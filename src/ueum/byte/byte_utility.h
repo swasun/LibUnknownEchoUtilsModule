@@ -37,7 +37,7 @@ unsigned char *ueum_bytes_create_from_bytes(unsigned char *bytes, size_t size);
 
 void ueum_int_to_bytes(int n, unsigned char *bytes);
 
-int ueum_bytes_to_int(unsigned char *bytes);
+bool ueum_bytes_to_int(unsigned char *bytes, int *n);
 
 bool ueum_bytes_starts_with(unsigned char *data, size_t data_size, unsigned char *target, size_t target_size);
 

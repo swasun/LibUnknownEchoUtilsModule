@@ -51,10 +51,12 @@ void ueum_int_to_bytes(int n, unsigned char *bytes) {
 	bytes[3] = n & 0xFF;
 }
 
-int ueum_bytes_to_int(unsigned char *bytes) {
-	int n;
-	n = (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];
-	return n;
+bool ueum_bytes_to_int(unsigned char *bytes, int *n) {
+	ei_check_parameter_or_return(bytes);
+
+	*n = (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];
+
+	return true;
 }
 
 bool ueum_bytes_starts_with(unsigned char *data, size_t data_size, unsigned char *target, size_t target_size) {
