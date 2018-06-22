@@ -33,7 +33,6 @@
 #include <ueum/console/progress_bar.h>
 
 #include <ueum/container/byte_vector.h>
-#include <ueum/container/queue.h>
 #include <ueum/container/string_vector.h>
 
 #include <ueum/fileSystem/file_utility.h>
