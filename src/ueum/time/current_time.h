@@ -25,7 +25,7 @@
 #if defined(__unix__)
     #include <sys/time.h>
 #elif defined(_WIN32) || defined(_WIN64)
-    #include <time.h>
+	#include <Windows.h>
 #endif
 
 bool ueum_time_of_day(struct timeval *p);
