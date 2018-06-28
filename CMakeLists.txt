@@ -85,7 +85,10 @@ else ()
 				### Disable lazy binding
 				## -Wl,-z,relro
 				### Read-only segments after relocation
-				add_compile_options("-fstack-protector-strong" "-D_FORTIFY_SOURCE=2" "-Wl,-z,now" "-Wl,-z,relro")
+				add_compile_options("-D_FORTIFY_SOURCE=2" "-Wl,-z,now" "-Wl,-z,relro")
+                if (CMAKE_COMPILER_IS_GNUCC VERSION_GREATER 4.9)
+                    add_compile_options("-fstack-protector-strong")
+                endif ()
 			endif ()
 		else () # Debug mode
 			add_compile_options("-g") # Add debug symbols
