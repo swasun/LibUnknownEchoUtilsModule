@@ -3,7 +3,7 @@
 
 # --- PROJECT ---
 
-PROJECT(unknownechoutilsmodule C)
+PROJECT(ueumutilsmodule C)
 cmake_minimum_required(VERSION 3.8)
 
 
