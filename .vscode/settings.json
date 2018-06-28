@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "byte_stream.h": "c",
-        "string.h": "c"
-    }
-}
