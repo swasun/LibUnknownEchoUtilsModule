@@ -34,6 +34,7 @@
 
 #include <ueum/container/byte_vector.h>
 #include <ueum/container/string_vector.h>
+#include <ueum/container/queue.h>
 
 #include <ueum/fileSystem/file_utility.h>
 #include <ueum/fileSystem/folder_utility.h>
@@ -41,6 +42,12 @@
 #include <ueum/string/string_builder.h>
 #include <ueum/string/string_split.h>
 #include <ueum/string/string_utility.h>
+
+#include <ueum/thread/thread_cond.h>
+#include <ueum/thread/thread_id_struct.h>
+#include <ueum/thread/thread_mutex.h>
+#include <ueum/thread/thread_result.h>
+#include <ueum/thread/thread.h>
 
 #include <ueum/time/current_time.h>
 #include <ueum/time/processor_timestamp.h>
