@@ -1,11 +1,26 @@
-## @brief LibUnknownEchoUtilsModule
-## @author Charly Lamothe
+ ##########################################################################################
+ # Copyright (C) 2018 by Charly Lamothe													  #
+ #																						  #
+ # This file is part of LibUnknownEchoUtilsModule.										  #
+ #																						  #
+ #   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    #
+ #   it under the terms of the GNU General Public License as published by				  #
+ #   the Free Software Foundation, either version 3 of the License, or					  #
+ #   (at your option) any later version.												  #
+ #																						  #
+ #   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         #
+ #   but WITHOUT ANY WARRANTY; without even the implied warranty of						  #
+ #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  #
+ #   GNU General Public License for more details.										  #
+ #																						  #
+ #   You should have received a copy of the GNU General Public License					  #
+ #   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   #
+ ##########################################################################################/
 
 # --- PROJECT ---
 
 PROJECT(ueumutilsmodule C)
 cmake_minimum_required(VERSION 3.8)
-
 
 # --- GLOBAL OPTIONS ---
 
@@ -129,15 +144,18 @@ endif()
 
 # --- SEARCH DEPENDENCIES ---
 
-# Search LibErrorInterceptor
+# External dependencies
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/external)
 
-if (WIN32)
-	set(LIBERRORINTERCEPTOR_INCLUDE "C:\\LibErrorInterceptor\\$ENV{name}\\include")
-	set(LIBERRORINTERCEPTOR_LIB "C:\\LibErrorInterceptor\\$ENV{name}\\lib\\ei_static.lib")
-endif ()
+# Location where external projects will be downloaded
+set (DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
+    CACHE PATH "Location where external projects will be downloaded.")
+mark_as_advanced(DOWNLOAD_LOCATION)
+
+# LibErrorInterceptor
+include(libei)
 
 # Search pthread
-
 if (UNIX)
 	find_package (Threads)
 endif ()
@@ -159,10 +177,8 @@ set_target_properties(${PROJECT_NAME_SHARED} PROPERTIES OUTPUT_NAME ueum)
 target_link_libraries(${PROJECT_NAME_SHARED} ${CMAKE_THREAD_LIBS_INIT})
 if (WIN32)
 	target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
-	target_link_libraries(${PROJECT_NAME_SHARED} "${LIBERRORINTERCEPTOR_LIB}")
-elseif (UNIX)
-	target_link_libraries(${PROJECT_NAME_SHARED} "-lei")
 endif ()
+target_link_libraries(${PROJECT_NAME_SHARED} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 # Build static library
 add_library(${PROJECT_NAME_STATIC} STATIC ${PROGRAM_TARGET_SRC_FILES})
@@ -171,10 +187,8 @@ set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES OUTPUT_NAME ueum_static)
 target_link_libraries(${PROJECT_NAME_STATIC} ${CMAKE_THREAD_LIBS_INIT})
 if (WIN32)
 	target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
-	target_link_libraries(${PROJECT_NAME_STATIC} "${LIBERRORINTERCEPTOR_LIB}")
-elseif (UNIX)
-	target_link_libraries(${PROJECT_NAME_SHARED} "-lei")
 endif ()
+target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 
 # --- INSTALL ---
@@ -214,9 +228,7 @@ foreach (filePath ${files} )
     target_link_libraries(${executableName} ${PROJECT_NAME_STATIC})
     if (WIN32)
 		target_include_directories(${executableName} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
-		target_link_libraries(${executableName} "${LIBERRORINTERCEPTOR_LIB}")
-	elseif (UNIX)
-		target_link_libraries(${executableName} "-lei")
 	endif ()
+	target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
     set_target_properties(${executableName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${EXAMPLES_OUTPUT_PATH})
 endforeach ()
