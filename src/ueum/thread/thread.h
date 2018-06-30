@@ -32,7 +32,7 @@
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <ueum/thread/thread_result.h>
-    #include <ueum/errorHandling/error.h>
+    #include <ei/ei.h>
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)

@@ -21,7 +21,7 @@
 #include <ueum/alloc.h>
 
 #if defined(_WIN32) || defined(_WIN64)
-    #include <ueum/errorHandling/error.h>
+    #include <ei/ei.h>
 #endif
 
 #include <errno.h>

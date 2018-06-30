@@ -25,6 +25,7 @@ cmake_minimum_required(VERSION 3.8)
 # --- GLOBAL OPTIONS ---
 
 set(CMAKE_VERBOSE_MAKEFILE on)
+set(systemlib_LIBEI FALSE)
 
 # --- PATH ---
 
@@ -176,7 +177,7 @@ target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_SHARED} PROPERTIES OUTPUT_NAME ueum)
 target_link_libraries(${PROJECT_NAME_SHARED} ${CMAKE_THREAD_LIBS_INIT})
 if (WIN32)
-	target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
+	target_include_directories(${PROJECT_NAME_SHARED} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
 endif ()
 target_link_libraries(${PROJECT_NAME_SHARED} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
@@ -186,7 +187,7 @@ target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES OUTPUT_NAME ueum_static)
 target_link_libraries(${PROJECT_NAME_STATIC} ${CMAKE_THREAD_LIBS_INIT})
 if (WIN32)
-	target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
+	target_include_directories(${PROJECT_NAME_STATIC} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
 endif ()
 target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
@@ -227,7 +228,7 @@ foreach (filePath ${files} )
 	add_executable(${executableName} ${filePath})
     target_link_libraries(${executableName} ${PROJECT_NAME_STATIC})
     if (WIN32)
-		target_include_directories(${executableName} PUBLIC "${LIBERRORINTERCEPTOR_INCLUDE}")
+		target_include_directories(${executableName} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
 	endif ()
 	target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
     set_target_properties(${executableName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${EXAMPLES_OUTPUT_PATH})

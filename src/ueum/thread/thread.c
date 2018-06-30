@@ -26,6 +26,7 @@ ueum_thread_id *ueum_thread_create(void *function, void *arg) {
     ueum_thread_id *ti;
 #if defined(_WIN32) || defined(_WIN64)
         char *error_buffer;
+		error_buffer = NULL;
 #endif
 
     ei_check_parameter_or_return(function);
@@ -33,15 +34,12 @@ ueum_thread_id *ueum_thread_create(void *function, void *arg) {
     ueum_safe_alloc(ti, ueum_thread_id, 1);
 
 #if defined(_WIN32) || defined(_WIN64)
-    _Pragma("GCC diagnostic push")
-    _Pragma("GCC diagnostic ignored \"-Wpedantic\"")
-        if (!(ti->id = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)function, arg, 0, NULL))) {
-            ueum_get_last_werror(error_buffer);
-            ei_stacktrace_push_msg(error_buffer);
-            ueum_safe_free(error_buffer);
-            return NULL;
-        }
-    _Pragma("GCC diagnostic pop")
+    if ((ti->id = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)function, arg, 0, NULL)) == NULL) {
+        ei_get_last_werror(error_buffer);
+        ei_stacktrace_push_msg(error_buffer);
+        ueum_safe_free(error_buffer);
+        return NULL;
+    }
     ueum_thread_result_add(ti);
 #else
         _Pragma("GCC diagnostic push")
@@ -59,7 +57,7 @@ ueum_thread_id *ueum_thread_create(void *function, void *arg) {
 
 bool ueum_thread_join(ueum_thread_id *ti, void **result) {
 #if defined(_WIN32) || defined(_WIN64)
-        char *error_buffer;
+        char *error_buffer = NULL;
         DWORD r;
 #else
         int r;
@@ -75,7 +73,7 @@ bool ueum_thread_join(ueum_thread_id *ti, void **result) {
         r = WaitForSingleObject(ti->id, INFINITE);
         ei_logger_debug("r : %d", r);
         if (r == WAIT_FAILED) {
-            ueum_get_last_werror(error_buffer);
+            ei_get_last_werror(error_buffer);
             ei_stacktrace_push_msg(error_buffer);
             ueum_safe_free(error_buffer);
             return false;
@@ -135,6 +133,7 @@ bool ueum_thread_detach(ueum_thread_id *ti) {
 bool ueum_thread_cancel(ueum_thread_id *ti) {
 #if defined(_WIN32) || defined(_WIN64)
     char *error_buffer;
+	error_buffer = NULL;
 #endif
 
     if (!ti) {
@@ -147,7 +146,7 @@ bool ueum_thread_cancel(ueum_thread_id *ti) {
         return true;
 #elif defined(_WIN32) || defined(_WIN64)
     if (!CloseHandle(ti->id)) {
-        ueum_get_last_werror(error_buffer);
+        ei_get_last_werror(error_buffer);
         ei_stacktrace_push_msg(error_buffer);
         return false;
     }

@@ -52,7 +52,7 @@ void test_2() {
     ueum_progress_bar_set_colors(progress_bar, UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_DIM, -1,
         UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_BLACK);
 
-#ifdef _WINDOWS
+#ifdef _WIN32
     ueum_progress_bar_set_style(progress_bar, "|", "-");
 #else
     ueum_progress_bar_set_style(progress_bar, "\u2588", "-");

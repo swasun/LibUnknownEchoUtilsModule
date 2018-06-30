@@ -32,7 +32,7 @@ int main() {
 
     ei_logger_info("UnknownEchoLib is correctly initialized");
     
-    if (!(password = ueum_input_password("Enter a password: ", 32))) {
+    if ((password = ueum_input_password("Enter a password: ", 32)) == NULL) {
         ei_stacktrace_push_msg("Failed to get input password");
         goto clean_up;
     }

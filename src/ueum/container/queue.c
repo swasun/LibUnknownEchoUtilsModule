@@ -286,6 +286,7 @@ bool ueum_queue_set_print_func(ueum_queue *queue, void (*print_func)(void *data,
 }
 
 static bool ueum_queue_push_internal(ueum_queue *queue, void *data, bool wait) {
+	(void)wait;
     /*if (queue->count == queue->capacity && wait) {
         while (queue->count == queue->capacity) {
             ueum_thread_cond_wait(queue->write_cond, queue->mutex);
