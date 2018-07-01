@@ -6,9 +6,7 @@ if (systemlib_LIBEI)
         set(LIBERRORINTERCEPTOR_LIBRARIES "-lei")
     endif ()
 else (systemlib_LIBEI)
-	set(LIBERRORINTERCEPTOR_LIBRARIES "")
-
-    if (UNIX)
+	if (UNIX)
 		find_library(LIBERRORINTERCEPTOR_LIBRARIES ei)
 		find_path(LIBERRORINTERCEPTOR_INCLUDE_DIR NAMES ei)
 	elseif (WIN32)
@@ -35,7 +33,6 @@ else (systemlib_LIBEI)
 		ExternalProject_Add(libei
 			PREFIX libei
 			GIT_REPOSITORY ${LIBEI_URL}
-			#INSTALL_DIR ${LIBEI_INSTALL}
 			BUILD_IN_SOURCE 1
 			BUILD_BYPRODUCTS ${libei_STATIC_LIBRARIES}
 			DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
