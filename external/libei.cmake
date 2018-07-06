@@ -20,7 +20,7 @@ else (systemlib_LIBEI)
 		include (ExternalProject)
 
 		set(LIBEI_URL https://github.com/swasun/LibErrorInterceptor.git)
-		set(libei_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/libei_archive)
+		set(LIBERRORINTERCEPTOR_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/libei_archive)
 		set(LIBEI_BUILD ${CMAKE_CURRENT_BINARY_DIR}/libei/src/libei)
 		set(LIBEI_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/libei/install)
 
