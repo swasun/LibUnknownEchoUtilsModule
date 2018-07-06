@@ -173,6 +173,7 @@ file(GLOB_RECURSE PROGRAM_TARGET_SRC_FILES "${SRC_PATH}/*.*")
 
 # Build shared library
 add_library(${PROJECT_NAME_SHARED} SHARED ${PROGRAM_TARGET_SRC_FILES})
+add_dependencies(${PROJECT_NAME_SHARED} libei)
 target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_SHARED} PROPERTIES OUTPUT_NAME ueum)
 target_link_libraries(${PROJECT_NAME_SHARED} ${CMAKE_THREAD_LIBS_INIT})
@@ -183,6 +184,7 @@ target_link_libraries(${PROJECT_NAME_SHARED} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 # Build static library
 add_library(${PROJECT_NAME_STATIC} STATIC ${PROGRAM_TARGET_SRC_FILES})
+add_dependencies(${PROJECT_NAME_STATIC} libei)
 target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES OUTPUT_NAME ueum_static)
 target_link_libraries(${PROJECT_NAME_STATIC} ${CMAKE_THREAD_LIBS_INIT})
@@ -226,6 +228,7 @@ foreach (filePath ${files} )
 	get_filename_component(executableName ${filePath} NAME_WE)
 	message(STATUS "Build Program : ${executableName}")
 	add_executable(${executableName} ${filePath})
+	add_dependencies(${executableName} libei)
     target_link_libraries(${executableName} ${PROJECT_NAME_STATIC})
     if (WIN32)
 		target_include_directories(${executableName} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
