@@ -9,12 +9,10 @@ if (systemlib_LIBEI)
 else (systemlib_LIBEI)
 	include (ExternalProject)
 
-	message(STATUS "libei ROOT_BUILD_DIR: " ${ROOT_BUILD_DIR})
-
 	set(LIBEI_URL https://github.com/swasun/LibErrorInterceptor.git)
-	set(LIBERRORINTERCEPTOR_INCLUDE_DIR ${ROOT_BUILD_DIR}/external/libei_archive)
-	set(LIBEI_BUILD ${ROOT_BUILD_DIR}/libei/src/libei)
 	set(LIBEI_INSTALL ${ROOT_BUILD_DIR}/libei/install)
+	set(LIBERRORINTERCEPTOR_INCLUDE_DIR ${LIBEI_INSTALL}/include)
+	set(LIBEI_BUILD ${ROOT_BUILD_DIR}/libei/src/libei)
 
 	if (WIN32)
 		set(LIBERRORINTERCEPTOR_LIBRARIES "${ROOT_BUILD_DIR}\\ei_static.lib")
