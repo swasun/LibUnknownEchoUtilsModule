@@ -27,6 +27,8 @@ cmake_minimum_required(VERSION 3.8)
 set(CMAKE_VERBOSE_MAKEFILE on)
 SET(ROOT_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE STRING "Default root path of the current build directory")
 
+message(STATUS "ROOT_BUILD_DIR: " ${ROOT_BUILD_DIR})
+
 # --- PATH ---
 
 set(${CMAKE_CURRENT_SOURCE_DIR} ..)
