@@ -25,7 +25,7 @@ cmake_minimum_required(VERSION 3.8)
 # --- GLOBAL OPTIONS ---
 
 set(CMAKE_VERBOSE_MAKEFILE on)
-set(systemlib_LIBEI FALSE)
+SET(ROOT_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE STRING "Default root path of the current build directory")
 
 # --- PATH ---
 
@@ -149,7 +149,7 @@ endif()
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/external)
 
 # Location where external projects will be downloaded
-set (DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
+set (DOWNLOAD_LOCATION "${ROOT_BUILD_DIR}/downloads"
     CACHE PATH "Location where external projects will be downloaded.")
 mark_as_advanced(DOWNLOAD_LOCATION)
 
@@ -173,9 +173,7 @@ file(GLOB_RECURSE PROGRAM_TARGET_SRC_FILES "${SRC_PATH}/*.*")
 
 # Build shared library
 add_library(${PROJECT_NAME_SHARED} SHARED ${PROGRAM_TARGET_SRC_FILES})
-if (LIBEI_SET)
-	add_dependencies(${PROJECT_NAME_SHARED} libei)
-endif ()
+add_dependencies(${PROJECT_NAME_SHARED} libei)
 target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_SHARED} PROPERTIES OUTPUT_NAME ueum)
 target_link_libraries(${PROJECT_NAME_SHARED} ${CMAKE_THREAD_LIBS_INIT})
@@ -186,9 +184,7 @@ target_link_libraries(${PROJECT_NAME_SHARED} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 # Build static library
 add_library(${PROJECT_NAME_STATIC} STATIC ${PROGRAM_TARGET_SRC_FILES})
-if (LIBEI_SET)
-	add_dependencies(${PROJECT_NAME_STATIC} libei)
-endif ()
+add_dependencies(${PROJECT_NAME_STATIC} libei)
 target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES OUTPUT_NAME ueum_static)
 target_link_libraries(${PROJECT_NAME_STATIC} ${CMAKE_THREAD_LIBS_INIT})
@@ -232,9 +228,7 @@ foreach (filePath ${files} )
 	get_filename_component(executableName ${filePath} NAME_WE)
 	message(STATUS "Build Program : ${executableName}")
 	add_executable(${executableName} ${filePath})
-	if (LIBEI_SET)
-		add_dependencies(${executableName} libei)
-	else ()
+	add_dependencies(${executableName} libei)
     target_link_libraries(${executableName} ${PROJECT_NAME_STATIC})
     if (WIN32)
 		target_include_directories(${executableName} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
