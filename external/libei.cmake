@@ -15,7 +15,7 @@ else (systemlib_LIBEI)
 	set(LIBEI_BUILD ${ROOT_BUILD_DIR}/libei/src/libei)
 
 	if (WIN32)
-		set(LIBERRORINTERCEPTOR_LIBRARIES "${ROOT_BUILD_DIR}\\ei_static.lib")
+		set(LIBERRORINTERCEPTOR_LIBRARIES "${ROOT_BUILD_DIR}\\libei\\install\\lib\\ei_static.lib")
 	else()
 		set(LIBERRORINTERCEPTOR_LIBRARIES ${ROOT_BUILD_DIR}/libei/install/lib/libei_static.a)
 	endif()
