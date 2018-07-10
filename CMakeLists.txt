@@ -177,9 +177,7 @@ add_dependencies(${PROJECT_NAME_SHARED} libei)
 target_include_directories(${PROJECT_NAME_SHARED} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_SHARED} PROPERTIES OUTPUT_NAME ueum)
 target_link_libraries(${PROJECT_NAME_SHARED} ${CMAKE_THREAD_LIBS_INIT})
-if (WIN32)
-	target_include_directories(${PROJECT_NAME_SHARED} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
-endif ()
+target_include_directories(${PROJECT_NAME_SHARED} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME_SHARED} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 # Build static library
@@ -188,9 +186,7 @@ add_dependencies(${PROJECT_NAME_STATIC} libei)
 target_include_directories(${PROJECT_NAME_STATIC} PUBLIC "${SRC_PATH}")
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES OUTPUT_NAME ueum_static)
 target_link_libraries(${PROJECT_NAME_STATIC} ${CMAKE_THREAD_LIBS_INIT})
-if (WIN32)
-	target_include_directories(${PROJECT_NAME_STATIC} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
-endif ()
+target_include_directories(${PROJECT_NAME_STATIC} PUBLIC ${LIBERRORINTERCEPTOR_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 
