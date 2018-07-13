@@ -130,6 +130,10 @@ Compile statically:
 gcc -o basic_usage basic_usage.c -lueum_static -lei_static
 ```
 
+# Dependency
+
+* [LibErrorInterceptor](https://github.com/swasun/LibErrorInterceptor), a lightweight and cross-plateform library to handle stacktrace and logging in C99.
+
 # Cross-plateform
 
 Successfully tested on the following OS (on both 32 and 64 bits):
