@@ -534,7 +534,7 @@ char *ueum_trim_whitespace(char *str) {
 	return str;
 }
 
-char *ueum_string_uppercase(char *input) {
+char *ueum_string_uppercase(const char *input) {
 	char *output;
 	size_t length, i;
 

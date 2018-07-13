@@ -100,6 +100,6 @@ char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end);
 
 char *ueum_trim_whitespace(char *str);
 
-char *ueum_string_uppercase(char *input);
+char *ueum_string_uppercase(const char *input);
 
 #endif
