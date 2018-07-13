@@ -168,25 +168,23 @@ char *ueum_strcat_variadic(const char *format, ...) {
 }
 
 int ueum_find_str_in_data(char *data, const char *query) {
-	char *tmp_data;
-	int data_size, query_len, position;
+	size_t begin_pos, i, j, query_size;
 
-	tmp_data = data;
-	data_size = (int)strlen(data);
-	query_len = (int)strlen(query);
-	position = 0;
+	begin_pos = 0;
+	query_size = strlen(query);
 
-	while (1) {
-		if (tmp_data + data_size - tmp_data < query_len) {
-			break;
+	for (i = 0, j = 0; i < strlen(data); i++) {
+		if (j == 0) {
+			begin_pos = i;
 		}
-		if (*tmp_data == query[0]) {
-			if (memcmp(tmp_data, query, query_len) == 0) {
-				return position;
-			}
+		if (j == query_size) {
+			return begin_pos;
 		}
-		tmp_data++;
-		position++;
+		if (data[i] == query[j]) {
+			j++;
+		} else {
+			j = 0;
+		}
 	}
 
 	return -1;
@@ -391,12 +389,12 @@ bool ueum_long_to_string(long num, char *buffer, int radix) {
 
 bool ueum_string_to_int(char *string, int *out, int radix) {
 	char *end;
-	long l;
+	long l;	
 
 	ei_check_parameter_or_return(string);
 
 	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
-		ei_stacktrace_push_msg("String is incovertible");
+		ei_stacktrace_push_msg("String is inconvertible");
 		return false;
 	}
 
@@ -413,7 +411,7 @@ bool ueum_string_to_int(char *string, int *out, int radix) {
 		return false;
 	}
 	if (*end != '\0') {
-		ei_stacktrace_push_msg("String is incovertible");
+		ei_stacktrace_push_msg("String is inconvertible");
 		return false;
 	}
 
@@ -429,7 +427,7 @@ bool ueum_string_to_long(char *string, long *out, int radix) {
 	ei_check_parameter_or_return(string);
 
 	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
-		ei_stacktrace_push_msg("String is incovertible");
+		ei_stacktrace_push_msg("String is inconvertible");
 		return false;
 	}
 
@@ -446,33 +444,13 @@ bool ueum_string_to_long(char *string, long *out, int radix) {
 		return false;
 	}
 	if (*end != '\0') {
-		ei_stacktrace_push_msg("String is incovertible");
+		ei_stacktrace_push_msg("String is inconvertible");
 		return false;
 	}
 
 	*out = l;
 
 	return true;
-}
-
-int ueum_digit(char c, int radix) {
-	char *string, *error_message;
-	int number;
-
-	number = 0;
-
-	ueum_safe_alloc(string, char, 2);
-	string[0] = c;
-	if (!ueum_string_to_int(string, &number, radix)) {
-		error_message = ueum_strcat_variadic("scsds", "Failed to convert char `", c,
-				"` to radix `", radix, "`");
-		ei_stacktrace_push_msg(error_message);
-		ueum_safe_str_free(error_message);
-	}
-
-	ueum_safe_str_free(string);
-
-	return number;
 }
 
 char *ueum_substring(char *string, int begin_index, int end_index) {
@@ -489,7 +467,7 @@ char *ueum_substring(char *string, int begin_index, int end_index) {
 		return NULL;
 	}
 
-	sub_length = end_index - begin_index;
+	sub_length = end_index - begin_index + 1;
 	if (sub_length < 0) {
 		ei_stacktrace_push_msg("Index out of bounds exception");
 		return NULL;
@@ -556,7 +534,7 @@ char *ueum_trim_whitespace(char *str) {
 	return str;
 }
 
-char *ueum_string_uppercase(const char *input) {
+char *ueum_string_uppercase(char *input) {
 	char *output;
 	size_t length, i;
 
@@ -564,10 +542,11 @@ char *ueum_string_uppercase(const char *input) {
 
 	length = strlen(input);
 
-	ueum_safe_alloc(output, char, length);
+	ueum_safe_alloc(output, char, length+1);
 
+	i = 0;
 	for (i = 0; i < length; i++) {
-		output[i] = (char)toupper(input[i]);
+		output[i] = (unsigned char)toupper((unsigned char)input[i]);
 	}
 
 	return output;

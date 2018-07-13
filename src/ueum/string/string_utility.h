@@ -80,8 +80,6 @@ bool ueum_string_to_int(char *string, int *out, int radix);
 
 bool ueum_string_to_long(char *string, long *out, int radix);
 
-int ueum_digit(char c, int radix);
-
 /**
  * Returns a string that is a ueum_substring of this string. The
  * ueum_substring begins at the specified {@code begin_index} and
@@ -89,8 +87,8 @@ int ueum_digit(char c, int radix);
  * Thus the length of the ueum_substring is {@code end_index-begin_index}.
  *
  * Examples:
- * "hamburger".ueum_substring(4, 8) returns "urge"
- * "smiles".ueum_substring(1, 5) returns "mile"
+ * ueum_substring("hamburger", 4, 8) returns "urge"
+ * ueum_substring("smiles", 1, 5) returns "mile"
  *
  * @param      begin_index   the beginning index, inclusive.
  * @param      end_index     the ending index, exclusive.
@@ -102,6 +100,6 @@ char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end);
 
 char *ueum_trim_whitespace(char *str);
 
-char *ueum_string_uppercase(const char *input);
+char *ueum_string_uppercase(char *input);
 
 #endif
