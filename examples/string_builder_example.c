@@ -20,18 +20,12 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 int main() {
     ueum_string_builder *builder;
 
-	if (!ei_init()) {
-        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
-        exit(EXIT_FAILURE);
-    }
-
+    ei_init_or_die();
 	ei_logger_use_symbol_levels();
     
     ei_logger_info("Creating string builder...");

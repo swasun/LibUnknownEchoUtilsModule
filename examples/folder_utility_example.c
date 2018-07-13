@@ -21,7 +21,6 @@
 #include <ei/ei.h>
 
 #include <stdlib.h>
-#include <stdio.h>
 
 int main() {
     const char *directory_name, *file_name, *data;
@@ -32,11 +31,7 @@ int main() {
     directories = NULL;
     files_count = 0;
 
-    if (!ei_init()) {
-        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
-        exit(EXIT_FAILURE);
-    }
-    
+    ei_init_or_die();
     ei_logger_use_symbol_levels();
 
     directory_name = "hello";

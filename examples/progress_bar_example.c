@@ -21,7 +21,6 @@
 #include <ei/ei.h>
 
 #include <stdio.h>
-#include <stdlib.h>
 
 void test_1() {
     ueum_progress_bar *progress_bar;
@@ -110,11 +109,7 @@ void test_4() {
 }
 
 int main() {
-    if (!ei_init()) {
-        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
-        exit(EXIT_FAILURE);
-    }
-
+    ei_init_or_die();
     ei_logger_use_symbol_levels();
 
     test_1();

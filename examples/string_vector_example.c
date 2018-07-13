@@ -20,19 +20,12 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 int main() {
     ueum_string_vector *data;
 
     data = NULL;
 
-    if (!ei_init()) {
-        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
-        exit(EXIT_FAILURE);
-    }
-
+    ei_init_or_die();
     ei_logger_use_symbol_levels();
 
     ei_logger_info("Creating an empty string vector");
