@@ -33,7 +33,7 @@ int main() {
     ueum_safe_free(colored);
 
     if (ei_stacktrace_is_filled()) {
-        ei_stacktrace_print_all();
+        ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
 
     ei_uninit();

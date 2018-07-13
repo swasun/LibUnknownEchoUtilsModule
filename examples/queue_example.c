@@ -21,51 +21,53 @@
 #include <ei/ei.h>
 
 int main() {
-    ueum_byte_stream *x, *y, *z;
+    ueum_queue *queue;
+    const char *data;
+    void *element;
+    
+    queue = NULL;
+    data = "Hello world !";
 
     ei_init();
 
-    /* Allocate streams */
-    ei_logger_info("Creating x, y and z byte streams");
-    x = ueum_byte_stream_create();
-    y = ueum_byte_stream_create();
-    z = ueum_byte_stream_create();
+    ei_logger_info("Creating an empty queue");
+    if ((queue = ueum_queue_create()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create new empty queue");
+        goto clean_up;
+    }
 
-    /* Create stream x with Hello world content */
-    ei_logger_info("Adding Hello world string to the stream x");
-    ueum_byte_writer_append_string(x, "Hello world !");
+    ei_logger_info("Pushing a new element to the queue");
+    if (!ueum_queue_push(queue, (void *)data)) {
+        ei_stacktrace_push_msg("Failed to push data to the queue");
+        goto clean_up;
+    }
 
-    /* Copy x stream to y */
-    ei_logger_info("Write x stream to y stream");
-    ueum_byte_writer_append_stream(y, x);
+    ei_logger_info("Checking if the queue is empty");
+    if (ueum_queue_empty(queue)) {
+        ei_stacktrace_push_msg("The queue is empty but it shouldn't");
+        goto clean_up;
+    }
 
-    /* Set the virtual cursor of y to the begining */
-    ueum_byte_stream_set_position(y, 0);
+    ei_logger_info("The queue isn't empty and contains %d element", ueum_queue_size(queue));
 
-    /* Read next datas as a stream and copy it to z */
-    ei_logger_info("Read y stream and copy it to z stream");
-    ueum_byte_read_next_stream(y, z);
+    ei_logger_info("Get the front element of the queue");
+    if ((element = ueum_queue_front(queue)) == NULL) {
+        ei_stacktrace_push_msg("Failed to get the front element from the queue");
+        goto clean_up;
+    }
 
-    /**
-     * Print all streams in hexadecimals format.
-     * It's excepted that x is equal to z. y is a little bigger
-     * because it contains the size of x.
-     */
-    ei_logger_info("Print the content of the streams in hex format. y is a little bigger that x and z because it contains the size of x.");
-    ueum_byte_stream_print_hex(x, stdout);
-    ueum_byte_stream_print_hex(y, stdout);
-    ueum_byte_stream_print_hex(z, stdout);
+    ei_logger_info("The element of the queue contains: %s", (char *)element);
 
-    /* Clean-up streams */
-    ueum_byte_stream_destroy(x);
-    ueum_byte_stream_destroy(y);
-    ueum_byte_stream_destroy(z);
+    if (!ueum_queue_pop(queue)) {
+        ei_stacktrace_push_msg("Failed to pop the queue");
+        goto clean_up;
+    }
 
+clean_up:
+    ueum_queue_destroy(queue);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }
