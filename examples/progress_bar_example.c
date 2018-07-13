@@ -111,11 +111,11 @@ void test_4() {
 int main() {
     ei_init();
 
-    //test_1();
+    test_1();
 
-    //test_2();
+    test_2();
 
-    //test_3();
+    test_3();
 
     test_4();
 

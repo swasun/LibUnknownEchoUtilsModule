@@ -26,6 +26,8 @@ cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 SET(ROOT_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE STRING "Default root path of the current build directory")
+SET(LIBEI_SYSTEM FALSE CACHE BOOL "Default LIBEI installation type")
+set(LIBEI_INSTALL ${ROOT_BUILD_DIR}/libei/install CACHE STRING "Default LIBEI install path")
 
 # --- PATH ---
 
@@ -194,15 +196,6 @@ target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 if (UNIX)
     # Copy includes
-    #install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION /usr/include FILES_MATCHING PATTERN "*.h")
-
-    # Copy static library
-    #install (TARGETS ${PROJECT_NAME_STATIC} ARCHIVE DESTINATION "/usr/lib")
-
-    # Copy shared library
-	#install (TARGETS ${PROJECT_NAME_SHARED} LIBRARY DESTINATION "/usr/lib")
-	
-	# Copy includes
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
 
 	# Copy static library
