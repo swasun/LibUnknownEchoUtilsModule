@@ -23,38 +23,38 @@
 #include <stdio.h>
 
 int main() {
-    ueum_byte_vector *data;
+    ueum_string_vector *data;
 
     data = NULL;
 
     ei_init();
     ei_logger_use_symbol_levels();
 
-    ei_logger_info("Creating an empty byte vector");
-    if ((data = ueum_byte_vector_create_empty()) == NULL) {
-        ei_stacktrace_push_msg("Failed to create empty byte vector data");
+    ei_logger_info("Creating an empty string vector");
+    if ((data = ueum_string_vector_create_empty()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create empty string vector data");
         goto clean_up;
     }
 
-    ei_logger_info("Append hello world string");
-    if (!ueum_byte_vector_append_string(data, "Hello world !")) {
-        ei_stacktrace_push_msg("Failed to append string to byte vector data");
+    ei_logger_info("string hello world string");
+    if (!ueum_string_vector_append(data, "Hello world !")) {
+        ei_stacktrace_push_msg("Failed to string string to string vector data");
         goto clean_up;
     }
 
-    ei_logger_info("Checking is byte vector is empty");
-    if (ueum_byte_vector_is_empty(data)) {
-        ei_stacktrace_push_msg("byte vector data is empty but it shouldn't")
+    ei_logger_info("Checking is string vector is empty");
+    if (ueum_string_vector_is_empty(data)) {
+        ei_stacktrace_push_msg("string vector data is empty but it shouldn't")
         goto clean_up;
     }
 
-    ei_logger_info("The byte vector isn't empty and contains %d element", ueum_byte_vector_size(data));
+    ei_logger_info("The string vector isn't empty and contains %d element", ueum_string_vector_size(data));
 
-    ei_logger_info("The byte vector 'data' contains:");
-    ueum_byte_vector_print(data, stdout);
+    ei_logger_info("The string vector 'data' contains:");
+    ueum_string_vector_print(data, stdout);
 
 clean_up:
-    ueum_byte_vector_destroy(data);
+    ueum_string_vector_destroy(data);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
