@@ -21,31 +21,40 @@
 #include <ei/ei.h>
 
 #include <stdio.h>
-#include <stdlib.h>
 
 int main() {
-    char *password;
+    ueum_byte_vector *data;
 
-    password = NULL;
+    data = NULL;
 
-    if (!ei_init()) {
+    ei_init();
+
+    ei_logger_info("Creating an empty byte vector");
+    if ((data = ueum_byte_vector_create_empty()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create empty byte vector data");
         goto clean_up;
     }
 
-    ei_logger_info("LibUnknownEchoUtilsModule is correctly initialized");
-    
-    if ((password = ueum_input_password("Enter a password: ", 32)) == NULL) {
-        ei_stacktrace_push_msg("Failed to get input password");
+    ei_logger_info("Append hello world string");
+    if (!ueum_byte_vector_append_string(data, "Hello world !")) {
+        ei_stacktrace_push_msg("Failed to append string to byte vector data");
         goto clean_up;
     }
 
-    ei_logger_info("The password is: %s", password);
+    ei_logger_info("Checking is byte vector is empty");
+    if (ueum_byte_vector_is_empty(data)) {
+        ei_stacktrace_push_msg("byte vector data is empty but it shouldn't")
+        goto clean_up;
+    }
+
+    ei_logger_info("The byte vector 'data' contains:");
+    ueum_byte_vector_print(data, stdout);
 
 clean_up:
-    ueum_safe_free(password);
+    ueum_byte_vector_destroy(data);
     if (ei_stacktrace_is_filled()) {
         ei_stacktrace_print_all();
     }
     ei_uninit();
-    return EXIT_SUCCESS;
+    return 0;
 }
