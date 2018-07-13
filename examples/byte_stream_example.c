@@ -25,6 +25,8 @@ int main() {
 
     ei_init();
 
+    ei_logger_use_symbol_levels();
+
     /* Allocate streams */
     ei_logger_info("Creating x, y and z byte streams");
     x = ueum_byte_stream_create();

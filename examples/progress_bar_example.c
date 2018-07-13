@@ -110,6 +110,7 @@ void test_4() {
 
 int main() {
     ei_init();
+    ei_logger_use_symbol_levels();
 
     test_1();
 

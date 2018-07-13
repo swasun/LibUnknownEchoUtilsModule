@@ -28,6 +28,7 @@ int main() {
     data = NULL;
 
     ei_init();
+    ei_logger_use_symbol_levels();
 
     ei_logger_info("Creating an empty byte vector");
     if ((data = ueum_byte_vector_create_empty()) == NULL) {

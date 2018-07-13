@@ -29,8 +29,10 @@ int main() {
     password = NULL;
 
     if (!ei_init()) {
+        ei_stacktrace_push_msg("Failed to initialize LibErrorInterceptor");
         goto clean_up;
     }
+    ei_logger_use_symbol_levels();
 
     ei_logger_info("LibUnknownEchoUtilsModule is correctly initialized");
     

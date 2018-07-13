@@ -29,6 +29,7 @@ int main() {
     data = "Hello world !";
 
     ei_init();
+    ei_logger_use_symbol_levels();
 
     ei_logger_info("Creating an empty queue");
     if ((queue = ueum_queue_create()) == NULL) {

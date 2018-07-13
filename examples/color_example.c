@@ -26,6 +26,7 @@ int main() {
     char *colored;
 
     ei_init();
+    ei_logger_use_symbol_levels();
 
     colored = ueum_colorize_string("colored mother fucker.", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
         UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
