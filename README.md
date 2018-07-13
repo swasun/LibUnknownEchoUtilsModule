@@ -91,7 +91,7 @@ Some examples are available in `examples` directory.
 
 # Basic usage
 
-`basic_usage.c`:
+The following `basic_usage.c` is an example of a simple usage of the library (file available in `examples` directory):
 ```c
 #include <ueum/ueum.h> /* include LibUnknownEchoUtilsModule */
 #include <ei/ei.h> /* include LibErrorInterceptor */
@@ -127,8 +127,10 @@ int main() {
 
 Compile statically:
 ```bash
-gcc -o basic_usage basic_usage.c -lueum_static -lei_static
+gcc -o basic_usage basic_usage.c -lueum_static -lei_static -pthread
 ```
+
+*note*: `-pthread` flag is necessary for Unix.
 
 # Dependency
 
