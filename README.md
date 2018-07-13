@@ -90,7 +90,7 @@ Some examples are available in `examples` directory.
 
 # Cross-plateform
 
-Successfully tested on the following OS:
-* Ubuntu 14.04 (64-bits)
-* Ubuntu 16.04 (64-bits)
-* Windows 10 (64-bits)
+Successfully tested on the following OS (on both 32 and 64 bits):
+* Ubuntu 14.04
+* Ubuntu 16.04
+* Windows 10
