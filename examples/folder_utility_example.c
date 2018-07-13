@@ -32,7 +32,11 @@ int main() {
     directories = NULL;
     files_count = 0;
 
-    ei_init();
+    if (!ei_init()) {
+        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
+        exit(EXIT_FAILURE);
+    }
+    
     ei_logger_use_symbol_levels();
 
     directory_name = "hello";

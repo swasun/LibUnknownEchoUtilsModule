@@ -20,6 +20,9 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 int main() {
     ueum_queue *queue;
     const char *data;
@@ -28,7 +31,11 @@ int main() {
     queue = NULL;
     data = "Hello world !";
 
-    ei_init();
+    if (!ei_init()) {
+        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
+        exit(EXIT_FAILURE);
+    }
+
     ei_logger_use_symbol_levels();
 
     ei_logger_info("Creating an empty queue");

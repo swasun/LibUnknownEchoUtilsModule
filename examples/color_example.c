@@ -21,11 +21,16 @@
 #include <ei/ei.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
     char *colored;
 
-    ei_init();
+    if (!ei_init()) {
+        fprintf(stderr, "[FATAL] Failed to initialize LibErrorInterceptor");
+        exit(EXIT_FAILURE);
+    }
+
     ei_logger_use_symbol_levels();
 
     colored = ueum_colorize_string("colored mother fucker.", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
