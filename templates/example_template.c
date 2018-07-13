@@ -20,24 +20,16 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-
 int main() {
-    char *colored;
-
-    ei_init_or_die();
+	ei_init_or_die();
     ei_logger_use_symbol_levels();
+    
+    
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
-
+clean_up:
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }

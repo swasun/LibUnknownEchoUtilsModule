@@ -42,7 +42,7 @@
     #error "OS not supported"
 #endif
 
-bool ueum_is_dir_exists(const char *file_name) {
+bool ueum_is_dir_exists(const char *dir_name) {
 #if defined(_WIN32) || defined(_WIN64)
     DWORD dw_attrib;
 #else
@@ -50,13 +50,13 @@ bool ueum_is_dir_exists(const char *file_name) {
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
-    dw_attrib = GetFileAttributesA(file_name);
+    dw_attrib = GetFileAttributesA(dir_name);
     if (dw_attrib != INVALID_FILE_ATTRIBUTES &&
         dw_attrib & FILE_ATTRIBUTE_DIRECTORY) {
         return true;
     }
 #elif defined(__unix__)
-    dir = opendir(file_name);
+    dir = opendir(dir_name);
     if (dir) {
         closedir(dir);
         return true;

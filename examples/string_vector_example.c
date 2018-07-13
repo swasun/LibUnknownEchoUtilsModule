@@ -20,24 +20,42 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-
 int main() {
-    char *colored;
+    ueum_string_vector *data;
+
+    data = NULL;
 
     ei_init_or_die();
     ei_logger_use_symbol_levels();
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    ei_logger_info("Creating an empty string vector");
+    if ((data = ueum_string_vector_create_empty()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create empty string vector data");
+        goto clean_up;
+    }
 
+    ei_logger_info("string hello world string");
+    if (!ueum_string_vector_append(data, "Hello world !")) {
+        ei_stacktrace_push_msg("Failed to string string to string vector data");
+        goto clean_up;
+    }
+
+    ei_logger_info("Checking is string vector is empty");
+    if (ueum_string_vector_is_empty(data)) {
+        ei_stacktrace_push_msg("string vector data is empty but it shouldn't")
+        goto clean_up;
+    }
+
+    ei_logger_info("The string vector isn't empty and contains %d element", ueum_string_vector_size(data));
+
+    ei_logger_info("The string vector 'data' contains:");
+    ueum_string_vector_print(data, stdout);
+
+clean_up:
+    ueum_string_vector_destroy(data);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }

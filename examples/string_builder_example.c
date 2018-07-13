@@ -20,24 +20,36 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
+#include <string.h>
 
 int main() {
-    char *colored;
+    ueum_string_builder *builder;
 
     ei_init_or_die();
-    ei_logger_use_symbol_levels();
+	ei_logger_use_symbol_levels();
+    
+    ei_logger_info("Creating string builder...");
+    if ((builder = ueum_string_builder_create()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create new string builder");
+        goto clean_up;
+    }
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    ei_logger_info("Append string to builder...");
+    if (!ueum_string_builder_append(builder, "Hello world !", strlen("Hello world !"))) {
+        ei_stacktrace_push_msg("Failed to append string to builder");
+        goto clean_up;
+    }
 
+    ei_logger_info("The string builder contains %ld chars with data: %s",
+        ueum_string_builder_get_position(builder),
+        ueum_string_builder_get_data(builder)
+    );
+
+clean_up:
+    ueum_string_builder_destroy(builder);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }

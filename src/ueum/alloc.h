@@ -67,21 +67,24 @@
 
 /**
  * Disable a warning on win32 platform
- * You must call DISABLE_WIN32_PRAGMA_WARN_END afterwards
+ * You must call UEUM_DISABLE_WIN32_PRAGMA_WARN_END afterwards
  *
  * @source: https://stackoverflow.com/a/13577924
  */
-#define DISABLE_WIN32_PRAGMA_WARN(nnn) \
-__pragma (warning (push)) \
-__pragma (warning(disable : nnn)) \
+ //#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
+//__pragma (warning (push))
+//__pragma (warning(disable : nnn))
 
-#define DISABLE_WIN32_PRAGMA_WARN_END \
-__pragma (warning (pop)) \
+//#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
+//__pragma (warning (pop))
+
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
 
 #else
 
-#define DISABLE_WIN32_PRAGMA_WARN(nnn)
-#define DISABLE_WIN32_PRAGMA_WARN_END
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
 
 #endif
 
@@ -94,9 +97,9 @@ __pragma (warning (pop)) \
  *  Check if variable is correctly allocated.
  */
 #define ueum_safe_alloc(var, type, size) \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		return 0; \
 	} \
@@ -106,9 +109,9 @@ DISABLE_WIN32_PRAGMA_WARN_END \
     ueum_check_alloc(var) \
 
 #define ueum_safe_alloc_ret(var, type, size, ret) \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		ret = 0; \
 	} else { \
@@ -135,9 +138,9 @@ DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated. If not, go to specified label
  */
 #define ueum_safe_alloc_or_goto(var, type, size, label) \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		goto label; \
 	} \
@@ -155,15 +158,15 @@ DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated.
  */
 #define ueum_safe_realloc(var, type, old_size, more_size) \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with a negative old_size"); \
 		return 0; \
 	} \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size"); \
 	    return 0; \
 	} \
@@ -180,15 +183,15 @@ DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated. If not, go to specified label
  */
 #define ueum_safe_realloc_or_goto(var, type, old_size, more_size, label) \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with a negative old_size '%d'", (int)old_size); \
 	    goto label; \
 	} \
-DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
 	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
 		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size '%d'", (int)more_size); \
 	    goto label; \
 	} \

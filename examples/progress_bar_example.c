@@ -109,15 +109,20 @@ void test_4() {
 }
 
 int main() {
-    ei_init();
+    ei_init_or_die();
+    ei_logger_use_symbol_levels();
 
-    //test_1();
+    test_1();
 
-    //test_2();
+    test_2();
 
-    //test_3();
+    test_3();
 
     test_4();
+
+    if (ei_stacktrace_is_filled()) {
+        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+    }
 
     ei_uninit();
 

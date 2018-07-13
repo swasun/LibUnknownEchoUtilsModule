@@ -20,17 +20,15 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 int main() {
     char *password;
 
     password = NULL;
 
-    ei_init();
+    ei_init_or_die();
+    ei_logger_use_symbol_levels();
 
-    ei_logger_info("UnknownEchoLib is correctly initialized");
+    ei_logger_info("LibUnknownEchoUtilsModule is correctly initialized");
     
     if ((password = ueum_input_password("Enter a password: ", 32)) == NULL) {
         ei_stacktrace_push_msg("Failed to get input password");
@@ -41,6 +39,9 @@ int main() {
 
 clean_up:
     ueum_safe_free(password);
+    if (ei_stacktrace_is_filled()) {
+        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+    }
     ei_uninit();
     return EXIT_SUCCESS;
 }

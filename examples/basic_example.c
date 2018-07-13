@@ -17,27 +17,33 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-#include <ueum/ueum.h>
-#include <ei/ei.h>
-
-#include <stdio.h>
+#include <ueum/ueum.h> /* include LibUnknownEchoUtilsModule */
+#include <ei/ei.h> /* include LibErrorInterceptor */
 
 int main() {
-    char *colored;
+    char *data;
 
-    ei_init_or_die();
-    ei_logger_use_symbol_levels();
+    ei_init(); /* initialize LibErrorInterceptor */
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    /* use LibUnknownEchoUtilsModule */
 
+    /* return the content of the file */
+    data = ueum_read_file("test.txt");
+
+    /* free data only if it's allocated */
+    ueum_safe_free(data);
+
+    /**
+     * If the file test.txt doesn't exist or cannot be
+     * opened, libueum will used libei to record an error
+     * in the stacktrace of the current thread.
+     * If so, we can print the stacktrace.
+     */
     if (ei_stacktrace_is_filled()) {
-        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+        ei_stacktrace_print_all();
     }
 
-    ei_uninit();
+    ei_uninit(); /* uninitialize LibErrorInterceptor */
 
     return 0;
 }

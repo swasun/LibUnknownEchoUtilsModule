@@ -20,24 +20,55 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-
 int main() {
-    char *colored;
+    ueum_queue *queue;
+    const char *data;
+    void *element;
+    
+    queue = NULL;
+    data = "Hello world !";
 
     ei_init_or_die();
     ei_logger_use_symbol_levels();
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    ei_logger_info("Creating an empty queue");
+    if ((queue = ueum_queue_create()) == NULL) {
+        ei_stacktrace_push_msg("Failed to create new empty queue");
+        goto clean_up;
+    }
 
+    ei_logger_info("Pushing a new element to the queue");
+    if (!ueum_queue_push(queue, (void *)data)) {
+        ei_stacktrace_push_msg("Failed to push data to the queue");
+        goto clean_up;
+    }
+
+    ei_logger_info("Checking if the queue is empty");
+    if (ueum_queue_empty(queue)) {
+        ei_stacktrace_push_msg("The queue is empty but it shouldn't");
+        goto clean_up;
+    }
+
+    ei_logger_info("The queue isn't empty and contains %d element", ueum_queue_size(queue));
+
+    ei_logger_info("Get the front element of the queue");
+    if ((element = ueum_queue_front(queue)) == NULL) {
+        ei_stacktrace_push_msg("Failed to get the front element from the queue");
+        goto clean_up;
+    }
+
+    ei_logger_info("The element of the queue contains: %s", (char *)element);
+
+    if (!ueum_queue_pop(queue)) {
+        ei_stacktrace_push_msg("Failed to pop the queue");
+        goto clean_up;
+    }
+
+clean_up:
+    ueum_queue_destroy(queue);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }

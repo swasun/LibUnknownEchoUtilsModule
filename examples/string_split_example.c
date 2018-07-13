@@ -20,24 +20,30 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-
 int main() {
-    char *colored;
+    const char *string, *delimiter;
+    ueum_string_vector *vector;
 
-    ei_init_or_die();
+	ei_init_or_die();
     ei_logger_use_symbol_levels();
+    
+    string = "oneUEtwoUEtree";
+    delimiter = "UE";
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    ei_logger_info("Splitting string '%s' with delimiter '%s'...", string, delimiter);
+    if ((vector = ueum_string_split(string, delimiter)) == NULL) {
+        ei_stacktrace_push_msg("Failed to split string");
+        goto clean_up;
+    }
 
+    ei_logger_info("Split output:");
+    ueum_string_vector_print(vector, stdout);
+
+clean_up:
+    ueum_string_vector_destroy(vector);
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }

@@ -23,23 +23,28 @@
 int main() {
     ueum_byte_stream *x, *y, *z;
 
-    ei_init();
+    ei_init_or_die();
+    ei_logger_use_symbol_levels();
 
     /* Allocate streams */
+    ei_logger_info("Creating x, y and z byte streams");
     x = ueum_byte_stream_create();
     y = ueum_byte_stream_create();
     z = ueum_byte_stream_create();
 
     /* Create stream x with Hello world content */
+    ei_logger_info("Adding Hello world string to the stream x");
     ueum_byte_writer_append_string(x, "Hello world !");
 
     /* Copy x stream to y */
+    ei_logger_info("Write x stream to y stream");
     ueum_byte_writer_append_stream(y, x);
 
     /* Set the virtual cursor of y to the begining */
     ueum_byte_stream_set_position(y, 0);
 
     /* Read next datas as a stream and copy it to z */
+    ei_logger_info("Read y stream and copy it to z stream");
     ueum_byte_read_next_stream(y, z);
 
     /**
@@ -47,6 +52,7 @@ int main() {
      * It's excepted that x is equal to z. y is a little bigger
      * because it contains the size of x.
      */
+    ei_logger_info("Print the content of the streams in hex format. y is a little bigger that x and z because it contains the size of x.");
     ueum_byte_stream_print_hex(x, stdout);
     ueum_byte_stream_print_hex(y, stdout);
     ueum_byte_stream_print_hex(z, stdout);
@@ -55,6 +61,10 @@ int main() {
     ueum_byte_stream_destroy(x);
     ueum_byte_stream_destroy(y);
     ueum_byte_stream_destroy(z);
+
+    if (ei_stacktrace_is_filled()) {
+        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+    }
 
     ei_uninit();
 

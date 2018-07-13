@@ -20,24 +20,36 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-#include <stdio.h>
-
 int main() {
-    char *colored;
+    const char *file_name, *out_data;
+    char *read_data;
 
     ei_init_or_die();
     ei_logger_use_symbol_levels();
 
-    colored = ueum_colorize_string("Hello world !", UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_BOLD,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_FOREGROUND_RED, UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_CYNAN);
-    printf("%s\n", colored);
-    ueum_safe_free(colored);
+    file_name = "hello.tmp";
+    out_data = "hello";
 
+    ei_logger_info("Check if file %s exists", file_name);
+    if (ueum_is_file_exists(file_name)) {
+        ei_logger_info("File %s already exist. Reading...", file_name);
+        if ((read_data = ueum_read_file(file_name)) == NULL) {
+            ei_stacktrace_push_msg("Failed to read file %s", file_name);
+            goto clean_up;
+        }
+        ei_logger_info("The content of the file is: %s", read_data);
+        ueum_safe_free(read_data);
+    } else {
+        ei_logger_info("File %s doesn't exist. Writing...", file_name);
+        if (!ueum_write_file(file_name, out_data)) {
+            ei_stacktrace_push_msg("Failed to write to file %s", file_name);
+        }
+    }
+
+clean_up:
     if (ei_stacktrace_is_filled()) {
         ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
-
     ei_uninit();
-
     return 0;
 }
