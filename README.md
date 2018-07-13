@@ -50,7 +50,7 @@ A lightweight utility library for C99 with cross-plateform features.
 
 Clone the repository:
 ```bash
-git clone http://github.com/swasun/LibUnknownEcho
+git clone http://github.com/swasun/LibUnknownEchoUtilsModule
 ```
 
 Build in release mode:
