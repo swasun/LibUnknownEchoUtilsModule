@@ -32,6 +32,10 @@ int main() {
     printf("%s\n", colored);
     ueum_safe_free(colored);
 
+    if (ei_stacktrace_is_filled()) {
+        ei_stacktrace_print_all();
+    }
+
     ei_uninit();
 
     return 0;

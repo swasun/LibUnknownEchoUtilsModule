@@ -119,6 +119,10 @@ int main() {
 
     test_4();
 
+    if (ei_stacktrace_is_filled()) {
+        ei_stacktrace_print_all();
+    }
+
     ei_uninit();
 
     return 0;

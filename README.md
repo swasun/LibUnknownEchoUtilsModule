@@ -70,10 +70,12 @@ cd build/debug
 make
 ```
 
-By default, dependencies are built and install in the `build` directoy.
+* By default, dependencies are built and install in the `build` directoy.
 To install in another place, add `-DLIBEI_INSTALL=/usr` flag in `cmake` command.
 
-To build with LIBEI already installed in the system, add `-DLIBEI_SYSTEM=TRUE` flag in `cmake` command.
+* To build with LIBEI already installed in the system, add `-DLIBEI_SYSTEM=TRUE` flag in `cmake` command.
+
+* Alternatively, you can build using `build_release.sh` and `build_debug.sh` scripts.
 
 Finally, to install in the system:
 ```bash
