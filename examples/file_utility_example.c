@@ -25,8 +25,9 @@ int main() {
     char *read_data;
 
     ei_init();
+    ei_logger_use_symbol_levels();
 
-    file_name = "hello.txt";
+    file_name = "hello.tmp";
     out_data = "hello";
 
     ei_logger_info("Check if file %s exists", file_name);

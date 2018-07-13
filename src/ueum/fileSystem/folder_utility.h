@@ -29,7 +29,7 @@
 
 #include <ueum/bool.h>
 
-bool ueum_is_dir_exists(const char *file_name);
+bool ueum_is_dir_exists(const char *dir_name);
 
 int ueum_count_dir_files(const char *dir_name, bool recursively);
 
