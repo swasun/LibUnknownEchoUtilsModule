@@ -47,7 +47,7 @@ int main() {
 
 clean_up:
     if (ei_stacktrace_is_filled()) {
-        ei_stacktrace_print_all();
+        ei_logger_stacktrace("An error occurred with the following stacktrace :");
     }
     ei_uninit();
     return 0;
