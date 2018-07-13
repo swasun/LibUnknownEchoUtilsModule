@@ -48,7 +48,7 @@ A lightweight utility library for C99 with cross-plateform features.
 
 # Installation
 
-Clone the repositoty:
+Clone the repository:
 ```bash
 git clone http://github.com/swasun/LibUnknownEcho
 ```
