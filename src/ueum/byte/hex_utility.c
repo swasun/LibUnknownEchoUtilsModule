@@ -26,6 +26,8 @@ char *ueum_bytes_to_hex(unsigned char *bytes, size_t bytes_count) {
     char *hex;
     size_t i;
 
+    hex = NULL;
+
 	ueum_safe_alloc(hex, char, bytes_count * 2 + 3);
 
     strcat(hex, "0x");

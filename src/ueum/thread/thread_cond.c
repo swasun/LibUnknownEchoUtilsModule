@@ -27,6 +27,8 @@
 ueum_thread_cond *ueum_thread_cond_create() {
 	ueum_thread_cond *cond;
 
+	cond = NULL;
+
 	ueum_safe_alloc(cond, ueum_thread_cond, 1);
 
 #if defined(_WIN32) || defined(_WIN64)

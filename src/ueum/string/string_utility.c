@@ -194,6 +194,8 @@ int ueum_find_str_in_data(char *data, const char *query) {
 char *ueum_get_file_name_from_path(char *path) {
 	char *file_name, *tmp_file_name;
 
+	file_name = NULL;
+
 	if (!strstr(path, "/")) {
 		ueum_safe_alloc(file_name, char, strlen(path) + 1);
 		strcpy(file_name, path);
@@ -209,6 +211,8 @@ char *ueum_get_file_name_from_path(char *path) {
 
 char *ueum_get_file_extension(char *path) {
 	char *file_name, *tmp_file_name;
+
+	file_name = NULL;
 
 	if (!strstr(path, ".")) {
 		ueum_safe_alloc(file_name, char, strlen(path) + 1);
@@ -226,6 +230,8 @@ char *ueum_get_file_extension(char *path) {
 char *ueum_string_create_from(const char *str) {
 	char *new_str;
 
+	new_str = NULL;
+
 	ueum_safe_alloc(new_str, char, strlen(str) + 1);
 	strcpy(new_str, str);
 
@@ -234,6 +240,8 @@ char *ueum_string_create_from(const char *str) {
 
 char *ueum_string_create_from_bytes(unsigned char *bytes, size_t size) {
 	char *string;
+
+	string = NULL;
 
 	ueum_safe_alloc(string, char, size + 1);
 	memcpy(string, bytes, size * sizeof(char));
@@ -247,6 +255,8 @@ char *ueum_append_dump_string(char *data, size_t max) {
 	if (max <= strlen(data)) {
 		return ueum_string_create_from(data);
 	}
+
+	dump = NULL;
 
 	ueum_safe_alloc(dump, char, max + 1);
 	strcpy(dump, data);
@@ -459,6 +469,7 @@ char *ueum_substring(char *string, size_t begin_index, size_t end_index) {
 	char *new_string;
 
 	length = strlen(string);
+	new_string = NULL;
 
 	if (end_index > length) {
 		ei_stacktrace_push_msg("Index out of bounds");
@@ -542,6 +553,7 @@ char *ueum_string_uppercase(const char *input) {
 
 	ei_check_parameter_or_return(input);
 
+	output = NULL;
 	length = strlen(input);
 
 	ueum_safe_alloc(output, char, length+1);

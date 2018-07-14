@@ -76,6 +76,8 @@ bool ueum_byte_read_next_bytes(ueum_byte_stream *stream, unsigned char **bytes, 
         return false;
     }
 
+    *bytes = NULL;
+
     ueum_safe_alloc(*bytes, unsigned char, len);
     memcpy(*bytes, stream->bytes + stream->position, len * sizeof(unsigned char));
     stream->position += len;

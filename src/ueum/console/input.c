@@ -173,6 +173,8 @@ char *ueum_input_password(const char *prompt_message, ssize_t max_size) {
     char *password;
     ssize_t size;
 
+    password = NULL;
+
     ueum_safe_alloc(password, char, max_size);
     size = 0;
 

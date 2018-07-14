@@ -34,6 +34,8 @@ ueum_byte_stream *ueum_byte_stream_create_size(size_t size) {
 
     ei_check_parameter_or_return(size > 0);
 
+    stream = NULL;
+
     ueum_safe_alloc(stream, ueum_byte_stream, 1);
 
     ueum_safe_alloc_or_goto(stream->bytes, unsigned char, size, clean_up);
@@ -142,6 +144,8 @@ void ueum_byte_stream_print_string(ueum_byte_stream *stream, FILE *fd) {
 
 ueum_byte_stream *ueum_byte_stream_copy(ueum_byte_stream *stream) {
 	ueum_byte_stream *new_stream;
+
+    new_stream = NULL;
 
 	ueum_safe_alloc(new_stream, ueum_byte_stream, 1);
 	ueum_safe_alloc(new_stream->bytes, unsigned char, stream->size);

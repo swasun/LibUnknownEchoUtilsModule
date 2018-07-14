@@ -27,6 +27,7 @@ unsigned char *ueum_bytes_create_from_string(const char *str) {
 	unsigned char *new_bytes;
 	size_t len;
 
+	new_bytes = NULL;
 	len = strlen(str);
 
 	ueum_safe_alloc(new_bytes, unsigned char, len);
@@ -38,6 +39,7 @@ unsigned char *ueum_bytes_create_from_string(const char *str) {
 unsigned char *ueum_bytes_create_from_bytes(unsigned char *bytes, size_t size) {
 	unsigned char *new_bytes;
 
+	new_bytes = NULL;
 	ueum_safe_alloc(new_bytes, unsigned char, size);
 	memcpy(new_bytes, bytes, size * sizeof(unsigned char));
 

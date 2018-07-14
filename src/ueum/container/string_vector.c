@@ -23,14 +23,16 @@
 #include <ei/ei.h>
 
 ueum_string_vector *ueum_string_vector_create_empty() {
-    ueum_string_vector *v;
+    ueum_string_vector *vector;
 
-    ueum_safe_alloc(v, ueum_string_vector, 1);
+    vector = NULL;
 
-    v->elements = NULL;
-    v->number = 0;
+    ueum_safe_alloc(vector, ueum_string_vector, 1);
 
-    return v;
+    vector->elements = NULL;
+    vector->number = 0;
+
+    return vector;
 }
 
 void ueum_string_vector_clean_up(ueum_string_vector *v) {

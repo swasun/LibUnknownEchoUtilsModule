@@ -27,6 +27,8 @@
 static ueum_byte_vector_element *new_element(unsigned char *data, size_t size) {
     ueum_byte_vector_element *element;
 
+    element = NULL;
+
     ueum_safe_alloc(element, ueum_byte_vector_element, 1);
     element->data = data;
     element->size = size;
@@ -36,6 +38,8 @@ static ueum_byte_vector_element *new_element(unsigned char *data, size_t size) {
 
 ueum_byte_vector *ueum_byte_vector_create_empty() {
     ueum_byte_vector *vector;
+
+    vector = NULL;
 
     ueum_safe_alloc(vector, ueum_byte_vector, 1);
 

@@ -34,6 +34,8 @@ static bool validate_unity(char *unity) {
 ueum_timer_measure *ueum_timer_measure_create(unsigned int id) {
 	ueum_timer_measure *measure;
 
+	measure = NULL;
+
 	ueum_safe_alloc(measure, ueum_timer_measure, 1);
 
 	measure->id = id;

@@ -31,22 +31,24 @@ ueum_string_builder *ueum_string_builder_create() {
 }
 
 ueum_string_builder *ueum_string_builder_create_size(size_t max_size) {
-    ueum_string_builder *s;
+    ueum_string_builder *builder;
 
     ei_check_parameter_or_return(max_size > 0);
 
-    ueum_safe_alloc(s, ueum_string_builder, 1);
+    builder = NULL;
 
-    ueum_safe_alloc_or_goto(s->data, char, max_size + 1, clean_up);
+    ueum_safe_alloc(builder, ueum_string_builder, 1);
 
-    memset(s->data, 0, max_size);
-    s->max_size = max_size;
-    s->position = 0;
+    ueum_safe_alloc_or_goto(builder->data, char, max_size + 1, clean_up);
 
-    return s;
+    memset(builder->data, 0, max_size);
+    builder->max_size = max_size;
+    builder->position = 0;
+
+    return builder;
 
 clean_up:
-    ueum_string_builder_destroy(s);
+    ueum_string_builder_destroy(builder);
     return NULL;
 }
 

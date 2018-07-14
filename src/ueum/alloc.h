@@ -18,231 +18,90 @@
  ******************************************************************************************/
 
 /**
- * The __pragma(warning(disable:4127)) is used to disable this warning:
- * https://docs.microsoft.com/fr-fr/cpp/error-messages/compiler-warnings/compiler-warning-level-4-c4127
- * that append when size is not variable, like 1. So 1 == 0 will trigger this warnings.
- *
- *  @file      alloc.h
- *  @brief     Macro functions to safely alloc/desalloc variables.
- *  @author    Charly Lamothe
- *  @copyright GNU Public License.
+ * @file      alloc.h
+ * @brief     Macro functions to safely alloc/realloc/free variables.
+ * @author    Charly Lamothe
+ * @copyright GNU Public License.
  */
 
 #ifndef UNKNOWNECHOUTILSMODULE_ALLOC_H
 #define UNKNOWNECHOUTILSMODULE_ALLOC_H
 
+#include <ei/ei.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <limits.h>
 
-#include <ei/ei.h>
+/*********************************************************************
+ *	 						API	functions							 *
+ *********************************************************************/
 
 /**
- * Check if a variable is unsigned
- *
- * @source: https://stackoverflow.com/a/9629354
- * @source: https://stackoverflow.com/a/7317613
- * @todo fix for unsigned char
+ * @brief Alloc a variable in a safe way.
+ * 
+ * @param  ptr  pointer variable to allocate.
+ * @param  type type of the variable.
+ * @param  size number of item of type `type` to allocate in `ptr`.
+ * @pre    Ensure that `ptr` is set to NULL before.
+ * @return On success, `ptr` is allocated. Otherwise, 0 is returned.
+ * @code
+ * char *ptr = NULL;
+ * ueum_safe_alloc(ptr, char, 10);
+ * @endcode
  */
-#if defined(__GNUC__)
+#define ueum_safe_alloc(ptr, type, size) \
+	__ueum_safe_alloc_internal(ptr, type, size, return 0); \
 
-//#define ISUNSIGNED(a) (a>=0 && ((a=~a)>=0 ? (a=~a, 1) : (a=~a, 0)))
-
-#define ISUNSIGNED(a) (a >= 0 && ~a >= 0)
-
-#else
-
-#define ISUNSIGNED(a) (a >= 0 && ~a >= 0)
-
-#endif
+#define ueum_safe_alloc_ret(ptr, type, size, ret) \
+	__ueum_safe_alloc_internal(ptr, type, size, ret = 0); \
+	ret = 1; \
 
 /**
- * Disable a warning on win32 platform
- * You must call UEUM_DISABLE_WIN32_PRAGMA_WARN_END afterwards
- *
- * @source: https://stackoverflow.com/a/13577924
+ * @brief Alloc a variable in a safe way.
  */
-#if defined(_WIN32)
-
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn) \
-	__pragma (warning (push)) \
-	__pragma (warning(disable : nnn)) \
-
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
-	__pragma (warning (pop)) \
-
-#define UEUM_DISABLE_Wtype_limits() \
-	UEUM_DISABLE_WIN32_PRAGMA_WARN(4047) \
-
-#define UEUM_DISABLE_Wtype_limits_END() \
-	UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
-
-#else
-
-#define UEUM_DISABLE_Wtype_limits() \
-	_Pragma("GCC diagnostic push") \
-	_Pragma("GCC diagnostic ignored \"-Wtype-limits\"") \
-
-#define UEUM_DISABLE_Wtype_limits_END() \
-	_Pragma("GCC diagnostic pop") \
-
-#endif
-
+#define ueum_safe_alloc_or_goto(ptr, type, size, label) \
+	__ueum_safe_alloc_internal(ptr, type, size, goto label); \
 
 /**
- *  @brief Alloc a variable in a safe way.
- *
- *  Set variable to NULL,
- *  and alloc it to specified size and cast to specified type.
- *  Set all elements to 0 with memset.
- *  Check if variable is correctly allocated.
- */
-#define ueum_safe_alloc(var, type, size) \
-UEUM_DISABLE_Wtype_limits() \
-	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
-		return 0; \
-	} \
-	var = NULL; \
-	var = (type *)malloc(size * sizeof(type)); \
-	memset(var, 0, size * sizeof(type)); \
-    ueum_check_alloc(var) \
-
-#define ueum_safe_alloc_ret(var, type, size, ret) \
-UEUM_DISABLE_Wtype_limits() \
-	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
-		ret = 0; \
-	} else { \
-		var = NULL; \
-		var = (type *)malloc(size * sizeof(type)); \
-		memset(var, 0, size * sizeof(type)); \
-	    if (errno == ENOMEM) { \
-	        ei_stacktrace_push_errno() \
-	        ueum_safe_free(var) \
-	        ret = 0; \
-		} else if (!var) { \
-	        ei_stacktrace_push_msg("No such memory to allocate") \
-			ret = 0; \
-		} \
-		ret = 1; \
-	} \
-
-/**
- *  @brief Alloc a variable in a safe way.
- *
- *  Set variable to NULL,
- *  and alloc it to specified size and cast to specified type.
- *  Set all elements to 0 with memset.
- *  Check if variable is correctly allocated. If not, go to specified label
- */
-#define ueum_safe_alloc_or_goto(var, type, size, label) \
-UEUM_DISABLE_Wtype_limits() \
-	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
-		goto label; \
-	} \
-	var = NULL; \
-	var = (type *)malloc(size * sizeof(type)); \
-	memset(var, 0, size * sizeof(type)); \
-    ueum_check_alloc_or_goto(var, label) \
-
-/**
- *  @brief Realloc a variable in a safe way.
+ * @brief Realloc a variable in a safe way.
  *
  *  If size has to be increase, we add specified more size.
  *  If size has to be reduce, the parameter more_size has to be equal to 0.
  *  Set all elements to 0 with memset.
  *  Check if variable is correctly allocated.
  */
-#define ueum_safe_realloc(var, type, old_size, more_size) \
-UEUM_DISABLE_Wtype_limits() \
-	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with a negative old_size"); \
-		return 0; \
-	} \
-UEUM_DISABLE_Wtype_limits() \
-	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size"); \
-	    return 0; \
-	} \
-	var = (type *)realloc(var, (old_size + more_size + 1) * sizeof(type)); \
-	memset(var + old_size, 0, (more_size + 1) * sizeof(type)); \
-    ueum_check_alloc(var) \
+#define ueum_safe_realloc(ptr, type, old_size, more_size) \
+	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, return 0); \
+
+#define ueum_safe_realloc_ret(ptr, type, old_size, more_size, ret) \
+	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, ret = 0); \
+	ret = 1; \
 
 /**
- *  @brief Realloc a variable in a safe way.
+ * @brief Realloc a variable in a safe way.
  *
  *  If size has to be increase, we add specified more size.
  *  If size has to be reduce, the parameter more_size has to be equal to 0.
  *  Set all elements to 0 with memset.
  *  Check if variable is correctly allocated. If not, go to specified label
  */
-#define ueum_safe_realloc_or_goto(var, type, old_size, more_size, label) \
-UEUM_DISABLE_Wtype_limits() \
-	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with a negative old_size '%d'", (int)old_size); \
-	    goto label; \
-	} \
-UEUM_DISABLE_Wtype_limits() \
-	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size '%d'", (int)more_size); \
-	    goto label; \
-	} \
-	var = (type *)realloc(var, (old_size + more_size + 1) * sizeof(type)); \
-	memset(var + old_size, 0, (more_size + 1) * sizeof(type)); \
-    ueum_check_alloc_or_goto(var, label) \
+#define ueum_safe_realloc_or_goto(ptr, type, old_size, more_size, label) \
+	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, goto label); \
 
 /**
- *  @brief Check if a variable is correctly allocated.
- *
- *  Check if 'errno' variable is equal to value ENOMEM ;
- *  if it is, we add an error message to ei_stacktrace.
- *  Some OS didn't update 'errno' variable in this case, so we check
- *  also if the variable is set to NULL ; if it is, we add an error
- *  message to ei_stacktrace.
- */
-#define ueum_check_alloc(var) \
-	if (errno == ENOMEM) { \
-        ei_stacktrace_push_errno() \
-        ueum_safe_free(var) \
-        return 0; \
-	} else if (!var) { \
-        ei_stacktrace_push_msg("No such memory to allocate") \
-		return 0; \
-	} \
-
-/**
- *  @brief Same behavior than CHECK_ALLOC, but if var isn't
- *  correctly allocated, go to specified label.
- */
-#define ueum_check_alloc_or_goto(var, label) \
-	if (errno == ENOMEM) { \
-        ei_stacktrace_push_errno() \
-        ueum_safe_free(var) \
-        goto label; \
-	} else if (!var) { \
-        ei_stacktrace_push_msg("No such memory to allocate") \
-		goto label; \
-	} \
-
-/**
- *  @brief Free a variable in a safe way.
+ * @brief Free a variable in a safe way.
  *
  *  Check if variable isn't set to NULL ;
  *  if it is, free the variable and set it to NULL.
  */
-#define ueum_safe_free(var) \
-	if (var) { \
-		free((void *)var); \
-		var = NULL; \
+#define ueum_safe_free(ptr) \
+	if (ptr) { \
+		free((void *)ptr); \
+		ptr = NULL; \
 	} \
 
 #define ueum_safe_str_free(str) \
@@ -254,7 +113,7 @@ UEUM_DISABLE_Wtype_limits_END() \
 	} \
 
 /**
- *  @brief Close a file in a safe way.
+ * @brief Close a file in a safe way.
  *
  *  Check if the file descriptor isn't set to NULL ;
  *  if it is, close the file descriptor and set it to NULL.
@@ -264,5 +123,214 @@ UEUM_DISABLE_Wtype_limits_END() \
 		fclose(fd); \
 		fd = NULL; \
 	} \
+
+/*********************************************************************
+ * 						Other usefull functions 			 		 *
+ *********************************************************************/
+
+/* Check if Microsoft Visual C++ compiler is used */
+#if defined(_MSC_VER)
+
+/**
+ * @brief Disable a warning on win platform for MSC
+ * 		  You must call UEUM_DISABLE_WIN32_PRAGMA_WARN_END afterwards.
+ *
+ * @source: https://stackoverflow.com/a/13577924
+ */
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn) \
+	__pragma (warning (push)) \
+	__pragma (warning(disable : nnn)) \
+
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
+	__pragma (warning (pop)) \
+
+/**
+ * @brief Disable the warning https://docs.microsoft.com/fr-fr/cpp/error-messages/compiler-warnings/compiler-warning-level-1-c4047
+ * 		  for MSC 
+ */
+#define UEUM_DISABLE_Wtype_limits() \
+	UEUM_DISABLE_WIN32_PRAGMA_WARN(4047) \
+
+#define UEUM_DISABLE_Wtype_limits_END() \
+	UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
+
+/* Check if GCC-like compiler is used */
+#elif defined(__GNUC__)
+
+#define UEUM_DISABLE_Wtype_limits() \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wtype-limits\"") \
+
+#define UEUM_DISABLE_Wtype_limits_END() \
+	_Pragma("GCC diagnostic pop") \
+
+/* Set empty defines otherwise */
+#else
+
+#define UEUM_DISABLE_Wtype_limits()
+#define UEUM_DISABLE_Wtype_limits_END()
+
+#endif
+
+/**
+ * @brief Check if a variable is unsigned.
+ *
+ * @param a  must be an assigned variable or we enter in the undefined behavior area.
+ * @return 1 if a is unsigned, 0 otherwise
+ * @source inspired from https://stackoverflow.com/a/7470062
+ * @note For an unsigned variable in parameter, some compilers warns a >= is always true (obviously).
+ *       To prevent that, just set UEUM_DISABLE_Wtype_limits() before the call of UEUM_ISUNSIGNED() and
+ * 		 UEUM_DISABLE_Wtype_limits_END() after the call of UEUM_ISUNSIGNED(). This will remove temporarily
+ *       Wtype-limits from GCC and 4047 from MSC.
+ */
+#define UEUM_ISUNSIGNED(a) (sizeof(a) == sizeof(unsigned char)) || (a >= 0 && ~a >= 0)
+
+/**
+ * @brief Get the max value of a variable, by resolving its type.
+ * 
+ * @param ptr  must be an assigned variable or we enter in the undefined behavior area.
+ * @source inspired from https://stackoverflow.com/a/12769452
+ */
+#define UEUM_VAR_MAX(ptr)                                     \
+(                                                             \
+	!UEUM_ISUNSIGNED(ptr) ?                                   \
+		((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 +          \
+     	(1ll << (sizeof(ptr) * CHAR_BIT - 2))) :              \
+    	(                                                     \
+      		(sizeof(ptr) < sizeof(long long)) ?               \
+        	((1ll << (sizeof(ptr) * CHAR_BIT - 1)) - 1 +      \
+         	(1ll << (sizeof(ptr) * CHAR_BIT - 1))) :          \
+        	(                                                 \
+          		(sizeof(ptr) == sizeof(long long)) ?          \
+            	-1ll :                                        \
+            	(fprintf(stderr, "[FATAL] Unsupported type"), \
+			 	exit(EXIT_FAILURE),							  \
+			 	0)                                            \
+        	)                                                 \
+    	)                                                     \
+)
+
+/**
+ * @brief Get the min value of a variable, by resolving its type.
+ * 
+ * @param ptr  must be an assigned variable or we enter in the undefined behavior area.
+ * @source inspired from https://stackoverflow.com/a/12769452
+ */
+#define UEUM_VAR_MIN(ptr)                          	   \
+(                                                      \
+	!UEUM_ISUNSIGNED(ptr) ?                            \
+		(-((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 + \
+		(1ll << (sizeof(ptr) * CHAR_BIT - 2))) - 1) :  \
+    	0                                              \
+)
+
+/**
+ * @brief Cross-plateform includes to resolve the function used by the current
+ * 		  OS to get the number of bytes allocated by a specified ptr. See below.
+ * 
+ * @source inspired from file lzham_mem.cpp from project lzham_codec_devel:
+ * 		   https://github.com/richgel999/lzham_codec_devel/blob/master/lzhamdecomp/lzham_mem.cpp
+ */
+#if defined(_WIN32) || defined(_WIN64)
+	#include <Windows.h>
+#elif defined(__APPLE__)
+	#include <malloc/malloc.h>
+#elif defined(__FreeBSD__) || defined(__NetBSD__)
+	#include <malloc_np.h>
+#else
+	#include <malloc.h>
+#endif
+    
+/**
+ * @brief Cross-plateform macro to get the number of bytes
+ *        allocated by ptr in the HEAP.
+ * 
+ * @source inspired from this old commit, in file lzham_mem.cpp from project lzham_codec:
+ * 		   https://github.com/fearog/lzham_codec/blob/75089234ebfa58dcf6631865acd2297b1b604df6/lzhamdecomp/lzham_mem.cpp
+ */
+#if defined(_WIN32) || defined(_WIN64)
+	#define ueum_get_allocation_size(ptr) _msize(ptr)
+#elif !defined(__APPLE__) && !defined(ANDROID)
+	#define ueum_get_allocation_size(ptr) malloc_usable_size(ptr)
+#else
+	#define ueum_get_allocation_size(ptr) malloc_size(ptr)
+#endif
+
+/*********************************************************************
+ * 							Internal functions 			 		 	 *
+ *********************************************************************/
+
+#define __ueum_check_not_already_assigned_or_rollback(ptr, rollback_expression) \
+	if (ptr != NULL) { \
+		ei_stacktrace_push_msg("ptr isn't NULL"); \
+		rollback_expression; \
+	} \
+
+#define __ueum_check_allocated_or_rollback(ptr, rollback_expression) \
+	if (ptr == NULL) { \
+		ei_stacktrace_push_msg("Cannot reallocate a NULL ptr"); \
+		rollback_expression; \
+	} \
+
+#define __ueum_check_allocation_size_or_rollback(ptr, requested_size, rollback_expression) \
+	if (ueum_get_allocation_size(ptr) < (size_t)requested_size) { \
+		ei_stacktrace_push_msg("malloc() doesn't allocated enough memory"); \
+		free((void *)ptr); \
+		rollback_expression; \
+	} \
+
+#define __ueum_check_size_not_null_or_rollback(size, rollback_expression) \
+	if (size == 0) { \
+		ei_stacktrace_push_msg("Cannot allocate 0 byte"); \
+		rollback_expression; \
+	} \
+
+#define __ueum_check_size_not_max_or_rollback(size, rollback_expression) \
+	UEUM_DISABLE_Wtype_limits() \
+	if (size == UEUM_VAR_MAX(size)) { \
+	UEUM_DISABLE_Wtype_limits_END() \
+		ei_stacktrace_push_msg("Cannot allocate with size equal to the max of the specified size type"); \
+		rollback_expression; \
+	} \
+
+#define __ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression) \
+	errno = 0; \
+	if ((ptr = (type *)malloc(size * sizeof(type))) == NULL) { \
+		if (errno != 0) { \
+			ei_stacktrace_push_msg("malloc() failed with error message: %s", strerror(errno)); \
+		} else { \
+			ei_stacktrace_push_msg("malloc() failed without setting errno"); \
+		} \
+		rollback_expression; \
+	} \
+
+#define __ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression) \
+	errno = 0; \
+	if ((ptr = (type *)realloc(ptr, (old_size + more_size + 1) * sizeof(type))) == NULL) { \
+		if (errno != 0) { \
+			ei_stacktrace_push_msg("realloc() failed with error message: %s", strerror(errno)); \
+		} else { \
+			ei_stacktrace_push_msg("realloc() failed without setting errno"); \
+		} \
+		rollback_expression; \
+	} \
+
+#define __ueum_safe_alloc_internal(ptr, type, size, rollback_expression) \
+	__ueum_check_not_already_assigned_or_rollback(ptr, rollback_expression); \
+	__ueum_check_size_not_null_or_rollback(size, rollback_expression); \
+	__ueum_check_size_not_max_or_rollback(size, rollback_expression); \
+	__ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression); \
+	__ueum_check_allocation_size_or_rollback(ptr, size, rollback_expression); \
+	memset(ptr, 0, size * sizeof(type)); \
+
+#define __ueum_safe_realloc_internal(ptr, type, old_size, more_size, rollback_expression) \
+	__ueum_check_allocated_or_rollback(ptr, rollback_expression); \
+	__ueum_check_size_not_null_or_rollback(old_size, rollback_expression); \
+	__ueum_check_size_not_null_or_rollback(more_size, rollback_expression); \
+	__ueum_check_size_not_max_or_rollback(old_size, rollback_expression); \
+	__ueum_check_size_not_max_or_rollback(more_size, rollback_expression); \
+	__ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression); \
+	__ueum_check_allocation_size_or_rollback(ptr, (old_size + more_size + 1) * sizeof(type), rollback_expression); \
+	memset(ptr + old_size, 0, (more_size + 1) * sizeof(type)); \
 
 #endif

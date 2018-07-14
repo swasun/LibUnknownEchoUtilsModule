@@ -326,6 +326,8 @@ char *ueum_get_current_dir() {
     char *error_buffer;
 #endif
 
+    dir = NULL;
+
 	ueum_safe_alloc(dir, char, 1024)
 
 #if defined(__unix__)

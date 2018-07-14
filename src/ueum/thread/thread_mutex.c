@@ -36,6 +36,8 @@ ueum_thread_mutex *ueum_thread_mutex_create() {
         char *error_buffer;
 #endif*/
 
+    m = NULL;
+
     ueum_safe_alloc(m, ueum_thread_mutex, 1);
 
 #if defined(_WIN32) || defined(_WIN64)

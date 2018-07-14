@@ -56,9 +56,9 @@
 ueum_progress_bar *ueum_progress_bar_create(unsigned int n, const char *description, FILE *fd) {
     ueum_progress_bar *progress_bar;
 
-	// @todo fix C4457 warning without use malloc() directly
-    //ueum_safe_alloc(progress_bar, ueum_progress_bar, 1);
-	progress_bar = (ueum_progress_bar *)malloc(sizeof(ueum_progress_bar));
+    progress_bar = NULL;
+
+    ueum_safe_alloc(progress_bar, ueum_progress_bar, 1);
 
     progress_bar->total_percentage = 100.0;
     progress_bar->character_width_percentage = 4;

@@ -58,6 +58,8 @@ static void *ueum_queue_front_internal(ueum_queue *queue, bool wait);
 ueum_queue *ueum_queue_create() {
     ueum_queue *queue;
 
+    queue = NULL;
+
     ueum_safe_alloc(queue, ueum_queue, 1);
     queue->front = queue->rear = NULL;
     queue->count = 0;

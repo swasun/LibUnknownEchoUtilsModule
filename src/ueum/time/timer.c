@@ -78,6 +78,8 @@ static ueum_timer_measure *get_timer_measure_from_id(ueum_timer *tm, unsigned in
 ueum_timer *ueum_timer_create_empty() {
 	ueum_timer *tm;
 
+	tm = NULL;
+
 	ueum_safe_alloc(tm, ueum_timer, 1);
 	tm->measures = NULL;
 	tm->measures_number = 0;

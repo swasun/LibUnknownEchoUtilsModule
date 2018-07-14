@@ -31,6 +31,8 @@ ueum_thread_id *ueum_thread_create(void *function, void *arg) {
 
     ei_check_parameter_or_return(function);
 
+    ti = NULL;
+
     ueum_safe_alloc(ti, ueum_thread_id, 1);
 
 #if defined(_WIN32) || defined(_WIN64)
