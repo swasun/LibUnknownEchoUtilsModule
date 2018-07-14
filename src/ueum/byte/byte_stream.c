@@ -22,6 +22,7 @@
 #include <ei/ei.h>
 
 #include <string.h>
+#include <limits.h>
 
 ueum_byte_stream *ueum_byte_stream_create() {
 	/* @todo fix default size */
@@ -93,7 +94,7 @@ bool ueum_byte_stream_set_position(ueum_byte_stream *stream, size_t position) {
     ei_check_parameter_or_return(stream);
     ei_check_parameter_or_return(stream->bytes);
     ei_check_parameter_or_return(stream->limit > 0);
-    ei_check_parameter_or_return(position >= 0 && position < 18446744073709551615UL);
+    ei_check_parameter_or_return((position == 0) || (position == ULONG_MAX));
 
 	if (position >= stream->limit || position > stream->size) {
 		ei_stacktrace_push_msg("Position out of range");

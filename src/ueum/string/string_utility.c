@@ -19,6 +19,7 @@
 
 #include <ueum/string/string_utility.h>
 #include <ueum/string/string_builder.h>
+#include <ueum/safe_arithmetic.h>
 #include <ei/ei.h>
 #include <ueum/alloc.h>
 
@@ -37,7 +38,7 @@ void ueum_remove_last_char(char *str) {
 	str[strlen(str) - 1] = '\0';
 }
 
-bool ueum_last_char_is(char *str, char c) {
+bool ueum_last_char_is(const char *str, char c) {
 	return (!str || str[strlen(str) - 1] != c) ? false : true;
 }
 
@@ -453,39 +454,40 @@ bool ueum_string_to_long(char *string, long *out, int radix) {
 	return true;
 }
 
-char *ueum_substring(char *string, int begin_index, int end_index) {
-	int sub_length;
+char *ueum_substring(char *string, size_t begin_index, size_t end_index) {
+	size_t sub_length, length;
 	char *new_string;
 
-	if (begin_index < 0) {
+	length = strlen(string);
+
+	if (end_index > length) {
 		ei_stacktrace_push_msg("Index out of bounds");
 		return NULL;
 	}
 
-	if (end_index > strlen(string)) {
-		ei_stacktrace_push_msg("Index out of bounds");
+	if (ueum__sub_sizet_overflow(end_index, begin_index, &sub_length)) {
+		ei_stacktrace_push_msg("Buffer overflow detected when substracting end_index and begin_index");
 		return NULL;
 	}
 
-	sub_length = end_index - begin_index + 1;
-	if (sub_length < 0) {
-		ei_stacktrace_push_msg("Index out of bounds exception");
+	if (ueum__add_sizet_overflow(sub_length, 1, &sub_length)) {
+		ei_stacktrace_push_msg("Buffer overflow detected when adding 1 to sub_length");
 		return NULL;
 	}
 
-	if ((begin_index == 0) && (end_index == strlen(string))) {
+	if ((begin_index == 0) && (end_index == length)) {
 		return ueum_string_create_from(string);
 	}
 
-	ueum_safe_alloc(new_string, char, strlen(string) + 1);
+	ueum_safe_alloc(new_string, char, length + 1);
 	strncpy(new_string, string + begin_index, sub_length);
 	return new_string;
 }
 
 char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end) {
 	char *line;
-	int i, cr, line_size;
-	size_t size;
+	int cr, line_size;
+	size_t i, size;
 
 	line = NULL;
 	cr = -1;

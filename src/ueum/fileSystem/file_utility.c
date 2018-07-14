@@ -106,7 +106,7 @@ clean_up:
     return out;
 }
 
-bool ueum_write_file(const char *file_name, char *data) {
+bool ueum_write_file(const char *file_name, const char *data) {
     FILE *fd;
     bool state;
 

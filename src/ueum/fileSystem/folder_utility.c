@@ -154,14 +154,15 @@ int ueum_count_dir_files(const char *dir_name, bool recursively) {
     return files;
 }
 
-char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
-    char **file_names, **new_folder_files, path[2048], slash;
+char **ueum_list_directory(const char *dir_name, int *files, bool recursively) {
+    char *temp_dir_char, **file_names, **new_folder_files, path[2048], slash;
     int i, j, files_count, new_folder_files_count;
 
     ei_check_parameter_or_return(dir_name)
 
 	file_names = NULL;
     *files = 0;
+    temp_dir_char = ueum_string_create_from(dir_name);
 
 #if defined(__unix__)
     DIR *d;
@@ -183,25 +184,28 @@ char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
     #error "OS not supported"
 #endif
 
-    if (ueum_last_char_is(dir_name, slash)) {
-        ueum_remove_last_char(dir_name);
+    if (ueum_last_char_is(temp_dir_char, slash)) {
+        ueum_remove_last_char(temp_dir_char);
     }
 
-    files_count = ueum_count_dir_files(dir_name, recursively);
+    files_count = ueum_count_dir_files(temp_dir_char, recursively);
 
     if (files_count == -1) {
         ei_stacktrace_push_msg("Failed to count dir files")
+        ueum_safe_free(temp_dir_char);
         return NULL;
     } else if (files_count == 0) {
+        ueum_safe_free(temp_dir_char);
         return NULL;
     }
 
     i = 0;
 
 #if defined(__unix__)
-    d = opendir(dir_name);
+    d = opendir(temp_dir_char);
     if (!d) {
         ei_stacktrace_push_errno()
+        ueum_safe_free(temp_dir_char);
         return NULL;
     }
 
@@ -209,12 +213,13 @@ char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
 
     if (errno == ENOMEM || !file_names) {
         ueum_safe_free(file_names);
+        ueum_safe_free(temp_dir_char);
         closedir(d);
         return NULL;
     }
 
     while ((dir = readdir(d)) != NULL) {
-        strcpy(path, dir_name);
+        strcpy(path, temp_dir_char);
 
         if (strcmp(dir->d_name, ".") != 0 &&
             strcmp(dir->d_name, "..") != 0) {
@@ -257,11 +262,12 @@ char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
 #elif defined(_WIN32) || defined(_WIN64)
     file_handle = NULL;
 
-    sprintf(path, "%s\\*.*", dir_name);
+    sprintf(path, "%s\\*.*", temp_dir_char);
 
     file_handle = FindFirstFile(path, &fd_file);
     if (file_handle == INVALID_HANDLE_VALUE) {
         ei_stacktrace_push_msg("Failed to get first file");
+        ueum_safe_free(temp_dir_char);
         return NULL;
     }
 
@@ -275,7 +281,7 @@ char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
         if(strcmp(fd_file.cFileName, ".") != 0 &&
            strcmp(fd_file.cFileName, "..") != 0) {
 
-            sprintf(path, "%s\\%s", dir_name, fd_file.cFileName);
+            sprintf(path, "%s\\%s", temp_dir_char, fd_file.cFileName);
 
             if (ueum_is_file_exists(path)) {
                 ueum_safe_alloc(file_names[i], char, strlen(path) + 1)
@@ -305,6 +311,8 @@ char **ueum_list_directory(char *dir_name, int *files, bool recursively) {
 #else
     #error "OS not supported"
 #endif
+
+    ueum_safe_free(temp_dir_char);
 
     *files = files_count;
 

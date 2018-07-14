@@ -144,8 +144,8 @@ static unsigned int ueum_progress_bar_compute_length(ueum_progress_bar *progress
 
 	width = ueum_console_get_width();
 
-	if (width > UINT_MAX) {
-		ei_stacktrace_push_msg("The width of the console is > UINT_MAX");
+	if (width < 0) {
+		ei_stacktrace_push_msg("Cannot cast a signed int to unsigned int");
 		return 0;
 	}
 

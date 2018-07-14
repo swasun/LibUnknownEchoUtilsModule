@@ -46,14 +46,7 @@
  */
 #if defined(__GNUC__)
 
-//_Pragma("GCC diagnostic push")
-//_Pragma("GCC diagnostic ignored \"-Werror\"")
-//#pragma GCC diagnostic ignored "-Werror")
-
 //#define ISUNSIGNED(a) (a>=0 && ((a=~a)>=0 ? (a=~a, 1) : (a=~a, 0)))
-
-//#pragma GCC diagnostic pop
-//_Pragma("GCC diagnostic pop")
 
 #define ISUNSIGNED(a) (a >= 0 && ~a >= 0)
 
@@ -62,8 +55,6 @@
 #define ISUNSIGNED(a) (a >= 0 && ~a >= 0)
 
 #endif
-
-#ifdef _WIN32
 
 /**
  * Disable a warning on win32 platform
@@ -71,22 +62,32 @@
  *
  * @source: https://stackoverflow.com/a/13577924
  */
- //#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
-//__pragma (warning (push))
-//__pragma (warning(disable : nnn))
+#if defined(_WIN32)
 
-//#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
-//__pragma (warning (pop))
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn) \
+	__pragma (warning (push)) \
+	__pragma (warning(disable : nnn)) \
 
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
+#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
+	__pragma (warning (pop)) \
+
+#define UEUM_DISABLE_Wtype_limits() \
+	UEUM_DISABLE_WIN32_PRAGMA_WARN(4047) \
+
+#define UEUM_DISABLE_Wtype_limits_END() \
+	UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
 
 #else
 
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn)
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END
+#define UEUM_DISABLE_Wtype_limits() \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wtype-limits\"") \
+
+#define UEUM_DISABLE_Wtype_limits_END() \
+	_Pragma("GCC diagnostic pop") \
 
 #endif
+
 
 /**
  *  @brief Alloc a variable in a safe way.
@@ -97,9 +98,9 @@
  *  Check if variable is correctly allocated.
  */
 #define ueum_safe_alloc(var, type, size) \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		return 0; \
 	} \
@@ -109,9 +110,9 @@ UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
     ueum_check_alloc(var) \
 
 #define ueum_safe_alloc_ret(var, type, size, ret) \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		ret = 0; \
 	} else { \
@@ -138,9 +139,9 @@ UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated. If not, go to specified label
  */
 #define ueum_safe_alloc_or_goto(var, type, size, label) \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if ((ISUNSIGNED(size) && size == 0) || (!ISUNSIGNED(size) && size <= 0)) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with a negative or null size"); \
 		goto label; \
 	} \
@@ -158,15 +159,15 @@ UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated.
  */
 #define ueum_safe_realloc(var, type, old_size, more_size) \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with a negative old_size"); \
 		return 0; \
 	} \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size"); \
 	    return 0; \
 	} \
@@ -183,15 +184,15 @@ UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
  *  Check if variable is correctly allocated. If not, go to specified label
  */
 #define ueum_safe_realloc_or_goto(var, type, old_size, more_size, label) \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if (!ISUNSIGNED(old_size) && old_size < 0) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with a negative old_size '%d'", (int)old_size); \
 	    goto label; \
 	} \
-UEUM_DISABLE_WIN32_PRAGMA_WARN(4127) \
+UEUM_DISABLE_Wtype_limits() \
 	if (old_size == 0 && ((ISUNSIGNED(more_size) && more_size == 0) || (!ISUNSIGNED(more_size) && more_size <= 0))) { \
-UEUM_DISABLE_WIN32_PRAGMA_WARN_END \
+UEUM_DISABLE_Wtype_limits_END() \
 		ei_stacktrace_push_msg("Can't allocate data with an old_size equal to 0 and a null or negative more_size '%d'", (int)more_size); \
 	    goto label; \
 	} \

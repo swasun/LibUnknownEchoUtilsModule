@@ -20,7 +20,6 @@
 #include <ueum/console/input.h>
 #include <ueum/string/string_utility.h>
 #include <ueum/alloc.h>
-#include <ueum/ssize_t.h>
 
 #include <ei/ei.h>
 
@@ -78,8 +77,8 @@ char *ueum_input_string(char *prefix) {
  *
  * @source https://stackoverflow.com/a/32421674
  */
-static ssize_t get_input_password_unix(char **password, size_t max_size, int mask, FILE *stream) {
-    size_t idx; /* index, number of chars in read   */
+static ssize_t get_input_password_unix(char **password, ssize_t max_size, int mask, FILE *stream) {
+    ssize_t idx; /* index, number of chars in read   */
     int c;
     struct termios old_kbd_mode; /* Orig keyboard settings   */
     struct termios new_kbd_mode;
@@ -157,7 +156,7 @@ static ssize_t get_input_password_unix(char **password, size_t max_size, int mas
 /**
  * @see http://www.cplusplus.com/articles/E6vU7k9E/
  */
-static ssize_t get_input_password_windows(char **password, size_t max_size, FILE *stream) {
+static ssize_t get_input_password_windows(char **password, ssize_t max_size, FILE *stream) {
 	(void)password;
 	(void)max_size;
 	(void)stream;
@@ -170,9 +169,9 @@ static ssize_t get_input_password_windows(char **password, size_t max_size, FILE
 /**
  * Get the password enter in input stream without print it in the terminal.
  */
-char *ueum_input_password(const char *prompt_message, size_t max_size) {
+char *ueum_input_password(const char *prompt_message, ssize_t max_size) {
     char *password;
-    size_t size;
+    ssize_t size;
 
     ueum_safe_alloc(password, char, max_size);
     size = 0;

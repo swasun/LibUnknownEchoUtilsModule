@@ -20,7 +20,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_INPUT_H
 #define UNKNOWNECHOUTILSMODULE_INPUT_H
 
-#include <stddef.h>
+#include <ueum/ssize_t.h>
 
 typedef enum {
     UNKNOWNECHOUTILSMODULE_STDIN_INPUT,
@@ -29,6 +29,6 @@ typedef enum {
 
 char *ueum_input_string(char *prefix);
 
-char *ueum_input_password(const char *prompt_message, size_t max_size);
+char *ueum_input_password(const char *prompt_message, ssize_t max_size);
 
 #endif

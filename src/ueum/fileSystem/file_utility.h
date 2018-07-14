@@ -39,7 +39,7 @@ ssize_t ueum_get_file_size(FILE *fd);
 
 char *ueum_read_file(const char *file_name);
 
-bool ueum_write_file(const char *file_name, char *data);
+bool ueum_write_file(const char *file_name, const char *data);
 
 unsigned char *ueum_read_binary_file(const char *file_name, size_t *size);
 

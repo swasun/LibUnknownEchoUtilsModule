@@ -59,6 +59,8 @@
 
 #include <ueum/alloc.h>
 #include <ueum/bool.h>
+#include <ueum/inline.h>
+#include <ueum/safe_arithmetic.h>
 #include <ueum/ssize_t.h>
 
 #endif

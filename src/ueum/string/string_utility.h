@@ -35,7 +35,7 @@
 
 void ueum_remove_last_char(char *str);
 
-bool ueum_last_char_is(char *str, char c);
+bool ueum_last_char_is(const char *str, char c);
 
 char *ueum_strcat_variadic(const char *format, ...);
 
@@ -94,7 +94,7 @@ bool ueum_string_to_long(char *string, long *out, int radix);
  * @param      end_index     the ending index, exclusive.
  * @return     the specified ueum_substring.
  */
-char *ueum_substring(char *string, int begin_index, int end_index);
+char *ueum_substring(char *string, size_t begin_index, size_t end_index);
 
 char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end);
 

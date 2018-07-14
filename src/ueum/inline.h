@@ -17,26 +17,16 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
+#ifndef UNKNOWNECHOUTILSMODULE_INLINE_H
+#define UNKNOWNECHOUTILSMODULE_INLINE_H
+
 /**
- *  @file      folder_utility.h
- *  @brief     Utility functions relative to folder manipulations.
- *  @author    Charly Lamothe
- *  @copyright GNU Public License.
+ * @source inspired from integer.h of libgit2
  */
-
-#ifndef UNKNOWNECHOUTILSMODULE_FOLDER_UTILITY_H
-#define UNKNOWNECHOUTILSMODULE_FOLDER_UTILITY_H
-
-#include <ueum/bool.h>
-
-bool ueum_is_dir_exists(const char *dir_name);
-
-int ueum_count_dir_files(const char *dir_name, bool recursively);
-
-char **ueum_list_directory(const char *dir_name, int *files, bool recursively);
-
-char *ueum_get_current_dir();
-
-bool ueum_create_folder(const char *path_name);
+#if defined(_MSC_VER)
+# define UEUM_INLINE(type) static __inline type
+#else
+# define UEUM_INLINE(type) static inline type
+#endif
 
 #endif
