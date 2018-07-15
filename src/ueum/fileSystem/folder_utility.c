@@ -338,6 +338,7 @@ char *ueum_get_current_dir() {
 	return dir;
 #elif defined(_WIN32) || defined(_WIN64)
 	error_buffer = NULL;
+	dir = NULL;
     ueum_safe_alloc(dir, char, MAX_PATH);
     result = GetModuleFileName(NULL, dir, MAX_PATH);
     if (result == ERROR_INSUFFICIENT_BUFFER) {

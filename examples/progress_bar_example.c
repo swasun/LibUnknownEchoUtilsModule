@@ -47,15 +47,14 @@ void test_2() {
 
     n = 1000;
     progress_bar = ueum_progress_bar_create(n, "Loading", stdout);
-
     ueum_progress_bar_set_frequency_update(progress_bar, 15);
-    ueum_progress_bar_set_colors(progress_bar, UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_DIM, -1,
-        UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_BLACK);
 
 #ifdef _WIN32
     ueum_progress_bar_set_style(progress_bar, "|", "-");
 #else
     ueum_progress_bar_set_style(progress_bar, "\u2588", "-");
+	ueum_progress_bar_set_colors(progress_bar, UNKNOWNECHOUTILSMODULE_COLOR_ID_ATTRIBUTE_DIM, -1,
+		UNKNOWNECHOUTILSMODULE_COLOR_ID_BACKGROUND_BLACK);
 #endif
 
     for (i = 0; i <= n; i++) {
