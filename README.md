@@ -84,7 +84,7 @@ cd build/release
 sudo make install
 ```
 
-# Example
+# Examples
 
 Some examples are available in `examples` directory.
 
