@@ -27,6 +27,8 @@
 #ifndef UNKNOWNECHOUTILSMODULE_HEX_UTILITY_H
 #define UNKNOWNECHOUTILSMODULE_HEX_UTILITY_H
 
+#include <ueum/bool.h>
+
 #include <stddef.h>
 #include <stdio.h>
 
