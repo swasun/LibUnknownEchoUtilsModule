@@ -20,9 +20,37 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
+#include <stddef.h>
+#include <limits.h>
+
+bool test_add_sizet_overflow() {
+    size_t one, two, out;
+
+    one = 7799999999999999990U;
+    two = 7799999999999999990U;
+    out = 0;
+    
+    ei_logger_debug("one=%ld", one);
+    ei_logger_debug("two=%ld", two);
+
+    if (ueum__add_sizet_overflow(one, two, &out)) {
+        ei_logger_info("Buffer overflow detected: %ld + %ld cannot be performed.", one, two);
+        return true;
+    }
+
+    ei_stacktrace_push_msg("Failed to detect buffer overflow when performing: %ld + %ld."
+        " The result appears to be: %ld", one, two, out);
+    return false;
+}
+
 int main() {
 	ei_init_or_die();
     ei_logger_use_symbol_levels();
+
+    if (!test_add_sizet_overflow()) {
+        ei_stacktrace_push_msg("Test of ueum__add_sizet_overflow() failed");
+        goto clean_up;
+    }
     
     ei_logger_info("Succeed !");    
 

@@ -26,14 +26,23 @@ int main() {
     unsigned char *bytes;
 
 	ei_init_or_die();
-    ei_logger_use_symbol_levels();
+    ei_logger_use_symbol_levels();    
 
-    bytes = ueum_bytes_create_from_string("Hello world !");
+    ei_logger_info("Creating bytes from Hello world string...");
+    if ((bytes = ueum_bytes_create_from_string("Hello world !")) == NULL) {
+        ei_stacktrace_push_msg("Failed to create bytes from string");
+        goto clean_up;
+    }
     
-    ueum_hex_print(bytes, strlen("Hello world"), stdout);
+    if (!ueum_hex_print(bytes, strlen("Hello world"), stdout)) {
+        ei_stacktrace_push_msg("Failed to print bytes to stdout");
+        goto clean_up;
+    }
 
+    ei_logger_info("Succeed !");
+
+clean_up:
     ueum_safe_free(bytes);
-
     if (ei_stacktrace_is_filled()) {
         ei_logger_error("Error(s) occurred with the following stacktrace(s):");
         ei_stacktrace_print_all();
