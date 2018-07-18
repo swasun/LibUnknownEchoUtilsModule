@@ -17,45 +17,27 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-#include <ueum/byte/hex_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/ueum.h>
+#include <ei/ei.h>
 
 #include <string.h>
 
-char *ueum_bytes_to_hex(unsigned char *bytes, size_t bytes_count) {
-    char *hex;
-    size_t i;
+int main() {
+    unsigned char *bytes;
 
-    ei_check_parameter_or_return(bytes);
-    ei_check_parameter_or_return(bytes_count > 0);
+	ei_init_or_die();
+    ei_logger_use_symbol_levels();
 
-    hex = NULL;
+    bytes = ueum_bytes_create_from_string("Hello world !");
+    
+    ueum_hex_print(bytes, strlen("Hello world"), stdout);
 
-	ueum_safe_alloc(hex, char, bytes_count * 2 + 3);
+    ueum_safe_free(bytes);
 
-    strcat(hex, "0x");
-    for (i = 0; i < bytes_count; i++) {
-        sprintf(hex + (i * 2) + 2, "%02x", bytes[i]);
+    if (ei_stacktrace_is_filled()) {
+        ei_logger_error("Error(s) occurred with the following stacktrace(s):");
+        ei_stacktrace_print_all();
     }
-
-    return hex;
-}
-
-bool ueum_hex_print(unsigned char *bytes, size_t bytes_count, FILE *fd) {
-    char *hex;
-
-    ei_check_parameter_or_return(bytes);
-    ei_check_parameter_or_return(bytes_count > 0);
-    ei_check_parameter_or_return(fd);
-
-    if ((hex = ueum_bytes_to_hex(bytes, bytes_count)) == NULL) {
-        ei_stacktrace_push_msg("Failed to convert input bytes to hex string");
-        return false;
-    }
-
-    fprintf(fd, "%s\n", hex);
-
-    ueum_safe_free(hex);
-
-    return true;
+    ei_uninit();
+    return 0;
 }
