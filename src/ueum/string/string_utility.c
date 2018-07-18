@@ -79,8 +79,10 @@ char *ueum_strcat_variadic(const char *format, ...) {
 		case 's':
 			src = va_arg(ap, char *);
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
+				src = NULL;
 				break;
 			}
+			src = NULL;
 			break;
 
 		case 'd':
@@ -90,7 +92,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 
 		case 'L':
@@ -111,7 +113,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 
 		case 'l':
@@ -121,7 +123,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 
 		case 'f':
@@ -131,7 +133,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 
 		case 'c':
@@ -141,7 +143,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 
 		case 'u':
@@ -151,7 +153,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
 			if (!ueum_string_builder_append(s, src, strlen(src))) {
 				break;
 			}
-			free((void*) src);
+			ueum_safe_free(src);
 			break;
 		}
 	}
