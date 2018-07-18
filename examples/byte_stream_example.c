@@ -63,7 +63,8 @@ int main() {
     ueum_byte_stream_destroy(z);
 
     if (ei_stacktrace_is_filled()) {
-        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+        ei_logger_error("Error(s) occurred with the following stacktrace(s):");
+        ei_stacktrace_print_all();
     }
 
     ei_uninit();

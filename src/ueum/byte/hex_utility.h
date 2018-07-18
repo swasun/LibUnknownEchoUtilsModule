@@ -28,7 +28,10 @@
 #define UNKNOWNECHOUTILSMODULE_HEX_UTILITY_H
 
 #include <stddef.h>
+#include <stdio.h>
 
 char *ueum_bytes_to_hex(unsigned char *bytes, size_t bytes_count);
+
+bool ueum_hex_print(unsigned char *bytes, size_t bytes_count, FILE *fd);
 
 #endif

@@ -159,7 +159,8 @@ clean_up:
     ueum_safe_free(whitespaces);
     ueum_safe_free(uppercased);
     if (ei_stacktrace_is_filled()) {
-        ei_logger_stacktrace("An error occurred with the following stacktrace :");
+        ei_logger_error("Error(s) occurred with the following stacktrace(s):");
+        ei_stacktrace_print_all();
     }
     ei_uninit();
     return 0;

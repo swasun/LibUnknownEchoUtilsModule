@@ -26,6 +26,9 @@ char *ueum_bytes_to_hex(unsigned char *bytes, size_t bytes_count) {
     char *hex;
     size_t i;
 
+    ei_check_parameter_or_return(bytes);
+    ei_check_parameter_or_return(bytes_count > 0);
+
     hex = NULL;
 
 	ueum_safe_alloc(hex, char, bytes_count * 2 + 3);
@@ -36,4 +39,23 @@ char *ueum_bytes_to_hex(unsigned char *bytes, size_t bytes_count) {
     }
 
     return hex;
+}
+
+bool ueum_hex_print(unsigned char *bytes, size_t bytes_count, FILE *fd) {
+    char *hex;
+
+    ei_check_parameter_or_return(bytes);
+    ei_check_parameter_or_return(bytes_count > 0);
+    ei_check_parameter_or_return(fd);
+
+    if ((hex = ueum_bytes_to_hex(bytes, bytes_count)) == NULL) {
+        ei_stacktrace_push_msg("Failed to convert input bytes to hex string");
+        return false;
+    }
+
+    fprintf(fd, "%s\n", hex);
+
+    ueum_safe_free(hex);
+
+    return true;
 }
