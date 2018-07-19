@@ -34,11 +34,40 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <limits.h>
 
-/** Support for gcc/clang __has_builtin intrinsic */
+#if defined(__unix__)
+	#include <sys/cdefs.h>
+#endif
+
+/* Support for gcc/clang __has_builtin intrinsic */
 #ifndef __has_builtin
 # define __has_builtin(x) 0
 #endif
+
+
+#if defined(__clang__)
+
+#define UEUM_WARN_RESULT __attribute__((__warn_unused_result__))
+
+#elif defined(__GNUC__)
+
+#define UEUM_WARN_RESULT __attribute__((warn_unused_result))
+
+#elif defined(_MSC_VER) && (_MSC_VER >= 1700)
+
+#define UEUM_WARN_RESULT _Check_return_
+
+#else
+
+#error (No warn_unused_result builtin found)
+
+#endif
+
+static inline bool UEUM_WARN_RESULT ueum_warn_unused(bool x) {
+	return x;
+}
+
 
 /* Use clang/gcc compiler intrinsics whenever possible */
 #if (SIZE_MAX == ULONG_MAX) && __has_builtin(__builtin_uaddl_overflow)
@@ -70,7 +99,7 @@
  * @return true if the result fits in a `size_t`, false on overflow.
  */
 UEUM_INLINE(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
-	if (SIZE_MAX - one < two) {
+	if (ULONG_MAX - one < two) {
 		return true;
     }
 	*out = one + two;
@@ -82,7 +111,7 @@ UEUM_INLINE(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) 
  * @return true if the result fits in a `size_t`, false on overflow.
  */
 UEUM_INLINE(bool) ueum__multiply_sizet_overflow(size_t one, size_t two, size_t *out) {
-	if (one && SIZE_MAX / one < two) {
+	if (one && ULONG_MAX / one < two) {
 		return true;
     }
 	*out = one * two;
@@ -99,6 +128,122 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
     *out = one - two;
     return false;
 }
+
+#endif
+
+#if __has_builtin(__builtin_uaddl_overflow)
+
+/*
+ * Facilities for performing type- and overflow-checked arithmetic. These
+ * functions return non-zero if overflow occured, zero otherwise. In either case,
+ * the potentially overflowing operation is fully performed, mod the size of the
+ * output type. See:
+ * https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html
+ * http://clang.llvm.org/docs/LanguageExtensions.html#checked-arithmetic-builtins
+ * for full details.
+ *
+ * The compiler enforces that users of os_*_overflow() check the return value to
+ * determine whether overflow occured.
+ */
+
+#if __has_builtin(__builtin_add_overflow) && \
+    __has_builtin(__builtin_sub_overflow) && \
+    __has_builtin(__builtin_mul_overflow)
+
+#define os_add_overflow(a, b, res) __os_warn_unused(__builtin_add_overflow((a), (b), (res)))
+#define os_sub_overflow(a, b, res) __os_warn_unused(__builtin_sub_overflow((a), (b), (res)))
+#define os_mul_overflow(a, b, res) __os_warn_unused(__builtin_mul_overflow((a), (b), (res)))
+
+#else
+
+/* compile-time assertion that 'x' and 'y' are equivalent types */
+#ifdef __cplusplus
+#define __OS_TYPE_CHECK(x, y) do { \
+	__typeof__(x) _x; \
+	__typeof__(y) _y; \
+	(void)(&_x == &_y, "overflow arithmetic: incompatible types"); \
+} while (0)
+#else
+#define __OS_TYPE_CHECK(x, y) do { \
+	_Static_assert(__builtin_types_compatible_p(__typeof(x),__typeof(y)), \
+			"overflow arithmetic: incompatible types"); \
+} while (0)
+#endif
+
+#define ueum__add_overflow(T,U,V) _Generic((T), \
+		unsigned:           __builtin_uadd_overflow, \
+		unsigned long:      __builtin_uaddl_overflow, \
+		unsigned long long: __builtin_uaddll_overflow, \
+		int:                __builtin_sadd_overflow, \
+		long:               __builtin_saddl_overflow, \
+		long long:          __builtin_saddll_overflow, \
+		size_t:				ueum__add_sizet_overflow \
+	)(T,U,V)
+
+#define ueum__sub_overflow(T,U,V) _Generic((T), \
+		unsigned:           __builtin_usub_overflow, \
+		unsigned long:      __builtin_usubl_overflow, \
+		unsigned long long: __builtin_usubll_overflow, \
+		int:                __builtin_ssub_overflow, \
+		long:               __builtin_ssubl_overflow, \
+		long long:          __builtin_ssubll_overflow \
+	)(T,U,V)
+
+#define __os_mul_overflow_func(T,U,V) _Generic((T), \
+		unsigned:           __builtin_umul_overflow, \
+		unsigned long:      __builtin_umull_overflow, \
+		unsigned long long: __builtin_umulll_overflow, \
+		int:                __builtin_smul_overflow, \
+		long:               __builtin_smull_overflow, \
+		long long:          __builtin_smulll_overflow \
+	)(T,U,V)
+
+#define os_add_overflow(a, b, res) __os_warn_unused(__extension__({ \
+	__OS_TYPE_CHECK((a), (b)); \
+	__OS_TYPE_CHECK((b), *(res)); \
+	__os_add_overflow_func((a), (b), (res)); \
+}))
+
+#define os_sub_overflow(a, b, res) __os_warn_unused(__extension__({ \
+	__OS_TYPE_CHECK((a), (b)); \
+	__OS_TYPE_CHECK((b), *(res)); \
+	__os_sub_overflow_func((a), (b), (res)); \
+}))
+
+#define os_mul_overflow(a, b, res) __os_warn_unused(__extension__({ \
+	__OS_TYPE_CHECK((a), (b)); \
+	__OS_TYPE_CHECK((b), *(res)); \
+	__os_mul_overflow_func((a), (b), (res)); \
+}))
+
+#endif /* __has_builtin(...) */
+
+/* os_add3_overflow(a, b, c) -> (a + b + c) */
+#define os_add3_overflow(a, b, c, res) __os_warn_unused(__extension__({ \
+	__typeof(*(res)) _tmp; \
+	bool _s, _t; \
+	_s = os_add_overflow((a), (b), &_tmp); \
+	_t = os_add_overflow((c), _tmp, (res)); \
+	_s | _t; \
+}))
+
+/* os_add_and_mul_overflow(a, b, x) -> (a + b)*x */
+#define os_add_and_mul_overflow(a, b, x, res) __os_warn_unused(__extension__({ \
+	__typeof(*(res)) _tmp; \
+	bool _s, _t; \
+	_s = os_add_overflow((a), (b), &_tmp); \
+	_t = os_mul_overflow((x), _tmp, (res)); \
+	_s | _t; \
+}))
+
+/* os_mul_and_add_overflow(a, x, b) -> a*x + b */
+#define os_mul_and_add_overflow(a, x, b, res) __os_warn_unused(__extension__({ \
+	__typeof(*(res)) _tmp; \
+	bool _s, _t; \
+	_s = os_mul_overflow((a), (x), &_tmp); \
+	_t = os_add_overflow((b), _tmp, (res)); \
+	_s | _t; \
+}))
 
 #endif
 

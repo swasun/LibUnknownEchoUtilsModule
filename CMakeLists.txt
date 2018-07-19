@@ -87,7 +87,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # If compiler is Clang
 else ()
 	# Unix plateform
 	if (UNIX)
-		add_compile_options("-std=gnu99" "-pthread" "-ldl")
+		add_compile_options("-std=gnu11" "-pthread" "-ldl")
 		if (CMAKE_BUILD_TYPE STREQUAL "Release") # Release build mode
 			if (CMAKE_COMPILER_IS_GNUCC) # GNU compiler
 				add_compile_options("-O2") # O2 optimization
