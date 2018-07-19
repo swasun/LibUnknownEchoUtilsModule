@@ -1,19 +1,19 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe													  *
- *																						  *
- * This file is part of LibUnknownEchoUtilsModule.										  *
- *																						  *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
+ *                                                                                        *
+ * This file is part of LibUnknownEchoUtilsModule.                                        *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
- *   it under the terms of the GNU General Public License as published by				  *
- *   the Free Software Foundation, either version 3 of the License, or					  *
- *   (at your option) any later version.												  *
- *																						  *
+ *   it under the terms of the GNU General Public License as published by                 *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
+ *   (at your option) any later version.                                                  *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
- *   GNU General Public License for more details.										  *
- *																						  *
- *   You should have received a copy of the GNU General Public License					  *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of                       *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
+ *   GNU General Public License for more details.                                         *
+ *                                                                                        *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -27,6 +27,8 @@
 #ifndef UNKNOWNECHOUTILSMODULE_ALLOC_H
 #define UNKNOWNECHOUTILSMODULE_ALLOC_H
 
+#include <ueum/pragma.h>
+
 #include <ei/ei.h>
 
 #include <stdlib.h>
@@ -37,7 +39,7 @@
 #include <limits.h>
 
 /*********************************************************************
- *	 						API	functions							 *
+ *                             API functions                         *
  *********************************************************************/
 
 /**
@@ -54,17 +56,17 @@
  * @endcode
  */
 #define ueum_safe_alloc(ptr, type, size) \
-	__ueum_safe_alloc_internal(ptr, type, size, return 0); \
+    __ueum_safe_alloc_internal(ptr, type, size, return 0); \
 
 #define ueum_safe_alloc_ret(ptr, type, size, ret) \
-	__ueum_safe_alloc_internal(ptr, type, size, ret = 0); \
-	ret = 1; \
+    __ueum_safe_alloc_internal(ptr, type, size, ret = 0); \
+    ret = 1; \
 
 /**
  * @brief Alloc a variable in a safe way.
  */
 #define ueum_safe_alloc_or_goto(ptr, type, size, label) \
-	__ueum_safe_alloc_internal(ptr, type, size, goto label); \
+    __ueum_safe_alloc_internal(ptr, type, size, goto label); \
 
 /**
  * @brief Realloc a variable in a safe way.
@@ -75,11 +77,11 @@
  *  Check if variable is correctly allocated.
  */
 #define ueum_safe_realloc(ptr, type, old_size, more_size) \
-	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, return 0); \
+    __ueum_safe_realloc_internal(ptr, type, old_size, more_size, return 0); \
 
 #define ueum_safe_realloc_ret(ptr, type, old_size, more_size, ret) \
-	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, ret = 0); \
-	ret = 1; \
+    __ueum_safe_realloc_internal(ptr, type, old_size, more_size, ret = 0); \
+    ret = 1; \
 
 /**
  * @brief Realloc a variable in a safe way.
@@ -90,7 +92,7 @@
  *  Check if variable is correctly allocated. If not, go to specified label
  */
 #define ueum_safe_realloc_or_goto(ptr, type, old_size, more_size, label) \
-	__ueum_safe_realloc_internal(ptr, type, old_size, more_size, goto label); \
+    __ueum_safe_realloc_internal(ptr, type, old_size, more_size, goto label); \
 
 /**
  * @brief Free a variable in a safe way.
@@ -99,18 +101,18 @@
  *  if it is, free the variable and set it to NULL.
  */
 #define ueum_safe_free(ptr) \
-	if (ptr) { \
-		free((void *)ptr); \
-		ptr = NULL; \
-	} \
+    if (ptr) { \
+        free((void *)ptr); \
+        ptr = NULL; \
+    } \
 
 #define ueum_safe_str_free(str) \
-	if (str) { \
-		if (strcmp(str, "") != 0) { \
-			free((void *)str); \
-			str = NULL; \
-		} \
-	} \
+    if (str) { \
+        if (strcmp(str, "") != 0) { \
+            free((void *)str); \
+            str = NULL; \
+        } \
+    } \
 
 /**
  * @brief Close a file in a safe way.
@@ -119,58 +121,14 @@
  *  if it is, close the file descriptor and set it to NULL.
  */
 #define ueum_safe_fclose(fd) \
-	if (fd) { \
-		fclose(fd); \
-		fd = NULL; \
-	} \
+    if (fd) { \
+        fclose(fd); \
+        fd = NULL; \
+    } \
 
 /*********************************************************************
- * 						Other usefull functions 			 		 *
+ *                         Other usefull functions                   *
  *********************************************************************/
-
-/* Check if Microsoft Visual C++ compiler is used */
-#if defined(_MSC_VER)
-
-/**
- * @brief Disable a warning on win platform for MSC
- * 		  You must call UEUM_DISABLE_WIN32_PRAGMA_WARN_END afterwards.
- *
- * @source: https://stackoverflow.com/a/13577924
- */
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN(nnn) \
-	__pragma (warning (push)) \
-	__pragma (warning(disable : nnn)) \
-
-#define UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
-	__pragma (warning (pop)) \
-
-/**
- * @brief Disable the warning https://docs.microsoft.com/fr-fr/cpp/error-messages/compiler-warnings/compiler-warning-level-1-c4047
- * 		  for MSC 
- */
-#define UEUM_DISABLE_Wtype_limits() \
-	UEUM_DISABLE_WIN32_PRAGMA_WARN(4047) \
-
-#define UEUM_DISABLE_Wtype_limits_END() \
-	UEUM_DISABLE_WIN32_PRAGMA_WARN_END() \
-
-/* Check if GCC-like compiler is used */
-#elif defined(__GNUC__)
-
-#define UEUM_DISABLE_Wtype_limits() \
-	_Pragma("GCC diagnostic push") \
-	_Pragma("GCC diagnostic ignored \"-Wtype-limits\"") \
-
-#define UEUM_DISABLE_Wtype_limits_END() \
-	_Pragma("GCC diagnostic pop") \
-
-/* Set empty defines otherwise */
-#else
-
-#define UEUM_DISABLE_Wtype_limits()
-#define UEUM_DISABLE_Wtype_limits_END()
-
-#endif
 
 /**
  * @brief Check if a variable is unsigned.
@@ -180,7 +138,7 @@
  * @source inspired from https://stackoverflow.com/a/7470062
  * @note For an unsigned variable in parameter, some compilers warns a >= is always true (obviously).
  *       To prevent that, just set UEUM_DISABLE_Wtype_limits() before the call of UEUM_ISUNSIGNED() and
- * 		 UEUM_DISABLE_Wtype_limits_END() after the call of UEUM_ISUNSIGNED(). This will remove temporarily
+ *          UEUM_DISABLE_Wtype_limits_END() after the call of UEUM_ISUNSIGNED(). This will remove temporarily
  *       Wtype-limits from GCC and 4047 from MSC.
  */
 #define UEUM_ISUNSIGNED(a) (sizeof(a) == sizeof(unsigned char)) || (a >= 0 && ~a >= 0)
@@ -193,21 +151,21 @@
  */
 #define UEUM_VAR_MAX(ptr)                                     \
 (                                                             \
-	!UEUM_ISUNSIGNED(ptr) ?                                   \
-		((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 +          \
-     	(1ll << (sizeof(ptr) * CHAR_BIT - 2))) :              \
-    	(                                                     \
-      		(sizeof(ptr) < sizeof(long long)) ?               \
-        	((1ll << (sizeof(ptr) * CHAR_BIT - 1)) - 1 +      \
-         	(1ll << (sizeof(ptr) * CHAR_BIT - 1))) :          \
-        	(                                                 \
-          		(sizeof(ptr) == sizeof(long long)) ?          \
-            	-1ll :                                        \
-            	(fprintf(stderr, "[FATAL] Unsupported type"), \
-			 	exit(EXIT_FAILURE),							  \
-			 	0)                                            \
-        	)                                                 \
-    	)                                                     \
+    !UEUM_ISUNSIGNED(ptr) ?                                   \
+        ((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 +          \
+         (1ll << (sizeof(ptr) * CHAR_BIT - 2))) :             \
+         (                                                    \
+            (sizeof(ptr) < sizeof(long long)) ?               \
+             ((1ll << (sizeof(ptr) * CHAR_BIT - 1)) - 1 +     \
+             (1ll << (sizeof(ptr) * CHAR_BIT - 1))) :         \
+            (                                                 \
+                  (sizeof(ptr) == sizeof(long long)) ?        \
+                -1ll :                                        \
+                (fprintf(stderr, "[FATAL] Unsupported type"), \
+                 exit(EXIT_FAILURE),                          \
+                 0)                                           \
+            )                                                 \
+         )                                                    \
 )
 
 /**
@@ -216,29 +174,29 @@
  * @param ptr  must be an assigned variable or we enter in the undefined behavior area.
  * @source inspired from https://stackoverflow.com/a/12769452
  */
-#define UEUM_VAR_MIN(ptr)                          	   \
+#define UEUM_VAR_MIN(ptr)                              \
 (                                                      \
-	!UEUM_ISUNSIGNED(ptr) ?                            \
-		(-((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 + \
-		(1ll << (sizeof(ptr) * CHAR_BIT - 2))) - 1) :  \
-    	0                                              \
+    !UEUM_ISUNSIGNED(ptr) ?                            \
+        (-((1ll << (sizeof(ptr) * CHAR_BIT - 2)) - 1 + \
+        (1ll << (sizeof(ptr) * CHAR_BIT - 2))) - 1) :  \
+        0                                              \
 )
 
 /**
  * @brief Cross-plateform includes to resolve the function used by the current
- * 		  OS to get the number of bytes allocated by a specified ptr. See below.
+ *           OS to get the number of bytes allocated by a specified ptr. See below.
  * 
  * @source inspired from file lzham_mem.cpp from project lzham_codec_devel:
- * 		   https://github.com/richgel999/lzham_codec_devel/blob/master/lzhamdecomp/lzham_mem.cpp
+ *            https://github.com/richgel999/lzham_codec_devel/blob/master/lzhamdecomp/lzham_mem.cpp
  */
 #if defined(_WIN32) || defined(_WIN64)
-	#include <Windows.h>
+    #include <Windows.h>
 #elif defined(__APPLE__)
-	#include <malloc/malloc.h>
+    #include <malloc/malloc.h>
 #elif defined(__FreeBSD__) || defined(__NetBSD__)
-	#include <malloc_np.h>
+    #include <malloc_np.h>
 #else
-	#include <malloc.h>
+    #include <malloc.h>
 #endif
     
 /**
@@ -246,91 +204,91 @@
  *        allocated by ptr in the HEAP.
  * 
  * @source inspired from this old commit, in file lzham_mem.cpp from project lzham_codec:
- * 		   https://github.com/fearog/lzham_codec/blob/75089234ebfa58dcf6631865acd2297b1b604df6/lzhamdecomp/lzham_mem.cpp
+ *         https://github.com/fearog/lzham_codec/blob/75089234ebfa58dcf6631865acd2297b1b604df6/lzhamdecomp/lzham_mem.cpp
  */
 #if defined(_WIN32) || defined(_WIN64)
-	#define ueum_get_allocation_size(ptr) _msize(ptr)
+    #define ueum_get_allocation_size(ptr) _msize(ptr)
 #elif !defined(__APPLE__) && !defined(ANDROID)
-	#define ueum_get_allocation_size(ptr) malloc_usable_size(ptr)
+    #define ueum_get_allocation_size(ptr) malloc_usable_size(ptr)
 #else
-	#define ueum_get_allocation_size(ptr) malloc_size(ptr)
+    #define ueum_get_allocation_size(ptr) malloc_size(ptr)
 #endif
 
 /*********************************************************************
- * 							Internal functions 			 		 	 *
+ *                             Internal functions                    *
  *********************************************************************/
 
 #define __ueum_check_not_already_assigned_or_rollback(ptr, rollback_expression) \
-	if (ptr != NULL) { \
-		ei_stacktrace_push_msg("ptr isn't NULL"); \
-		rollback_expression; \
-	} \
+    if (ptr != NULL) { \
+        ei_stacktrace_push_msg("ptr isn't NULL"); \
+        rollback_expression; \
+    } \
 
 #define __ueum_check_allocated_or_rollback(ptr, rollback_expression) \
-	if (ptr == NULL) { \
-		ei_stacktrace_push_msg("Cannot reallocate a NULL ptr"); \
-		rollback_expression; \
-	} \
+    if (ptr == NULL) { \
+        ei_stacktrace_push_msg("Cannot reallocate a NULL ptr"); \
+        rollback_expression; \
+    } \
 
 #define __ueum_check_allocation_size_or_rollback(ptr, requested_size, rollback_expression) \
-	if (ueum_get_allocation_size(ptr) < (size_t)requested_size) { \
-		ei_stacktrace_push_msg("malloc() doesn't allocated enough memory"); \
-		free((void *)ptr); \
-		rollback_expression; \
-	} \
+    if (ueum_get_allocation_size(ptr) < (size_t)requested_size) { \
+        ei_stacktrace_push_msg("malloc() doesn't allocated enough memory"); \
+        free((void *)ptr); \
+        rollback_expression; \
+    } \
 
 #define __ueum_check_size_not_null_or_rollback(size, rollback_expression) \
-	if (size == 0) { \
-		ei_stacktrace_push_msg("Cannot allocate 0 byte"); \
-		rollback_expression; \
-	} \
+    if (size == 0) { \
+        ei_stacktrace_push_msg("Cannot allocate 0 byte"); \
+        rollback_expression; \
+    } \
 
 #define __ueum_check_size_not_max_or_rollback(size, rollback_expression) \
-	UEUM_DISABLE_Wtype_limits() \
-	if (size == UEUM_VAR_MAX(size)) { \
-	UEUM_DISABLE_Wtype_limits_END() \
-		ei_stacktrace_push_msg("Cannot allocate with size equal to the max of the specified size type"); \
-		rollback_expression; \
-	} \
+    UEUM_DISABLE_Wtype_limits() \
+    if (size == UEUM_VAR_MAX(size)) { \
+    UEUM_DISABLE_Wtype_limits_END() \
+        ei_stacktrace_push_msg("Cannot allocate with size equal to the max of the specified size type"); \
+        rollback_expression; \
+    } \
 
 #define __ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression) \
-	errno = 0; \
-	if ((ptr = (type *)malloc(size * sizeof(type))) == NULL) { \
-		if (errno != 0) { \
-			ei_stacktrace_push_msg("malloc() failed with error message: %s", strerror(errno)); \
-		} else { \
-			ei_stacktrace_push_msg("malloc() failed without setting errno"); \
-		} \
-		rollback_expression; \
-	} \
+    errno = 0; \
+    if ((ptr = (type *)malloc(size * sizeof(type))) == NULL) { \
+        if (errno != 0) { \
+            ei_stacktrace_push_msg("malloc() failed with error message: %s", strerror(errno)); \
+        } else { \
+            ei_stacktrace_push_msg("malloc() failed without setting errno"); \
+        } \
+        rollback_expression; \
+    } \
 
 #define __ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression) \
-	errno = 0; \
-	if ((ptr = (type *)realloc(ptr, (old_size + more_size + 1) * sizeof(type))) == NULL) { \
-		if (errno != 0) { \
-			ei_stacktrace_push_msg("realloc() failed with error message: %s", strerror(errno)); \
-		} else { \
-			ei_stacktrace_push_msg("realloc() failed without setting errno"); \
-		} \
-		rollback_expression; \
-	} \
+    errno = 0; \
+    if ((ptr = (type *)realloc(ptr, (old_size + more_size + 1) * sizeof(type))) == NULL) { \
+        if (errno != 0) { \
+            ei_stacktrace_push_msg("realloc() failed with error message: %s", strerror(errno)); \
+        } else { \
+            ei_stacktrace_push_msg("realloc() failed without setting errno"); \
+        } \
+        rollback_expression; \
+    } \
 
 #define __ueum_safe_alloc_internal(ptr, type, size, rollback_expression) \
-	__ueum_check_not_already_assigned_or_rollback(ptr, rollback_expression); \
-	__ueum_check_size_not_null_or_rollback(size, rollback_expression); \
-	__ueum_check_size_not_max_or_rollback(size, rollback_expression); \
-	__ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression); \
-	__ueum_check_allocation_size_or_rollback(ptr, size, rollback_expression); \
-	memset(ptr, 0, size * sizeof(type)); \
+    __ueum_check_not_already_assigned_or_rollback(ptr, rollback_expression); \
+    __ueum_check_size_not_null_or_rollback(size, rollback_expression); \
+    __ueum_check_size_not_max_or_rollback(size, rollback_expression); \
+    __ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression); \
+    __ueum_check_allocation_size_or_rollback(ptr, size, rollback_expression); \
+    memset(ptr, 0, size * sizeof(type)); \
 
 #define __ueum_safe_realloc_internal(ptr, type, old_size, more_size, rollback_expression) \
-	__ueum_check_allocated_or_rollback(ptr, rollback_expression); \
-	__ueum_check_size_not_null_or_rollback(old_size, rollback_expression); \
-	__ueum_check_size_not_null_or_rollback(more_size, rollback_expression); \
-	__ueum_check_size_not_max_or_rollback(old_size, rollback_expression); \
-	__ueum_check_size_not_max_or_rollback(more_size, rollback_expression); \
-	__ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression); \
-	__ueum_check_allocation_size_or_rollback(ptr, (old_size + more_size + 1) * sizeof(type), rollback_expression); \
-	memset(ptr + old_size, 0, (more_size + 1) * sizeof(type)); \
+    __ueum_check_allocated_or_rollback(ptr, rollback_expression); \
+    __ueum_check_size_not_null_or_rollback(old_size, rollback_expression); \
+    __ueum_check_size_not_null_or_rollback(more_size, rollback_expression); \
+    __ueum_check_size_not_max_or_rollback(old_size, rollback_expression); \
+    __ueum_check_size_not_max_or_rollback(more_size, rollback_expression); \
+    __ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression); \
+    __ueum_check_allocation_size_or_rollback(ptr, (old_size + more_size + 1) * sizeof(type), rollback_expression); \
+    memset(ptr + old_size, 0, (more_size + 1) * sizeof(type)); \
 
 #endif

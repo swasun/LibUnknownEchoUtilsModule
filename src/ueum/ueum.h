@@ -60,7 +60,11 @@
 #include <ueum/alloc.h>
 #include <ueum/bool.h>
 #include <ueum/inline.h>
+#include <ueum/overflow.h>
 #include <ueum/safe_arithmetic.h>
 #include <ueum/ssize_t.h>
+#include <ueum/type_check.h>
+#include <ueum/typename.h>
+#include <ueum/warn_unused_result.h>
 
 #endif

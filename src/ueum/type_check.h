@@ -17,20 +17,26 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-#ifndef UNKNOWNECHOUTILSMODULE_INLINE_H
-#define UNKNOWNECHOUTILSMODULE_INLINE_H
+#ifndef UNKNOWNECHOUTILSMODULE_TYPE_CHECK_H
+#define UNKNOWNECHOUTILSMODULE_TYPE_CHECK_H
 
-#if defined(__unix__)
-	#include <sys/cdefs.h>
-#endif
+/* Compile-time assertion that check if 'x' and 'y' are equivalent types */
 
-/**
- * @source inspired from integer.h of libgit2
- */
-#if defined(_MSC_VER)
-# define ueum__inline(type) static __inline type
+#ifdef __cplusplus
+
+#define ueum__type_check(x, y) do { \
+	__typeof__(x) _x; \
+	__typeof__(y) _y; \
+	(void)(&_x == &_y, "overflow arithmetic: incompatible types"); \
+} while (0)
+
 #else
-# define ueum__inline(type) static inline type
+
+#define ueum__type_check(x, y) do { \
+	_Static_assert(__builtin_types_compatible_p(__typeof(x),__typeof(y)), \
+			"overflow arithmetic: incompatible types"); \
+} while (0)
+
 #endif
 
 #endif
