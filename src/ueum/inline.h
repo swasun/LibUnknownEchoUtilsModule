@@ -24,9 +24,9 @@
  * @source inspired from integer.h of libgit2
  */
 #if defined(_MSC_VER)
-# define UEUM_INLINE(type) static __inline type
+# define ueum__inline(type) static __inline type
 #else
-# define UEUM_INLINE(type) static inline type
+# define ueum__inline(type) static inline type
 #endif
 
 #endif

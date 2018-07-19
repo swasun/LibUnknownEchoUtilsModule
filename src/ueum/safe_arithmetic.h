@@ -26,6 +26,8 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
+
+
 #ifndef UNKNOWNECHOUTILSMODULE_SAFE_ARITHMETIC_H
 #define UNKNOWNECHOUTILSMODULE_SAFE_ARITHMETIC_H
 
@@ -48,15 +50,15 @@
 
 #if defined(__clang__)
 
-#define UEUM_WARN_RESULT __attribute__((__warn_unused_result__))
+#define ueum__warn_result __attribute__((__warn_unused_result__))
 
 #elif defined(__GNUC__)
 
-#define UEUM_WARN_RESULT __attribute__((warn_unused_result))
+#define ueum__warn_result __attribute__((warn_unused_result))
 
 #elif defined(_MSC_VER) && (_MSC_VER >= 1700)
 
-#define UEUM_WARN_RESULT _Check_return_
+#define ueum__warn_result _Check_return_
 
 #else
 
@@ -64,18 +66,46 @@
 
 #endif
 
-static inline bool UEUM_WARN_RESULT ueum_warn_unused(bool x) {
+static inline bool ueum__warn_result ueum__warn_unused(bool x) {
 	return x;
 }
 
 
-/* Use clang/gcc compiler intrinsics whenever possible */
+/* compile-time assertion that 'x' and 'y' are equivalent types */
+#ifdef __cplusplus
+#define ueum__type_check(x, y) do { \
+	__typeof__(x) _x; \
+	__typeof__(y) _y; \
+	(void)(&_x == &_y, "overflow arithmetic: incompatible types"); \
+} while (0)
+#else
+#define ueum__type_check(x, y) do { \
+	_Static_assert(__builtin_types_compatible_p(__typeof(x),__typeof(y)), \
+			"overflow arithmetic: incompatible types"); \
+} while (0)
+#endif
+
+
+#define typename(x) _Generic((x),                                                 \
+        _Bool: "_Bool",                  unsigned char: "unsigned char",          \
+         char: "char",                     signed char: "signed char",            \
+    short int: "short int",         unsigned short int: "unsigned short int",     \
+          int: "int",                     unsigned int: "unsigned int",           \
+     long int: "long int",           unsigned long int: "unsigned long int",      \
+long long int: "long long int", unsigned long long int: "unsigned long long int", \
+        float: "float",                         double: "double",                 \
+  long double: "long double",                   char *: "pointer to char",        \
+       void *: "pointer to void",                int *: "pointer to int",         \
+      default: "unknown")
+
+
+/* Use clang/gcc compiler intrinsics whenever pueumsible */
 #if (SIZE_MAX == ULONG_MAX) && __has_builtin(__builtin_uaddl_overflow)
 
 # define ueum__add_sizet_overflow(one, two, out) \
 	__builtin_uaddl_overflow(one, two, out)
 
-# define ueum__multiply_sizet_overflow(one, two, out) \
+# define ueum__mul_sizet_overflow(one, two, out) \
 	__builtin_umull_overflow(one, two, out)
 
 # define ueum__sub_sizet_overflow(one, two, out) \
@@ -86,7 +116,7 @@ static inline bool UEUM_WARN_RESULT ueum_warn_unused(bool x) {
 # define ueum__add_sizet_overflow(one, two, out) \
 	__builtin_uadd_overflow(one, two, out)
 
-# define ueum__multiply_sizet_overflow(one, two, out) \
+# define ueum__mul_sizet_overflow(one, two, out) \
 	__builtin_umul_overflow(one, two, out)
 
 # define ueum__sub_sizet_overflow(one, two, out) \
@@ -98,7 +128,7 @@ static inline bool UEUM_WARN_RESULT ueum_warn_unused(bool x) {
  * Sets `one + two` into `out`, unless the arithmetic would overflow.
  * @return true if the result fits in a `size_t`, false on overflow.
  */
-UEUM_INLINE(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
+ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (ULONG_MAX - one < two) {
 		return true;
     }
@@ -110,7 +140,7 @@ UEUM_INLINE(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) 
  * Sets `one * two` into `out`, unless the arithmetic would overflow.
  * @return true if the result fits in a `size_t`, false on overflow.
  */
-UEUM_INLINE(bool) ueum__multiply_sizet_overflow(size_t one, size_t two, size_t *out) {
+ueum__inline(bool) ueum__mul_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (one && ULONG_MAX / one < two) {
 		return true;
     }
@@ -121,7 +151,7 @@ UEUM_INLINE(bool) ueum__multiply_sizet_overflow(size_t one, size_t two, size_t *
 /**
  * @source inspired from https://wiki.sei.cmu.edu/confluence/display/c/INT30-C.+Ensure+that+unsigned+integer+operations+do+not+wrap
  */
-UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) {
+ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) {
     if (one < two) {
         return true;
     }
@@ -130,8 +160,6 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
 }
 
 #endif
-
-#if __has_builtin(__builtin_uaddl_overflow)
 
 /*
  * Facilities for performing type- and overflow-checked arithmetic. These
@@ -142,7 +170,7 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
  * http://clang.llvm.org/docs/LanguageExtensions.html#checked-arithmetic-builtins
  * for full details.
  *
- * The compiler enforces that users of os_*_overflow() check the return value to
+ * The compiler enforces that users of ueum__*_overflow() check the return value to
  * determine whether overflow occured.
  */
 
@@ -150,37 +178,22 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
     __has_builtin(__builtin_sub_overflow) && \
     __has_builtin(__builtin_mul_overflow)
 
-#define os_add_overflow(a, b, res) __os_warn_unused(__builtin_add_overflow((a), (b), (res)))
-#define os_sub_overflow(a, b, res) __os_warn_unused(__builtin_sub_overflow((a), (b), (res)))
-#define os_mul_overflow(a, b, res) __os_warn_unused(__builtin_mul_overflow((a), (b), (res)))
+#define ueum__add_overflow(a, b, res) ueum__warn_unused(__builtin_add_overflow((a), (b), (res)))
+#define ueum__sub_overflow(a, b, res) ueum__warn_unused(__builtin_sub_overflow((a), (b), (res)))
+#define ueum__mul_overflow(a, b, res) ueum__warn_unused(__builtin_mul_overflow((a), (b), (res)))
 
 #else
 
-/* compile-time assertion that 'x' and 'y' are equivalent types */
-#ifdef __cplusplus
-#define __OS_TYPE_CHECK(x, y) do { \
-	__typeof__(x) _x; \
-	__typeof__(y) _y; \
-	(void)(&_x == &_y, "overflow arithmetic: incompatible types"); \
-} while (0)
-#else
-#define __OS_TYPE_CHECK(x, y) do { \
-	_Static_assert(__builtin_types_compatible_p(__typeof(x),__typeof(y)), \
-			"overflow arithmetic: incompatible types"); \
-} while (0)
-#endif
-
-#define ueum__add_overflow(T,U,V) _Generic((T), \
+#define __ueum__add_overflow_func(T,U,V) _Generic((T), \
 		unsigned:           __builtin_uadd_overflow, \
 		unsigned long:      __builtin_uaddl_overflow, \
 		unsigned long long: __builtin_uaddll_overflow, \
 		int:                __builtin_sadd_overflow, \
 		long:               __builtin_saddl_overflow, \
-		long long:          __builtin_saddll_overflow, \
-		size_t:				ueum__add_sizet_overflow \
+		long long:          __builtin_saddll_overflow \
 	)(T,U,V)
 
-#define ueum__sub_overflow(T,U,V) _Generic((T), \
+#define __ueum__sub_overflow_func(T,U,V) _Generic((T), \
 		unsigned:           __builtin_usub_overflow, \
 		unsigned long:      __builtin_usubl_overflow, \
 		unsigned long long: __builtin_usubll_overflow, \
@@ -189,7 +202,7 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
 		long long:          __builtin_ssubll_overflow \
 	)(T,U,V)
 
-#define __os_mul_overflow_func(T,U,V) _Generic((T), \
+#define __ueum__mul_overflow_func(T,U,V) _Generic((T), \
 		unsigned:           __builtin_umul_overflow, \
 		unsigned long:      __builtin_umull_overflow, \
 		unsigned long long: __builtin_umulll_overflow, \
@@ -198,53 +211,103 @@ UEUM_INLINE(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out) 
 		long long:          __builtin_smulll_overflow \
 	)(T,U,V)
 
-#define os_add_overflow(a, b, res) __os_warn_unused(__extension__({ \
-	__OS_TYPE_CHECK((a), (b)); \
-	__OS_TYPE_CHECK((b), *(res)); \
-	__os_add_overflow_func((a), (b), (res)); \
+#define ueum__add_overflow(a, b, res) ueum__warn_unused(__extension__({ \
+	ueum__type_check((a), (b)); \
+	ueum__type_check((b), *(res)); \
+	__ueum__add_overflow_func((a), (b), (res)); \
 }))
 
-#define os_sub_overflow(a, b, res) __os_warn_unused(__extension__({ \
-	__OS_TYPE_CHECK((a), (b)); \
-	__OS_TYPE_CHECK((b), *(res)); \
-	__os_sub_overflow_func((a), (b), (res)); \
+#define ueum__sub_overflow(a, b, res) ueum__warn_unused(__extension__({ \
+	ueum__type_check((a), (b)); \
+	ueum__type_check((b), *(res)); \
+	__ueum__sub_overflow_func((a), (b), (res)); \
 }))
 
-#define os_mul_overflow(a, b, res) __os_warn_unused(__extension__({ \
-	__OS_TYPE_CHECK((a), (b)); \
-	__OS_TYPE_CHECK((b), *(res)); \
-	__os_mul_overflow_func((a), (b), (res)); \
+#define ueum__mul_overflow(a, b, res) ueum__warn_unused(__extension__({ \
+	ueum__type_check((a), (b)); \
+	ueum__type_check((b), *(res)); \
+	__ueum__mul_overflow_func((a), (b), (res)); \
 }))
 
 #endif /* __has_builtin(...) */
 
-/* os_add3_overflow(a, b, c) -> (a + b + c) */
-#define os_add3_overflow(a, b, c, res) __os_warn_unused(__extension__({ \
+/* ueum__add3_overflow(a, b, c) -> (a + b + c) */
+#define ueum__add3_overflow(a, b, c, res) ueum__warn_unused(__extension__({ \
 	__typeof(*(res)) _tmp; \
 	bool _s, _t; \
-	_s = os_add_overflow((a), (b), &_tmp); \
-	_t = os_add_overflow((c), _tmp, (res)); \
+	_s = ueum__add_overflow((a), (b), &_tmp); \
+	_t = ueum__add_overflow((c), _tmp, (res)); \
 	_s | _t; \
 }))
 
-/* os_add_and_mul_overflow(a, b, x) -> (a + b)*x */
-#define os_add_and_mul_overflow(a, b, x, res) __os_warn_unused(__extension__({ \
+/* ueum__add_and_mul_overflow(a, b, x) -> (a + b)*x */
+#define ueum__add_and_mul_overflow(a, b, x, res) ueum__warn_unused(__extension__({ \
 	__typeof(*(res)) _tmp; \
 	bool _s, _t; \
-	_s = os_add_overflow((a), (b), &_tmp); \
-	_t = os_mul_overflow((x), _tmp, (res)); \
+	_s = ueum__add_overflow((a), (b), &_tmp); \
+	_t = ueum__mul_overflow((x), _tmp, (res)); \
 	_s | _t; \
 }))
 
-/* os_mul_and_add_overflow(a, x, b) -> a*x + b */
-#define os_mul_and_add_overflow(a, x, b, res) __os_warn_unused(__extension__({ \
+/* ueum__mul_and_add_overflow(a, x, b) -> a*x + b */
+#define ueum__mul_and_add_overflow(a, x, b, res) ueum__warn_unused(__extension__({ \
 	__typeof(*(res)) _tmp; \
 	bool _s, _t; \
-	_s = os_mul_overflow((a), (x), &_tmp); \
-	_t = os_add_overflow((b), _tmp, (res)); \
+	_s = ueum__mul_overflow((a), (x), &_tmp); \
+	_t = ueum__add_overflow((b), _tmp, (res)); \
 	_s | _t; \
 }))
 
-#endif
+#define __ueum_safe_add_internal(a, b, res, rollback_expression) \
+	if (ueum__add_overflow(a, b, res)) { \
+		ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)", typename(res), \
+			typename(a), typename(b)); \
+		rollback_expression; \
+	} \
+
+#define ueum_safe_add(a, b, res) \
+	__ueum_safe_add_internal(a, b, res, return 0); \
+
+#define ueum_safe_add_or_goto(a, b, res, label) \
+	__ueum_safe_add_internal(a, b, res, goto label); \
+
+#define __ueum_safe_add3_internal(a, b, c, res, rollback_expression) \
+	if (ueum__add3_overflow(a, b, c, res)) { \
+		ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)+(%s)", typename(res), \
+			typename(a), typename(b), typename(c)); \
+		rollback_expression; \
+	} \
+
+#define ueum_safe_add3(a, b, c, res) \
+	__ueum_safe_add3_internal(a, b, c, res, return 0); \
+
+#define ueum_safe_add3_or_goto(a, b, c, res, label) \
+	__ueum_safe_add3_internal(a, b, c, res, goto label); \
+
+#define __ueum_safe_sub_internal(a, b, res, rollback_expression) \
+	if (ueum__sub_overflow(a, b, res)) { \
+		ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)-(%s)", typename(res), \
+			typename(a), typename(b)); \
+		rollback_expression; \
+	} \
+
+#define ueum_safe_sub(a, b, res) \
+	__ueum_safe_sub_internal(a, b, res, return 0); \
+
+#define ueum_safe_sub_or_goto(a, b, res, label) \
+	__ueum_safe_sub_internal(a, b, res, goto label); \
+
+#define __ueum_safe_mul_internal(a, b, res, rollback_expression) \
+	if (ueum__mul_overflow(a, b, res)) { \
+		ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)*(%s)", typename(res), \
+			typename(a), typename(b)); \
+		rollback_expression; \
+	} \
+
+#define ueum_safe_mul(a, b, res) \
+	__ueum_safe_mul_internal(a, b, res, return 0); \
+
+#define ueum_safe_mul_or_goto(a, b, res, label) \
+	__ueum_safe_mul_internal(a, b, res, goto label); \
 
 #endif

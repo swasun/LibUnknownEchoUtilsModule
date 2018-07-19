@@ -20,8 +20,6 @@
 #include <ueum/ueum.h>
 #include <ei/ei.h>
 
-
-
 bool test_add_sizet_overflow() {
     size_t one, two, out;
     int i;
@@ -36,10 +34,8 @@ bool test_add_sizet_overflow() {
     ei_logger_debug("two=%ld", two);
     ei_logger_debug("out=%ld", out);
 
-    os_add_overflow(one, two, &out);
-
     for (i = 0; i < 100; i++) {
-        if (ueum__add_sizet_overflow(one, two, &out)) {
+        if (ueum__add_overflow(one, two, &out)) {
             ei_logger_info("Buffer overflow detected: %ld + %ld cannot be performed.", one, two);
             detected = true;
             break;
@@ -57,18 +53,32 @@ bool test_add_sizet_overflow() {
     return true;
 }
 
+bool test_safe_add() {
+    int res;
+
+    res = 0;
+
+    ueum_safe_add(10, 20, &res);
+
+    printf("%d\n", res);
+
+    return true;
+}
+
 int main() {
 	ei_init_or_die();
     ei_logger_use_symbol_levels();
 
-    if (!test_add_sizet_overflow()) {
+    /*if (!test_add_sizet_overflow()) {
         ei_stacktrace_push_msg("Test of ueum__add_sizet_overflow() failed");
         goto clean_up;
-    }
+    }*/
+
+    test_safe_add();
     
     ei_logger_info("Succeed !");    
 
-clean_up:
+//clean_up:
     if (ei_stacktrace_is_filled()) {
         ei_logger_error("Error(s) occurred with the following stacktrace(s):");
         ei_stacktrace_print_all();
