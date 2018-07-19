@@ -61,6 +61,7 @@
 #include <ueum/bool.h>
 #include <ueum/inline.h>
 #include <ueum/overflow.h>
+#include <ueum/pragma.h>
 #include <ueum/safe_arithmetic.h>
 #include <ueum/ssize_t.h>
 #include <ueum/type_check.h>
