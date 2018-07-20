@@ -19,7 +19,7 @@
 
 #include <ueum/fileSystem/file_utility.h>
 #include <ei/ei.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #if defined(__unix__)
     #include <sys/types.h>

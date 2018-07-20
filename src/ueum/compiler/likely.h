@@ -17,42 +17,25 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-/**
- *  @file      thread_mutex.h
- *  @brief     Portable structure of thread mutex.
- *  @author    Charly Lamothe
- *  @copyright GNU Public License.
- */
+#ifndef UNKNOWNECHOUTILSMODULE_LIKELY_H
+#define UNKNOWNECHOUTILSMODULE_LIKELY_H
 
-#ifndef UNKNOWNECHOUTILSMODULE_THREAD_MUTEX_H
-#define UNKNOWNECHOUTILSMODULE_THREAD_MUTEX_H
+#if defined(__GNUC__) || defined(__ICL) || defined(__clang__)
 
-#include <ueum/compiler/bool.h>
-
-#if defined(_WIN32) || defined(_WIN64)
-    #include <windows.h>
-#else
-    #include <pthread.h>
+#ifndef likely
+#define likely(x) __builtin_expect(!!(x), 1)
 #endif
 
-typedef struct {
-#if defined(_WIN32) || defined(_WIN64)
-        //HANDLE lock;
-        CRITICAL_SECTION lock;
-#else
-        pthread_mutex_t lock;
+#ifndef unlikely
+#define unlikely(x) __builtin_expect(!!(x), 0)
 #endif
-} ueum_thread_mutex;
 
-ueum_thread_mutex *ueum_thread_mutex_create();
+#else
 
-/**
- * @todo In UNIX impl, detect EBUSY and try to destroy the mutex with a timeout.
- */
-bool ueum_thread_mutex_destroy(ueum_thread_mutex *m);
+#define likely(x) (!!(x))
 
-bool ueum_thread_mutex_lock(ueum_thread_mutex *m);
+#define unlikely(x) (!!(x))
 
-bool ueum_thread_mutex_unlock(ueum_thread_mutex *m);
+#endif
 
 #endif

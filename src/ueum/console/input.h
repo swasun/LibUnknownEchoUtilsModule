@@ -20,7 +20,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_INPUT_H
 #define UNKNOWNECHOUTILSMODULE_INPUT_H
 
-#include <ueum/ssize_t.h>
+#include <ueum/compiler/ssize_t.h>
 
 typedef enum {
     UNKNOWNECHOUTILSMODULE_STDIN_INPUT,

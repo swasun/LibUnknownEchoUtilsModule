@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_STRING_VECTOR_H
 #define UNKNOWNECHOUTILSMODULE_STRING_VECTOR_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stdio.h>
 

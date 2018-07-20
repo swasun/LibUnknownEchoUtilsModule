@@ -19,7 +19,7 @@
 
 #include <ueum/container/string_vector.h>
 #include <ueum/string/string_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ei/ei.h>
 
 ueum_string_vector *ueum_string_vector_create_empty() {

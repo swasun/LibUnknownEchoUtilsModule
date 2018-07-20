@@ -31,7 +31,7 @@
 #define UNKNOWNECHOUTILSMODULE_BYTE_STREAM_H
 
 #include <ueum/byte/byte_stream_struct.h>
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stddef.h>
 #include <stdio.h>

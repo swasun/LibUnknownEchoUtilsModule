@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_STRING_SPLIT_H
 #define UNKNOWNECHOUTILSMODULE_STRING_SPLIT_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 #include <ueum/container/string_vector.h>
 
 ueum_string_vector *ueum_string_split(const char *string, const char *delimiter);

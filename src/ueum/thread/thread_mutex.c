@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/thread/thread_mutex.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <ei/ei.h>

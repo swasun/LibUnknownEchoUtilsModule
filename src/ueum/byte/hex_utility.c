@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/byte/hex_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <string.h>
 

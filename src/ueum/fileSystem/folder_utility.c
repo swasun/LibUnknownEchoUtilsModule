@@ -23,7 +23,7 @@
 #include <ueum/string/string_builder.h>
 #include <ueum/string/string_split.h>
 #include <ueum/container/string_vector.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <ei/ei.h>
 

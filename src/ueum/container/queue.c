@@ -44,7 +44,7 @@
   */
 
 #include <ueum/container/queue.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ei/ei.h>
 
 #include <stdio.h>

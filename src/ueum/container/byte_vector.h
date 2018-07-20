@@ -20,7 +20,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_BYTE_VECTOR_H
 #define UNKNOWNECHOUTILSMODULE_BYTE_VECTOR_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stdio.h>
 #include <stddef.h>

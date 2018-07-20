@@ -44,7 +44,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_PROGRESS_BAR_H
 #define UNKNOWNECHOUTILSMODULE_PROGRESS_BAR_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stdio.h>
 

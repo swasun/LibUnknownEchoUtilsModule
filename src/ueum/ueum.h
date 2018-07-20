@@ -17,8 +17,8 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-#ifndef UNKNOWNECHOUTILSMODULE_ueum_H
-#define UNKNOWNECHOUTILSMODULE_ueum_H
+#ifndef UNKNOWNECHOUTILSMODULE_UEUM_H
+#define UNKNOWNECHOUTILSMODULE_UEUM_H
 
 #include <ueum/byte/byte_reader.h>
 #include <ueum/byte/byte_stream_struct.h>
@@ -26,6 +26,17 @@
 #include <ueum/byte/byte_utility.h>
 #include <ueum/byte/byte_writer.h>
 #include <ueum/byte/hex_utility.h>
+
+#include <ueum/compiler/bool.h>
+#include <ueum/compiler/inline.h>
+#include <ueum/compiler/likely.h>
+#include <ueum/compiler/overflow.h>
+#include <ueum/compiler/pragma.h>
+#include <ueum/compiler/ssize_t.h>
+#include <ueum/compiler/typecheck.h>
+#include <ueum/compiler/typename.h>
+#include <ueum/compiler/typeof.h>
+#include <ueum/compiler/warn_unused_result.h>
 
 #include <ueum/console/color.h>
 #include <ueum/console/console.h>
@@ -38,6 +49,9 @@
 
 #include <ueum/fileSystem/file_utility.h>
 #include <ueum/fileSystem/folder_utility.h>
+
+#include <ueum/safe/safe_alloc.h>
+#include <ueum/safe/safe_arithmetic.h>
 
 #include <ueum/string/string_builder.h>
 #include <ueum/string/string_split.h>
@@ -56,16 +70,5 @@
 #include <ueum/time/timer_measure_struct.h>
 #include <ueum/time/timer_measure.h>
 #include <ueum/time/timer.h>
-
-#include <ueum/alloc.h>
-#include <ueum/bool.h>
-#include <ueum/inline.h>
-#include <ueum/overflow.h>
-#include <ueum/pragma.h>
-#include <ueum/safe_arithmetic.h>
-#include <ueum/ssize_t.h>
-#include <ueum/type_check.h>
-#include <ueum/typename.h>
-#include <ueum/warn_unused_result.h>
 
 #endif

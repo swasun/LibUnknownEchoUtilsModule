@@ -30,7 +30,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_BYTE_WRITER_H
 #define UNKNOWNECHOUTILSMODULE_BYTE_WRITER_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 #include <ueum/byte/byte_stream_struct.h>
 
 #include <stddef.h>

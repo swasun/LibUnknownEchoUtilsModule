@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/byte/byte_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ei/ei.h>
 
 #include <string.h>

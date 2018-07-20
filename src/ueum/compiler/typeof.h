@@ -17,42 +17,13 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-/**
- *  @file      thread_mutex.h
- *  @brief     Portable structure of thread mutex.
- *  @author    Charly Lamothe
- *  @copyright GNU Public License.
- */
+#ifndef UNKNOWNECHOUTILSMODULE_TYPEOF_H
+#define UNKNOWNECHOUTILSMODULE_TYPEOF_H
 
-#ifndef UNKNOWNECHOUTILSMODULE_THREAD_MUTEX_H
-#define UNKNOWNECHOUTILSMODULE_THREAD_MUTEX_H
-
-#include <ueum/compiler/bool.h>
-
-#if defined(_WIN32) || defined(_WIN64)
-    #include <windows.h>
-#else
-    #include <pthread.h>
+#if defined(_MSC_VER) && _MSC_VER >= 1600
+#ifndef __typeof__
+#define __typeof__(x)  decltype(x)
 #endif
-
-typedef struct {
-#if defined(_WIN32) || defined(_WIN64)
-        //HANDLE lock;
-        CRITICAL_SECTION lock;
-#else
-        pthread_mutex_t lock;
 #endif
-} ueum_thread_mutex;
-
-ueum_thread_mutex *ueum_thread_mutex_create();
-
-/**
- * @todo In UNIX impl, detect EBUSY and try to destroy the mutex with a timeout.
- */
-bool ueum_thread_mutex_destroy(ueum_thread_mutex *m);
-
-bool ueum_thread_mutex_lock(ueum_thread_mutex *m);
-
-bool ueum_thread_mutex_unlock(ueum_thread_mutex *m);
 
 #endif

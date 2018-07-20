@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_THREAD_COND_H
 #define UNKNOWNECHOUTILSMODULE_THREAD_COND_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 #include <ueum/thread/thread_mutex.h>
 
 #if defined(_WIN32) || defined(_WIN64)

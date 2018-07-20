@@ -18,16 +18,17 @@
  ******************************************************************************************/
 
 /**
- * @file      alloc.h
+ * @file      safe_alloc.h
  * @brief     Macro functions to safely alloc/realloc/free variables.
  * @author    Charly Lamothe
  * @copyright GNU Public License.
  */
 
-#ifndef UNKNOWNECHOUTILSMODULE_ALLOC_H
-#define UNKNOWNECHOUTILSMODULE_ALLOC_H
+#ifndef UNKNOWNECHOUTILSMODULE_SAFE_ALLOC_H
+#define UNKNOWNECHOUTILSMODULE_SAFE_ALLOC_H
 
-#include <ueum/pragma.h>
+#include <ueum/compiler/pragma.h>
+#include <ueum/compiler/likely.h>
 
 #include <ei/ei.h>
 
@@ -253,7 +254,7 @@
 
 #define __ueum_try_malloc_or_rollback(ptr, type, size, rollback_expression) \
     errno = 0; \
-    if ((ptr = (type *)malloc(size * sizeof(type))) == NULL) { \
+    if (unlikely((ptr = (type *)malloc(size * sizeof(type))) == NULL)) { \
         if (errno != 0) { \
             ei_stacktrace_push_msg("malloc() failed with error message: %s", strerror(errno)); \
         } else { \
@@ -264,7 +265,7 @@
 
 #define __ueum_try_realloc_or_rollback(ptr, type, old_size, more_size, rollback_expression) \
     errno = 0; \
-    if ((ptr = (type *)realloc(ptr, (old_size + more_size + 1) * sizeof(type))) == NULL) { \
+    if (unlikely((ptr = (type *)realloc(ptr, (old_size + more_size + 1) * sizeof(type))) == NULL)) { \
         if (errno != 0) { \
             ei_stacktrace_push_msg("realloc() failed with error message: %s", strerror(errno)); \
         } else { \

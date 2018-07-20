@@ -28,7 +28,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_STRING_BUILDER_H
 #define UNKNOWNECHOUTILSMODULE_STRING_BUILDER_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stddef.h>
 

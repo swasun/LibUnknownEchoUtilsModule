@@ -46,7 +46,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_QUEUE_H
 #define UNKNOWNECHOUTILSMODULE_QUEUE_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 #include <ueum/thread/thread_mutex.h>
 #include <ueum/thread/thread_cond.h>
 

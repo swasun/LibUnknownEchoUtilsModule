@@ -28,7 +28,7 @@
 #define UNKNOWNECHOUTILSMODULE_TIMER_MEASURE_H
 
 #include <ueum/time/timer_measure_struct.h>
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 ueum_timer_measure *ueum_timer_measure_create(unsigned int id);
 

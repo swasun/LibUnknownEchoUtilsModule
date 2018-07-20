@@ -32,7 +32,7 @@
 #include <ueum/time/timer_measure_struct.h>
 #include <ueum/time/timer_measure.h>
 #include <ueum/time/real_current_time.h>
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <time.h>
 

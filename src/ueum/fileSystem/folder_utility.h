@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_FOLDER_UTILITY_H
 #define UNKNOWNECHOUTILSMODULE_FOLDER_UTILITY_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 bool ueum_is_dir_exists(const char *dir_name);
 

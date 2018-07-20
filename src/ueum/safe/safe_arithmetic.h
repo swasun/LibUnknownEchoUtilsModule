@@ -20,8 +20,8 @@
 #ifndef UNKNOWNECHOUTILSMODULE_SAFE_ARITHMETIC_H
 #define UNKNOWNECHOUTILSMODULE_SAFE_ARITHMETIC_H
 
-#include <ueum/overflow.h>
-#include <ueum/typename.h>
+#include <ueum/compiler/overflow.h>
+#include <ueum/compiler/typename.h>
 
 #include <ei/ei.h>
 

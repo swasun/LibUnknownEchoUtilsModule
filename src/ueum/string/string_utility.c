@@ -19,9 +19,9 @@
 
 #include <ueum/string/string_utility.h>
 #include <ueum/string/string_builder.h>
-#include <ueum/safe_arithmetic.h>
+#include <ueum/safe/safe_arithmetic.h>
 #include <ei/ei.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <string.h>
 #include <stdarg.h>

@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/time/timer_measure.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ei/ei.h>
 #include <ueum/string/string_utility.h>
 

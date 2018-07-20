@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_STRING_UTILITY_H
 #define UNKNOWNECHOUTILSMODULE_STRING_UTILITY_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stdarg.h>
 #include <stddef.h>

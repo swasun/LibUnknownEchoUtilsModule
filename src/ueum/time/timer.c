@@ -19,7 +19,7 @@
 
 #include <ueum/time/timer.h>
 #include <ueum/time/timer_measure.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ueum/string/string_utility.h>
 
 #include <string.h>

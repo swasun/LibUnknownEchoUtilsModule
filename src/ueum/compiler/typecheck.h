@@ -17,25 +17,39 @@
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
-#ifndef UNKNOWNECHOUTILSMODULE_TYPE_CHECK_H
-#define UNKNOWNECHOUTILSMODULE_TYPE_CHECK_H
+#ifndef UNKNOWNECHOUTILSMODULE_TYPECHECK_H
+#define UNKNOWNECHOUTILSMODULE_TYPECHECK_H
+
+#ifndef typecheck
+
+#include <ueum/compiler/typeof.h>
+
+#if __STDC_VERSION__ >= 201112L
 
 /* Compile-time assertion that check if 'x' and 'y' are equivalent types */
-
-#ifdef __cplusplus
-
-#define ueum__type_check(x, y) do { \
-	__typeof__(x) _x; \
-	__typeof__(y) _y; \
-	(void)(&_x == &_y, "overflow arithmetic: incompatible types"); \
+#define typecheck(x, y) do { \
+	_Static_assert(__builtin_types_compatible_p(__typeof__(x),__typeof__(y)), \
+			"Arithmetic overflow detected: incompatible types"); \
 } while (0)
 
 #else
 
-#define ueum__type_check(x, y) do { \
-	_Static_assert(__builtin_types_compatible_p(__typeof(x),__typeof(y)), \
-			"overflow arithmetic: incompatible types"); \
-} while (0)
+/*
+ * SPDX-License-Identifier: GPL-2.0
+ * 
+ * from https://github.com/torvalds/linux/blob/master/include/linux/typecheck.h
+ * 
+ * Check at compile time that something is of a particular type.
+ * Always evaluates to 1 so you may use it easily in comparisons.
+ */
+#define typecheck(type, x) \
+({	type __dummy; \
+	__typeof__(x) __dummy2; \
+	(void)(&__dummy == &__dummy2); \
+	1; \
+})
+
+#endif
 
 #endif
 

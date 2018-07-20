@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/thread/thread_cond.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <ei/ei.h>
 

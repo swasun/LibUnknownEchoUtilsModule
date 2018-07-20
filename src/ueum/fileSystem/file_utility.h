@@ -30,8 +30,8 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include <ueum/bool.h>
-#include <ueum/ssize_t.h>
+#include <ueum/compiler/bool.h>
+#include <ueum/compiler/ssize_t.h>
 
 bool ueum_is_file_exists(const char *file_name);
 

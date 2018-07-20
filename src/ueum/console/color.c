@@ -19,7 +19,7 @@
 
 #include <ueum/console/color.h>
 #include <ueum/string/string_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <stdio.h>
 #include <string.h>

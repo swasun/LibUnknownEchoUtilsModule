@@ -28,7 +28,7 @@
 #define UNKNOWNECHOUTILSMODULE_THREAD_RESULT_H
 
 #include <ueum/thread/thread_id_struct.h>
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 typedef struct {
     ueum_thread_id *ti;

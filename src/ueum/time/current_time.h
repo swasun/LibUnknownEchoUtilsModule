@@ -20,7 +20,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_TIME_CURRENT_H
 #define UNKNOWNECHOUTILSMODULE_TIME_CURRENT_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #if defined(__unix__)
     #include <sys/time.h>

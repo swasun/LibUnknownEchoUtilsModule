@@ -44,7 +44,7 @@
 #include <ueum/console/progress_bar.h>
 #include <ueum/console/console.h>
 #include <ueum/console/color.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 #include <ueum/string/string_utility.h>
 
 #include <ei/ei.h>

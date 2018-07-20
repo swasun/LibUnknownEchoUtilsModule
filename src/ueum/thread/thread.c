@@ -18,7 +18,7 @@
  ******************************************************************************************/
 
 #include <ueum/thread/thread.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <errno.h>
 

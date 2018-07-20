@@ -27,7 +27,7 @@
 #ifndef UNKNOWNECHOUTILSMODULE_BYTE_UTILITY_H
 #define UNKNOWNECHOUTILSMODULE_BYTE_UTILITY_H
 
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #include <stddef.h>
 

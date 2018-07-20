@@ -19,7 +19,7 @@
 
 #include <ueum/console/input.h>
 #include <ueum/string/string_utility.h>
-#include <ueum/alloc.h>
+#include <ueum/safe/safe_alloc.h>
 
 #include <ei/ei.h>
 

@@ -20,8 +20,8 @@
 #ifndef UNKNOWNECHOUTILSMODULE_WARN_UNUSED_RESULT_H
 #define UNKNOWNECHOUTILSMODULE_WARN_UNUSED_RESULT_H
 
-#include <ueum/bool.h>
-#include <ueum/inline.h>
+#include <ueum/compiler/bool.h>
+#include <ueum/compiler/inline.h>
 
 #if defined(__unix__)
 	#include <sys/cdefs.h>

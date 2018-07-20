@@ -28,7 +28,7 @@
 #define UNKNOWNECHOUTILSMODULE_THREAD_H
 
 #include <ueum/thread/thread_id_struct.h>
-#include <ueum/bool.h>
+#include <ueum/compiler/bool.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <ueum/thread/thread_result.h>
