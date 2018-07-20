@@ -105,7 +105,7 @@ bool ueum_timer_measure_average(ueum_timer_measure *measure, double *result) {
 	}
 
 	for (i = 0; i < measure->times_begin_number; i++) {
-    sum += (double)(measure->times_end[i] - measure->times_begin[i]);
+        sum += (double)(measure->times_end[i] - measure->times_begin[i]);
 	}
 
 	*result = (double)(sum / measure->times_begin_number);

@@ -59,13 +59,13 @@ char *ueum_strcat_variadic(const char *format, ...) {
 	concatenated = NULL;
 
 	for (i = 0; i < strlen(format); i++) {
-    if (format[i] != 's' && format[i] != 'd' && format[i] != 'L' &&
-    	format[i] != 'l' && format[i] != 'f' && format[i] != 'c' &&
-    	format[i] != 'u') {
-    	ei_stacktrace_push_msg(
-        	"Specified format isn't valid. It must be contains only characters 's', 'd', 'L', 'l', 'f', 'c' and 'u'");
-    	return NULL;
-    }
+        if (format[i] != 's' && format[i] != 'd' && format[i] != 'L' &&
+            format[i] != 'l' && format[i] != 'f' && format[i] != 'c' &&
+            format[i] != 'u') {
+            ei_stacktrace_push_msg(
+                "Specified format isn't valid. It must be contains only characters 's', 'd', 'L', 'l', 'f', 'c' and 'u'");
+            return NULL;
+        }
 	}
 
 	if ((s = ueum_string_builder_create()) == NULL) {
@@ -75,29 +75,29 @@ char *ueum_strcat_variadic(const char *format, ...) {
 
 	va_start(ap, format);
 	while (*format) {
-    switch (*format++) {
-    case 's':
-    	src = va_arg(ap, char *);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        switch (*format++) {
+        case 's':
+            src = va_arg(ap, char *);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                src = NULL;
+                break;
+            }
             src = NULL;
             break;
-    	}
-    	src = NULL;
-    	break;
 
-    case 'd':
-    	d = va_arg(ap, int);
-    	ueum_safe_alloc(src, char, 10);
-    	sprintf(src, "%d", d);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        case 'd':
+            d = va_arg(ap, int);
+            ueum_safe_alloc(src, char, 10);
+            sprintf(src, "%d", d);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
 
-    case 'L':
-    	L = va_arg(ap, long long int);
-    	ueum_safe_alloc(src, char, 20);
+        case 'L':
+            L = va_arg(ap, long long int);
+            ueum_safe_alloc(src, char, 20);
 #if defined(_WIN32) || defined(_WIN64)
 #if defined(__GNUC__)
             _Pragma("GCC diagnostic push")
@@ -110,52 +110,52 @@ char *ueum_strcat_variadic(const char *format, ...) {
 #else
             sprintf(src, "%lld", L);
 #endif
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
 
-    case 'l':
-    	l = va_arg(ap, long int);
-    	ueum_safe_alloc(src, char, 20);
-    	sprintf(src, "%ld", l);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        case 'l':
+            l = va_arg(ap, long int);
+            ueum_safe_alloc(src, char, 20);
+            sprintf(src, "%ld", l);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
 
-    case 'f':
-    	f = va_arg(ap, double);
-    	ueum_safe_alloc(src, char, 10);
-    	sprintf(src, "%f", f);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        case 'f':
+            f = va_arg(ap, double);
+            ueum_safe_alloc(src, char, 10);
+            sprintf(src, "%f", f);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
 
-    case 'c':
-    	c = (char) va_arg(ap, int);
-    	ueum_safe_alloc(src, char, 2);
-    	sprintf(src, "%c", c);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        case 'c':
+            c = (char) va_arg(ap, int);
+            ueum_safe_alloc(src, char, 2);
+            sprintf(src, "%c", c);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
 
-    case 'u':
-    	u = va_arg(ap, unsigned int);
-    	ueum_safe_alloc(src, char, 10);
-    	sprintf(src, "%u", u);
-    	if (!ueum_string_builder_append(s, src, strlen(src))) {
+        case 'u':
+            u = va_arg(ap, unsigned int);
+            ueum_safe_alloc(src, char, 10);
+            sprintf(src, "%u", u);
+            if (!ueum_string_builder_append(s, src, strlen(src))) {
+                break;
+            }
+            ueum_safe_free(src);
             break;
-    	}
-    	ueum_safe_free(src);
-    	break;
-    }
+        }
 	}
 
 	va_end(ap);
@@ -177,17 +177,17 @@ int ueum_find_str_in_data(char *data, const char *query) {
 	query_size = strlen(query);
 
 	for (i = 0, j = 0; i < strlen(data); i++) {
-    if (j == 0) {
-    	begin_pos = i;
-    }
-    if (j == query_size) {
-    	return begin_pos;
-    }
-    if (data[i] == query[j]) {
-    	j++;
-    } else {
-    	j = 0;
-    }
+        if (j == 0) {
+            begin_pos = i;
+        }
+        if (j == query_size) {
+            return begin_pos;
+        }
+        if (data[i] == query[j]) {
+            j++;
+        } else {
+            j = 0;
+        }
 	}
 
 	return -1;
@@ -299,14 +299,14 @@ char *ueum_string_reverse(char *string) {
 
 	/* Find the end of the string */
 	while (*s1) {
-    ++s1;
+        ++s1;
 	}
 
 	/* Reverse it */
 	while (s1-- > ++s0) {
-    c = *s0;
-    *s0 = *s1;
-    *s1 = c;
+        c = *s0;
+        *s0 = *s1;
+        *s1 = c;
 	}
 
 	return string;
@@ -337,10 +337,10 @@ bool ueum_int_to_string(int num, char *buffer, int radix) {
 
 	/* Process individual digits */
 	while (num != 0) {
-    remainder = num % radix;
-    buffer[i++] =
-        (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
-    num = num / radix;
+        remainder = num % radix;
+        buffer[i++] =
+            (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
+        num = num / radix;
 	}
 
 	/* If number is negative, append '-' */
@@ -381,10 +381,10 @@ bool ueum_long_to_string(long num, char *buffer, int radix) {
 
 	/* Process individual digits */
 	while (num != 0) {
-    remainder = num % radix;
-    buffer[i++] =
-        (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
-    num = num / radix;
+        remainder = num % radix;
+        buffer[i++] =
+            (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
+        num = num / radix;
 	}
 
 	/* If number is negative, append '-' */
