@@ -1,19 +1,19 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe													  *
- *																						  *
- * This file is part of LibUnknownEchoUtilsModule.										  *
- *																						  *
+ * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ *                                                                                        *
+ * This file is part of LibUnknownEchoUtilsModule.                                        *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
- *   it under the terms of the GNU General Public License as published by				  *
- *   the Free Software Foundation, either version 3 of the License, or					  *
- *   (at your option) any later version.												  *
- *																						  *
+ *   it under the terms of the GNU General Public License as published by                 *
+ *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   (at your option) any later version.                                                  *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
- *   GNU General Public License for more details.										  *
- *																						  *
- *   You should have received a copy of the GNU General Public License					  *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of                       *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
+ *   GNU General Public License for more details.                                         *
+ *                                                                                        *
+ *   You should have received a copy of the GNU General Public License        	          *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -85,7 +85,7 @@ unsigned char *ueum_byte_stream_get_data(ueum_byte_stream *stream) {
 
 size_t ueum_byte_stream_get_position(ueum_byte_stream *stream) {
 	if (!stream) {
-		ei_stacktrace_push_msg("Specified stream ptr is null");
+    ei_stacktrace_push_msg("Specified stream ptr is null");
         return 0;
     }
 
@@ -99,8 +99,8 @@ bool ueum_byte_stream_set_position(ueum_byte_stream *stream, size_t position) {
     ei_check_parameter_or_return((position == 0) || (position == ULONG_MAX));
 
 	if (position >= stream->limit || position > stream->size) {
-		ei_stacktrace_push_msg("Position out of range");
-		return false;
+    ei_stacktrace_push_msg("Position out of range");
+    return false;
 	}
 
     stream->position = position;
@@ -110,7 +110,7 @@ bool ueum_byte_stream_set_position(ueum_byte_stream *stream, size_t position) {
 
 size_t ueum_byte_stream_get_size(ueum_byte_stream *stream) {
     if (!stream) {
-		ei_stacktrace_push_msg("Specified stream ptr is null");
+    ei_stacktrace_push_msg("Specified stream ptr is null");
         return 0;
     }
 

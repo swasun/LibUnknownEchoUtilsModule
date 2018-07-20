@@ -1,19 +1,19 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe													  *
- *																						  *
- * This file is part of LibUnknownEchoUtilsModule.										  *
- *																						  *
+ * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ *                                                                                        *
+ * This file is part of LibUnknownEchoUtilsModule.                                        *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
- *   it under the terms of the GNU General Public License as published by				  *
- *   the Free Software Foundation, either version 3 of the License, or					  *
- *   (at your option) any later version.												  *
- *																						  *
+ *   it under the terms of the GNU General Public License as published by                 *
+ *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   (at your option) any later version.                                                  *
+ *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
- *   GNU General Public License for more details.										  *
- *																						  *
- *   You should have received a copy of the GNU General Public License					  *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of                       *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
+ *   GNU General Public License for more details.                                         *
+ *                                                                                        *
+ *   You should have received a copy of the GNU General Public License        	          *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -51,7 +51,7 @@ void ueum_thread_cond_destroy(ueum_thread_cond *cond) {
 #else
             pthread_cond_destroy(&cond->data);
 #endif
-		ueum_safe_free(cond);
+    ueum_safe_free(cond);
 	}
 }
 
@@ -80,8 +80,8 @@ bool ueum_thread_cond_signal(ueum_thread_cond *cond) {
     WakeConditionVariable(&cond->data);
 #else
 	if (pthread_cond_signal(&cond->data) != 0) {
-		ei_stacktrace_push_errno();
-		return false;
+    ei_stacktrace_push_errno();
+    return false;
 	}
 #endif
 
@@ -95,8 +95,8 @@ bool ueum_thread_cond_broadcast(ueum_thread_cond *cond) {
     WakeAllConditionVariable(&cond->data);
 #else
     if (pthread_cond_broadcast(&cond->data) != 0) {
-		ei_stacktrace_push_errno();
-		return false;
+    ei_stacktrace_push_errno();
+    return false;
 	}
 #endif
 

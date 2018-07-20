@@ -79,7 +79,7 @@
  */
 ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (ULONG_MAX - one < two) {
-		return true;
+    return true;
     }
 	*out = one + two;
 	return false;
@@ -91,7 +91,7 @@ ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out)
  */
 ueum__inline(bool) ueum__mul_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (one && ULONG_MAX / one < two) {
-		return true;
+    return true;
     }
 	*out = one * two;
 	return false;
@@ -135,30 +135,30 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
 #elif __STDC_VERSION__ >= 201112L
 
 #define __ueum__add_overflow_func(T,U,V) _Generic((T), \
-		unsigned:           __builtin_uadd_overflow, \
-		unsigned long:      __builtin_uaddl_overflow, \
-		unsigned long long: __builtin_uaddll_overflow, \
-		int:                __builtin_sadd_overflow, \
-		long:               __builtin_saddl_overflow, \
-		long long:          __builtin_saddll_overflow \
+    unsigned:           __builtin_uadd_overflow, \
+    unsigned long:      __builtin_uaddl_overflow, \
+    unsigned long long: __builtin_uaddll_overflow, \
+    int:                __builtin_sadd_overflow, \
+    long:               __builtin_saddl_overflow, \
+    long long:          __builtin_saddll_overflow \
 	)(T,U,V)
 
 #define __ueum__sub_overflow_func(T,U,V) _Generic((T), \
-		unsigned:           __builtin_usub_overflow, \
-		unsigned long:      __builtin_usubl_overflow, \
-		unsigned long long: __builtin_usubll_overflow, \
-		int:                __builtin_ssub_overflow, \
-		long:               __builtin_ssubl_overflow, \
-		long long:          __builtin_ssubll_overflow \
+    unsigned:           __builtin_usub_overflow, \
+    unsigned long:      __builtin_usubl_overflow, \
+    unsigned long long: __builtin_usubll_overflow, \
+    int:                __builtin_ssub_overflow, \
+    long:               __builtin_ssubl_overflow, \
+    long long:          __builtin_ssubll_overflow \
 	)(T,U,V)
 
 #define __ueum__mul_overflow_func(T,U,V) _Generic((T), \
-		unsigned:           __builtin_umul_overflow, \
-		unsigned long:      __builtin_umull_overflow, \
-		unsigned long long: __builtin_umulll_overflow, \
-		int:                __builtin_smul_overflow, \
-		long:               __builtin_smull_overflow, \
-		long long:          __builtin_smulll_overflow \
+    unsigned:           __builtin_umul_overflow, \
+    unsigned long:      __builtin_umull_overflow, \
+    unsigned long long: __builtin_umulll_overflow, \
+    int:                __builtin_smul_overflow, \
+    long:               __builtin_smull_overflow, \
+    long long:          __builtin_smulll_overflow \
 	)(T,U,V)
 
 #define ueum__add_overflow(a, b, res) ueum__warn_unused_result(__extension__({ \
