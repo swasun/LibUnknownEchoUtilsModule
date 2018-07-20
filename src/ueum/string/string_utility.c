@@ -32,7 +32,7 @@
 
 void ueum_remove_last_char(char *str) {
 	if (!str) {
-    return;
+        return;
 	}
 
 	str[strlen(str) - 1] = '\0';
@@ -69,8 +69,8 @@ char *ueum_strcat_variadic(const char *format, ...) {
 	}
 
 	if ((s = ueum_string_builder_create()) == NULL) {
-    ei_stacktrace_push_msg("Failed to create empty string builder");
-    return NULL;
+        ei_stacktrace_push_msg("Failed to create empty string builder");
+        return NULL;
 	}
 
 	va_start(ap, format);
@@ -79,8 +79,8 @@ char *ueum_strcat_variadic(const char *format, ...) {
     case 's':
     	src = va_arg(ap, char *);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        src = NULL;
-        break;
+            src = NULL;
+            break;
     	}
     	src = NULL;
     	break;
@@ -90,7 +90,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
     	ueum_safe_alloc(src, char, 10);
     	sprintf(src, "%d", d);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -111,7 +111,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
             sprintf(src, "%lld", L);
 #endif
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -121,7 +121,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
     	ueum_safe_alloc(src, char, 20);
     	sprintf(src, "%ld", l);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -131,7 +131,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
     	ueum_safe_alloc(src, char, 10);
     	sprintf(src, "%f", f);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -141,7 +141,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
     	ueum_safe_alloc(src, char, 2);
     	sprintf(src, "%c", c);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -151,7 +151,7 @@ char *ueum_strcat_variadic(const char *format, ...) {
     	ueum_safe_alloc(src, char, 10);
     	sprintf(src, "%u", u);
     	if (!ueum_string_builder_append(s, src, strlen(src))) {
-        break;
+            break;
     	}
     	ueum_safe_free(src);
     	break;
@@ -161,8 +161,8 @@ char *ueum_strcat_variadic(const char *format, ...) {
 	va_end(ap);
 
 	if (s->data) {
-    ueum_safe_alloc(concatenated, char, strlen(s->data) + 1);
-    memcpy(concatenated, s->data, (strlen(s->data) + 1) * sizeof(char));
+        ueum_safe_alloc(concatenated, char, strlen(s->data) + 1);
+        memcpy(concatenated, s->data, (strlen(s->data) + 1) * sizeof(char));
 	}
 
 	ueum_string_builder_destroy(s);
@@ -199,9 +199,9 @@ char *ueum_get_file_name_from_path(char *path) {
 	file_name = NULL;
 
 	if (!strstr(path, "/")) {
-    ueum_safe_alloc(file_name, char, strlen(path) + 1);
-    strcpy(file_name, path);
-    return file_name;
+        ueum_safe_alloc(file_name, char, strlen(path) + 1);
+        strcpy(file_name, path);
+        return file_name;
 	}
 
 	tmp_file_name = strrchr(path, '/');
@@ -217,9 +217,9 @@ char *ueum_get_file_extension(char *path) {
 	file_name = NULL;
 
 	if (!strstr(path, ".")) {
-    ueum_safe_alloc(file_name, char, strlen(path) + 1);
-    strcpy(file_name, path);
-    return file_name;
+        ueum_safe_alloc(file_name, char, strlen(path) + 1);
+        strcpy(file_name, path);
+        return file_name;
 	}
 
 	tmp_file_name = strrchr(path, '.');
@@ -255,7 +255,7 @@ char *ueum_append_dump_string(char *data, size_t max) {
 	char *dump;
 
 	if (max <= strlen(data)) {
-    return ueum_string_create_from(data);
+        return ueum_string_create_from(data);
 	}
 
 	dump = NULL;
@@ -280,11 +280,11 @@ int ueum_last_index_of(const char *string, char target) {
 	current_index = 0;
 
 	while (string[current_index] != '\0') {
-    if (string[current_index] == target) {
-    	r = current_index;
-    }
+        if (string[current_index] == target) {
+            r = current_index;
+        }
 
-    current_index++;
+        current_index++;
 	}
 
 	return r;
@@ -321,9 +321,9 @@ bool ueum_int_to_string(int num, char *buffer, int radix) {
 
 	/* Handle 0 explicitely, otherwise empty string is printed for 0 */
 	if (num == 0) {
-    buffer[i++] = '0';
-    buffer[i] = '\0';
-    return false;
+        buffer[i++] = '0';
+        buffer[i] = '\0';
+        return false;
 	}
 
 	/**
@@ -331,8 +331,8 @@ bool ueum_int_to_string(int num, char *buffer, int radix) {
 	 * radix 10. Otherwise numbers are considered unsigned.
 	 */
 	if (num < 0 && radix == 10) {
-    is_negative = true;
-    num = -num;
+        is_negative = true;
+        num = -num;
 	}
 
 	/* Process individual digits */
@@ -345,7 +345,7 @@ bool ueum_int_to_string(int num, char *buffer, int radix) {
 
 	/* If number is negative, append '-' */
 	if (is_negative) {
-    buffer[i++] = '-';
+        buffer[i++] = '-';
 	}
 
 	/* Append string terminator */
@@ -365,9 +365,9 @@ bool ueum_long_to_string(long num, char *buffer, int radix) {
 
 	/* Handle 0 explicitely, otherwise empty string is printed for 0 */
 	if (num == 0) {
-    buffer[i++] = '0';
-    buffer[i] = '\0';
-    return false;
+        buffer[i++] = '0';
+        buffer[i] = '\0';
+        return false;
 	}
 
 	/**
@@ -375,8 +375,8 @@ bool ueum_long_to_string(long num, char *buffer, int radix) {
 	 * radix 10. Otherwise numbers are considered unsigned.
 	 */
 	if (num < 0 && radix == 10) {
-    is_negative = true;
-    num = -num;
+        is_negative = true;
+        num = -num;
 	}
 
 	/* Process individual digits */
@@ -389,7 +389,7 @@ bool ueum_long_to_string(long num, char *buffer, int radix) {
 
 	/* If number is negative, append '-' */
 	if (is_negative) {
-    buffer[i++] = '-';
+        buffer[i++] = '-';
 	}
 
 	/* Append string terminator */
@@ -407,8 +407,8 @@ bool ueum_string_to_int(char *string, int *out, int radix) {
 	ei_check_parameter_or_return(string);
 
 	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
-    ei_stacktrace_push_msg("String is inconvertible");
-    return false;
+        ei_stacktrace_push_msg("String is inconvertible");
+        return false;
 	}
 
 	errno = 0;
@@ -416,16 +416,16 @@ bool ueum_string_to_int(char *string, int *out, int radix) {
 
 	/* Both checks are needed because INT_MAX == LONG_MAX is possible. */
 	if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
-    ei_stacktrace_push_msg("String overflow");
-    return false;
+        ei_stacktrace_push_msg("String overflow");
+        return false;
 	}
 	if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
-    ei_stacktrace_push_msg("String underflow");
-    return false;
+        ei_stacktrace_push_msg("String underflow");
+        return false;
 	}
 	if (*end != '\0') {
-    ei_stacktrace_push_msg("String is inconvertible");
-    return false;
+        ei_stacktrace_push_msg("String is inconvertible");
+        return false;
 	}
 
 	*out = l;
@@ -440,8 +440,8 @@ bool ueum_string_to_long(char *string, long *out, int radix) {
 	ei_check_parameter_or_return(string);
 
 	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
-    ei_stacktrace_push_msg("String is inconvertible");
-    return false;
+        ei_stacktrace_push_msg("String is inconvertible");
+        return false;
 	}
 
 	errno = 0;
@@ -449,16 +449,16 @@ bool ueum_string_to_long(char *string, long *out, int radix) {
 
 	/* Both checks are needed because INT_MAX == LONG_MAX is possible. */
 	if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
-    ei_stacktrace_push_msg("String overflow");
-    return false;
+        ei_stacktrace_push_msg("String overflow");
+        return false;
 	}
 	if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
-    ei_stacktrace_push_msg("String underflow");
-    return false;
+        ei_stacktrace_push_msg("String underflow");
+        return false;
 	}
 	if (*end != '\0') {
-    ei_stacktrace_push_msg("String is inconvertible");
-    return false;
+        ei_stacktrace_push_msg("String is inconvertible");
+        return false;
 	}
 
 	*out = l;
@@ -474,22 +474,22 @@ char *ueum_substring(char *string, size_t begin_index, size_t end_index) {
 	new_string = NULL;
 
 	if (end_index > length) {
-    ei_stacktrace_push_msg("Index out of bounds");
-    return NULL;
+        ei_stacktrace_push_msg("Index out of bounds");
+        return NULL;
 	}
 
 	if (ueum__sub_sizet_overflow(end_index, begin_index, &sub_length)) {
-    ei_stacktrace_push_msg("Buffer overflow detected when substracting end_index and begin_index");
-    return NULL;
+        ei_stacktrace_push_msg("Buffer overflow detected when substracting end_index and begin_index");
+        return NULL;
 	}
 
 	if (ueum__add_sizet_overflow(sub_length, 1, &sub_length)) {
-    ei_stacktrace_push_msg("Buffer overflow detected when adding 1 to sub_length");
-    return NULL;
+        ei_stacktrace_push_msg("Buffer overflow detected when adding 1 to sub_length");
+        return NULL;
 	}
 
 	if ((begin_index == 0) && (end_index == length)) {
-    return ueum_string_create_from(string);
+        return ueum_string_create_from(string);
 	}
 
 	ueum_safe_alloc(new_string, char, length + 1);
@@ -508,16 +508,16 @@ char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end) {
 	*end = -1;
 
 	for (i = begin; i < size; i++) {
-    if (str[i] == symbol) {
-    	cr = i;
-    	break;
-    }
+        if (str[i] == symbol) {
+            cr = i;
+            break;
+        }
 	}
 
 	if (cr != -1) {
-    line_size = cr - begin;
-    ueum_safe_alloc(line, char, line_size + 1);
-    memcpy(line, str + begin, line_size * sizeof(char));
+        line_size = cr - begin;
+        ueum_safe_alloc(line, char, line_size + 1);
+        memcpy(line, str + begin, line_size * sizeof(char));
 	}
 
 	*end = cr;
@@ -529,18 +529,18 @@ char *ueum_trim_whitespace(char *str) {
 	char *end;
 
 	while (isspace((unsigned char )*str)) {
-    str++;
+        str++;
 	}
 
 	 /* All spaces? */
 	if (*str == 0) {
-    return str;
+        return str;
 	}
 
 	/* Trim trailing space */
 	end = str + strlen(str) - 1;
 	while (end > str && isspace((unsigned char )*end)) {
-    end--;
+        end--;
 	}
 
 	/* Write new null terminator */
@@ -562,7 +562,7 @@ char *ueum_string_uppercase(const char *input) {
 
 	i = 0;
 	for (i = 0; i < length; i++) {
-    output[i] = (unsigned char)toupper((unsigned char)input[i]);
+        output[i] = (unsigned char)toupper((unsigned char)input[i]);
 	}
 
 	return output;

@@ -124,7 +124,7 @@ char *ueum_string_builder_get_data(ueum_string_builder *s) {
 
 size_t ueum_string_builder_get_position(ueum_string_builder *s) {
     if (!s) {
-    ei_stacktrace_push_msg("Specified string builder ptr is null");
+        ei_stacktrace_push_msg("Specified string builder ptr is null");
         return 0;
     }
 

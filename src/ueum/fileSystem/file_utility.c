@@ -96,7 +96,7 @@ char *ueum_read_file(const char *file_name) {
 	ueum_safe_alloc_or_goto(out, char, file_size + 1, clean_up);
 
     if (fread(out, file_size, 1, fd) == 0) {
-    ueum_safe_free(out);
+        ueum_safe_free(out);
         ei_stacktrace_push_errno();
     }
 

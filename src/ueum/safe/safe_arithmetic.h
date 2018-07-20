@@ -51,30 +51,30 @@
 
 #define __ueum_safe_add_internal(a, b, res, rollback_expression) \
 	if (ueum__add_overflow(a, b, res)) { \
-    ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)", ueum_typename(res), \
-    	ueum_typename(a), ueum_typename(b)); \
-    rollback_expression; \
+        ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)", ueum_typename(res), \
+    	    ueum_typename(a), ueum_typename(b)); \
+        rollback_expression; \
 	} \
 
 #define __ueum_safe_add3_internal(a, b, c, res, rollback_expression) \
 	if (ueum__add3_overflow(a, b, c, res)) { \
-    ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)+(%s)", ueum_typename(res), \
-    	ueum_typename(a), ueum_typename(b), ueum_typename(c)); \
-    rollback_expression; \
+        ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)+(%s)+(%s)", ueum_typename(res), \
+            ueum_typename(a), ueum_typename(b), ueum_typename(c)); \
+        rollback_expression; \
 	} \
 
 #define __ueum_safe_sub_internal(a, b, res, rollback_expression) \
 	if (ueum__sub_overflow(a, b, res)) { \
-    ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)-(%s)", ueum_typename(res), \
-    	ueum_typename(a), ueum_typename(b)); \
-    rollback_expression; \
+        ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)-(%s)", ueum_typename(res), \
+            ueum_typename(a), ueum_typename(b)); \
+        rollback_expression; \
 	} \
 
 #define __ueum_safe_mul_internal(a, b, res, rollback_expression) \
 	if (ueum__mul_overflow(a, b, res)) { \
-    ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)*(%s)", ueum_typename(res), \
-    	ueum_typename(a), ueum_typename(b)); \
-    rollback_expression; \
+        ei_stacktrace_push_msg("Arithmetic overflow detected when performing: (%s)=(%s)*(%s)", ueum_typename(res), \
+            ueum_typename(a), ueum_typename(b)); \
+        rollback_expression; \
 	} \
 
 #endif

@@ -68,8 +68,8 @@ bool ueum_bytes_starts_with(unsigned char *data, size_t data_size, unsigned char
 	ei_check_parameter_or_return(target_size);
 
 	if (data_size < target_size) {
-    ei_logger_warn("Target > than data. The comparaison will be performed with the data size and not the target size.");
-    return memcmp(data, target, data_size) == 0;
+        ei_logger_warn("Target > than data. The comparaison will be performed with the data size and not the target size.");
+        return memcmp(data, target, data_size) == 0;
 	}
 
 	return memcmp(data, target, target_size) == 0;
@@ -84,24 +84,24 @@ bool ueum_bytes_contains(unsigned char *data, size_t data_size, unsigned char *t
 	ei_check_parameter_or_return(target_size);
 
 	if (data_size < target_size) {
-    ei_logger_warn("Target > than data.");
-    return false;
+        ei_logger_warn("Target > than data.");
+        return false;
 	}
 
 	counter = 0;
 
 	for (i = 0; i < data_size; i++) {
-    if (data[i] == target[counter]) {
-    	counter++;
-    } else {
-    	if (counter > 0) {
-        i -= counter;
-    	}
-    	counter = 0;
-    }
-    if (counter == target_size) {
-    	return true;
-    }
+        if (data[i] == target[counter]) {
+            counter++;
+        } else {
+            if (counter > 0) {
+                i -= counter;
+            }
+            counter = 0;
+        }
+        if (counter == target_size) {
+            return true;
+        }
 	}
 
 	return false;

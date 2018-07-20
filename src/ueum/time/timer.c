@@ -33,26 +33,26 @@ static ueum_timer_measure *get_timer_measure_from_id(ueum_timer *tm, unsigned in
 	found = false;
 
 	if (tm->measures) {
-    for (i = 0; i < tm->measures_number; i++) {
-    	if (tm->measures[i]->id == id) {
-        measure = tm->measures[i];
-        found = true;
-        break;
-    	}
-    }
+		for (i = 0; i < tm->measures_number; i++) {
+			if (tm->measures[i]->id == id) {
+				measure = tm->measures[i];
+				found = true;
+				break;
+			}
+		}
 
-    if (!found) {
-    	ueum_safe_realloc(tm->measures, ueum_timer_measure *, tm->measures_number, 1);
-    	tm->measures[tm->measures_number] = ueum_timer_measure_create(id);
-    	measure = tm->measures[tm->measures_number];
-    	tm->measures_number++;
-    }
+		if (!found) {
+			ueum_safe_realloc(tm->measures, ueum_timer_measure *, tm->measures_number, 1);
+			tm->measures[tm->measures_number] = ueum_timer_measure_create(id);
+			measure = tm->measures[tm->measures_number];
+			tm->measures_number++;
+		}
 	}
 	else {
-    ueum_safe_alloc(tm->measures, ueum_timer_measure *, 1);
-    tm->measures[tm->measures_number] = ueum_timer_measure_create(id);
-    measure = tm->measures[tm->measures_number];
-    tm->measures_number++;
+		ueum_safe_alloc(tm->measures, ueum_timer_measure *, 1);
+		tm->measures[tm->measures_number] = ueum_timer_measure_create(id);
+		measure = tm->measures[tm->measures_number];
+		tm->measures_number++;
 	}
 
 	return measure;
@@ -62,14 +62,14 @@ static ueum_timer_measure *get_timer_measure_from_id(ueum_timer *tm, unsigned in
 	double result;
 
 	if (strcmp(unity, "us") == 0) {
-    result = n;
+    	result = n;
 	} else if (strcmp(unity, "ms") == 0) {
-    result = n / 1000;
+    	result = n / 1000;
 	} else if (strcmp(unity, "s") == 0) {
-    result = n / 1000000;
+    	result = n / 1000000;
 	} else {
-    ei_logger_warn("Unknown unity '%s', returned unchanged value", unity);
-    result = n;
+    	ei_logger_warn("Unknown unity '%s', returned unchanged value", unity);
+    	result = n;
 	}
 
 	return result;
@@ -92,13 +92,13 @@ void ueum_timer_destroy(ueum_timer *tm) {
 	unsigned int i;
 
 	if (tm) {
-    if (tm->measures) {
-    	for (i = 0; i < tm->measures_number; i++) {
-        ueum_timer_measure_destroy(tm->measures[i]);
-    	}
-    	ueum_safe_free(tm->measures);
-    }
-    ueum_safe_free(tm);
+		if (tm->measures) {
+			for (i = 0; i < tm->measures_number; i++) {
+				ueum_timer_measure_destroy(tm->measures[i]);
+			}
+			ueum_safe_free(tm->measures);
+		}
+		ueum_safe_free(tm);
 	}
 }
 
@@ -165,7 +165,7 @@ void ueum_timer_total_impl(ueum_timer *tm, unsigned int id, double *result) {
 	*result = 0;
 
 	for (i = 0; i < measure->times_end_number; i++) {
-    *result += (measure->times_end[i] - measure->times_begin[i]);
+    	*result += (measure->times_end[i] - measure->times_begin[i]);
 	}
 }
 

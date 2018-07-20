@@ -49,9 +49,9 @@ void ueum_thread_cond_destroy(ueum_thread_cond *cond) {
 #if defined(_WIN32) || defined(_WIN64)
 
 #else
-            pthread_cond_destroy(&cond->data);
+        pthread_cond_destroy(&cond->data);
 #endif
-    ueum_safe_free(cond);
+        ueum_safe_free(cond);
 	}
 }
 
@@ -80,8 +80,8 @@ bool ueum_thread_cond_signal(ueum_thread_cond *cond) {
     WakeConditionVariable(&cond->data);
 #else
 	if (pthread_cond_signal(&cond->data) != 0) {
-    ei_stacktrace_push_errno();
-    return false;
+        ei_stacktrace_push_errno();
+        return false;
 	}
 #endif
 
@@ -95,8 +95,8 @@ bool ueum_thread_cond_broadcast(ueum_thread_cond *cond) {
     WakeAllConditionVariable(&cond->data);
 #else
     if (pthread_cond_broadcast(&cond->data) != 0) {
-    ei_stacktrace_push_errno();
-    return false;
+        ei_stacktrace_push_errno();
+        return false;
 	}
 #endif
 

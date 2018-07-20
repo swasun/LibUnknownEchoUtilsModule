@@ -121,7 +121,7 @@ int ueum_count_dir_files(const char *dir_name, bool recursively) {
 
     sprintf(path, "%s\\*.*", dir_name);
 
-    if((file_handle = FindFirstFile(path, &fd_file)) == INVALID_HANDLE_VALUE) {
+    if ((file_handle = FindFirstFile(path, &fd_file)) == INVALID_HANDLE_VALUE) {
         ei_stacktrace_push_msg("Failed to get first file")
         return -1;
     }
@@ -131,7 +131,7 @@ int ueum_count_dir_files(const char *dir_name, bool recursively) {
            Find first file will always return "."
            and ".." as the first two directories.
         */
-        if(strcmp(fd_file.cFileName, ".") != 0 &&
+        if (strcmp(fd_file.cFileName, ".") != 0 &&
            strcmp(fd_file.cFileName, "..") != 0) {
 
             sprintf(path, "%s\\%s", dir_name, fd_file.cFileName);

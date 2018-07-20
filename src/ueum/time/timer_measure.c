@@ -50,10 +50,10 @@ ueum_timer_measure *ueum_timer_measure_create(unsigned int id) {
 
 void ueum_timer_measure_destroy(ueum_timer_measure *measure) {
 	if (measure) {
-    ueum_safe_free(measure->times_begin);
-    ueum_safe_free(measure->times_end);
-    ueum_safe_free(measure->unity);
-    ueum_safe_free(measure);
+        ueum_safe_free(measure->times_begin);
+        ueum_safe_free(measure->times_end);
+        ueum_safe_free(measure->unity);
+        ueum_safe_free(measure);
 	}
 }
 
@@ -63,8 +63,8 @@ char *ueum_timer_measure_get_unity(ueum_timer_measure *measure) {
 
 bool ueum_timer_measure_set_unity(ueum_timer_measure *measure, char *unity) {
 	if (measure && validate_unity(unity)) {
-    measure->unity = unity;
-    return true;
+        measure->unity = unity;
+        return true;
 	}
 	return false;
 }
@@ -93,15 +93,15 @@ bool ueum_timer_measure_average(ueum_timer_measure *measure, double *result) {
 	*result = 0.0;
 
 	if (measure->times_begin_number < measure->times_end_number) {
-    ei_stacktrace_push_msg("There's less times start than times end");
-    return false;
+        ei_stacktrace_push_msg("There's less times start than times end");
+        return false;
 	}
 	else if (measure->times_begin_number > measure->times_end_number) {
-    ei_stacktrace_push_msg("There's more times start than times end");
-    return false;
+        ei_stacktrace_push_msg("There's more times start than times end");
+        return false;
 	} else if (measure->times_begin_number == 0 && measure->times_end_number == 0) {
-    ei_stacktrace_push_msg("Couple of times are equals to 0");
-    return false;
+        ei_stacktrace_push_msg("Couple of times are equals to 0");
+        return false;
 	}
 
 	for (i = 0; i < measure->times_begin_number; i++) {

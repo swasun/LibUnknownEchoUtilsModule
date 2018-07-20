@@ -79,7 +79,7 @@
  */
 ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (ULONG_MAX - one < two) {
-    return true;
+        return true;
     }
 	*out = one + two;
 	return false;
@@ -91,7 +91,7 @@ ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out)
  */
 ueum__inline(bool) ueum__mul_sizet_overflow(size_t one, size_t two, size_t *out) {
 	if (one && ULONG_MAX / one < two) {
-    return true;
+        return true;
     }
 	*out = one * two;
 	return false;

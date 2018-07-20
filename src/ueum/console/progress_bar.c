@@ -94,10 +94,10 @@ void ueum_progress_bar_destroy(ueum_progress_bar *progress_bar) {
 void ueum_progress_bar_set_frequency_update(ueum_progress_bar *progress_bar, unsigned long frequency_update) {
     /* Prevents out of bound crash if freqency_update > n */
     if (frequency_update > progress_bar->n){
-    progress_bar->frequency_update = progress_bar->n;
+        progress_bar->frequency_update = progress_bar->n;
 	}
 	else {
-    progress_bar->frequency_update = frequency_update;
+        progress_bar->frequency_update = frequency_update;
     }
 }
 
@@ -145,8 +145,8 @@ static unsigned int ueum_progress_bar_compute_length(ueum_progress_bar *progress
 	width = ueum_console_get_width();
 
 	if (width < 0) {
-    ei_stacktrace_push_msg("Cannot cast a signed int to unsigned int");
-    return 0;
+        ei_stacktrace_push_msg("Cannot cast a signed int to unsigned int");
+        return 0;
 	}
 
     bar_length = (unsigned int)((unsigned int)width - progress_bar->desc_width - progress_bar->character_width_percentage) / 2;

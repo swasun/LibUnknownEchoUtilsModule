@@ -40,16 +40,16 @@ char *ueum_input_string(char *prefix) {
 	printf("%s", prefix);
 
   	if (fgets(input, 256, stdin)) {
-      if (input[0] == 10) {
-      	return NULL;
-      }
-      for (i = 0; i < 256; i++) {
-      	if (input[i] != ' ') {
-          result = ueum_string_create_from(input);
-          ueum_remove_last_char(result);
-          break;
-      	}
-      }
+        if (input[0] == 10) {
+      	    return NULL;
+        }
+        for (i = 0; i < 256; i++) {
+            if (input[i] != ' ') {
+                result = ueum_string_create_from(input);
+                ueum_remove_last_char(result);
+                break;
+            }
+        }
   	}
 
   	return result;
