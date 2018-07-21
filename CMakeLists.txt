@@ -46,6 +46,8 @@ endif ()
 
 # --- COMPILE OPTIONS ---
 
+set(CMAKE_C_FLAGS "-fPIC")
+
 # Compile options for Microsoft Visual Studio
 if (MSVC)
 	# Add O2 optimization if build type is Release
@@ -58,7 +60,7 @@ if (MSVC)
 	endif ()
     add_compile_options("/W4") 
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) # This variable is used to initialize the property on each target as it is created
-	set(CMAKE_C_FLAGS "${CMAKE_ENABLE_C99}") # Compile with C99 rules
+	set(CMAKE_C_FLAGS "${CMAKE_ENABLE_C11}") # Compile with C11 rules
 
 	# Use secure functions by defaualt and suppress warnings about
     # deprecated" functions

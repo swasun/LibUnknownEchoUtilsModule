@@ -2,10 +2,12 @@ if (LIBEI_SYSTEM)
     if (WIN32)
         set(LIBERRORINTERCEPTOR_INCLUDE_DIR "C:\\LibErrorInterceptor\\$ENV{name}\\include")
         set(LIBERRORINTERCEPTOR_LIBRARIES "C:\\LibErrorInterceptor\\$ENV{name}\\lib\\ei_static.lib")
-    elseif (UNIX)
-        set(LIBERRORINTERCEPTOR_LIBRARIES "-lei_static")
+	elseif (UNIX)
+		find_library(LIBERRORINTERCEPTOR_LIBRARIES
+		    NAMES ei_static libei_static ei libei
+            HINTS ${CMAKE_INSTALL_PREFIX}/lib)
+        find_path(LIBERRORINTERCEPTOR_INCLUDE_DIR ei)
 	endif ()
-	set(LIBEI_SET true)
 else (LIBEI_SYSTEM)
 	include (ExternalProject)
 

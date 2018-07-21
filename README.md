@@ -1,4 +1,4 @@
-A lightweight utility library for C99 with cross-platform features.
+A lightweight utility library for C11 with cross-platform features.
 
 Its main purpose is to be the utility module of [LibUnknownEcho](https://github.com/swasun/LibUnknownEcho) library.
 
