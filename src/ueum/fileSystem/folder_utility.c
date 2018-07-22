@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -160,7 +160,7 @@ char **ueum_list_directory(const char *dir_name, int *files, bool recursively) {
 
     ei_check_parameter_or_return(dir_name)
 
-	file_names = NULL;
+    file_names = NULL;
     *files = 0;
     temp_dir_char = ueum_string_create_from(dir_name);
 
@@ -328,17 +328,17 @@ char *ueum_get_current_dir() {
 
     dir = NULL;
 
-	ueum_safe_alloc(dir, char, 1024)
+    ueum_safe_alloc(dir, char, 1024)
 
 #if defined(__unix__)
     if (!getcwd(dir, 1024)) {
-    	ei_stacktrace_push_errno();
-    	goto failed;
+        ei_stacktrace_push_errno();
+        goto failed;
     }
-	return dir;
+    return dir;
 #elif defined(_WIN32) || defined(_WIN64)
-	error_buffer = NULL;
-	dir = NULL;
+    error_buffer = NULL;
+    dir = NULL;
     ueum_safe_alloc(dir, char, MAX_PATH);
     result = GetModuleFileName(NULL, dir, MAX_PATH);
     if (result == ERROR_INSUFFICIENT_BUFFER) {

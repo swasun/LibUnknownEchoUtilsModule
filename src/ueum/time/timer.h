@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -59,7 +59,7 @@ bool ueum_timer_set_unity_impl(ueum_timer *tm, unsigned int id, char *unity);
  */
 
 /*#define ueum_timer_set_unity(id, unity) \
-	ueum_timer_set_unity_impl(ueum_thread_storage_get_timer(), id, unity); \
+    ueum_timer_set_unity_impl(ueum_thread_storage_get_timer(), id, unity); \
 
 #define ueum_timer_start(id) \
     ueum_timer_start_impl(ueum_thread_storage_get_timer(), id, ueum_get_real_current_time()); \
@@ -68,15 +68,15 @@ bool ueum_timer_set_unity_impl(ueum_timer *tm, unsigned int id, char *unity);
     ueum_timer_stop_impl(ueum_thread_storage_get_timer(), id, ueum_get_real_current_time()); \
 
 #define ueum_timer_average(id, result) \
-	ueum_timer_average_impl(ueum_thread_storage_get_timer(), id, &result); \
+    ueum_timer_average_impl(ueum_thread_storage_get_timer(), id, &result); \
 
 #define ueum_timer_average_print(id, message) \
-	ueum_timer_average_print_impl(ueum_thread_storage_get_timer(), id, message); \
+    ueum_timer_average_print_impl(ueum_thread_storage_get_timer(), id, message); \
 
 #define ueum_timer_total(id, result) \
-	ueum_timer_total_impl(ueum_thread_storage_get_timer(), id, &result); \
+    ueum_timer_total_impl(ueum_thread_storage_get_timer(), id, &result); \
 
 #define ueum_timer_total_print(id, message) \
-	ueum_timer_total_print_impl(ueum_thread_storage_get_timer(), id, message); \*/
+    ueum_timer_total_print_impl(ueum_thread_storage_get_timer(), id, message); \*/
 
 #endif

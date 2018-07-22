@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -28,7 +28,7 @@
 #include <stdint.h>
 
 bool ueum_byte_writer_append_bytes(ueum_byte_stream *stream, unsigned char *bytes, size_t bytes_len) {
-	ei_check_parameter_or_return(stream);
+    ei_check_parameter_or_return(stream);
     ei_check_parameter_or_return(bytes);
     ei_check_parameter_or_return(bytes_len > 0 && bytes_len != 18446744073709551615UL);
 
@@ -67,20 +67,20 @@ bool ueum_byte_writer_append_string(ueum_byte_stream *stream, const char *string
 }
 
 bool ueum_byte_writer_append_byte(ueum_byte_stream *stream, unsigned char byte) {
-	ei_check_parameter_or_return(stream);
+    ei_check_parameter_or_return(stream);
 
     if ((1 + stream->position) > stream->size) {
         ueum_safe_realloc(stream->bytes, unsigned char, stream->size, 1 + stream->size);
         stream->size += 1;
     }
 
-	stream->bytes[stream->position++] = byte;
+    stream->bytes[stream->position++] = byte;
 
     return true;
 }
 
 bool ueum_byte_writer_append_int(ueum_byte_stream *stream, int n) {
-	ei_check_parameter_or_return(stream);
+    ei_check_parameter_or_return(stream);
 
     if ((4 + stream->position) > stream->size) {
         ueum_safe_realloc(stream->bytes, unsigned char, stream->size, 4 + stream->size);

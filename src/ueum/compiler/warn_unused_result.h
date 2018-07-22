@@ -24,7 +24,7 @@
 #include <ueum/compiler/inline.h>
 
 #if defined(__unix__)
-	#include <sys/cdefs.h>
+    #include <sys/cdefs.h>
 #endif
 
 #if defined(__clang__)
@@ -46,7 +46,7 @@
 #endif
 
 ueum__inline(bool) ueum__warn_result ueum__warn_unused_result(bool x) {
-	return x;
+    return x;
 }
 
 #endif

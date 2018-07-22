@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -288,7 +288,7 @@ bool ueum_queue_set_print_func(ueum_queue *queue, void (*print_func)(void *data,
 }
 
 static bool ueum_queue_push_internal(ueum_queue *queue, void *data, bool wait) {
-	(void)wait;
+    (void)wait;
     /*if (queue->count == queue->capacity && wait) {
         while (queue->count == queue->capacity) {
             ueum_thread_cond_wait(queue->write_cond, queue->mutex);

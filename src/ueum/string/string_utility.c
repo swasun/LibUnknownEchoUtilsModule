@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -31,34 +31,34 @@
 #include <stdint.h>
 
 void ueum_remove_last_char(char *str) {
-	if (!str) {
+    if (!str) {
         return;
-	}
+    }
 
-	str[strlen(str) - 1] = '\0';
+    str[strlen(str) - 1] = '\0';
 }
 
 bool ueum_last_char_is(const char *str, char c) {
-	return (!str || str[strlen(str) - 1] != c) ? false : true;
+    return (!str || str[strlen(str) - 1] != c) ? false : true;
 }
 
 char *ueum_strcat_variadic(const char *format, ...) {
-	ueum_string_builder *s;
-	va_list ap;
-	size_t i;
-	char c, *src, *concatenated;
-	int d;
-	double f;
+    ueum_string_builder *s;
+    va_list ap;
+    size_t i;
+    char c, *src, *concatenated;
+    int d;
+    double f;
     int64_t L;
-	long int l;
-	unsigned int u;
+    long int l;
+    unsigned int u;
 
-	ei_check_parameter_or_return(format);
+    ei_check_parameter_or_return(format);
 
-	src = NULL;
-	concatenated = NULL;
+    src = NULL;
+    concatenated = NULL;
 
-	for (i = 0; i < strlen(format); i++) {
+    for (i = 0; i < strlen(format); i++) {
         if (format[i] != 's' && format[i] != 'd' && format[i] != 'L' &&
             format[i] != 'l' && format[i] != 'f' && format[i] != 'c' &&
             format[i] != 'u') {
@@ -66,15 +66,15 @@ char *ueum_strcat_variadic(const char *format, ...) {
                 "Specified format isn't valid. It must be contains only characters 's', 'd', 'L', 'l', 'f', 'c' and 'u'");
             return NULL;
         }
-	}
+    }
 
-	if ((s = ueum_string_builder_create()) == NULL) {
+    if ((s = ueum_string_builder_create()) == NULL) {
         ei_stacktrace_push_msg("Failed to create empty string builder");
         return NULL;
-	}
+    }
 
-	va_start(ap, format);
-	while (*format) {
+    va_start(ap, format);
+    while (*format) {
         switch (*format++) {
         case 's':
             src = va_arg(ap, char *);
@@ -156,27 +156,27 @@ char *ueum_strcat_variadic(const char *format, ...) {
             ueum_safe_free(src);
             break;
         }
-	}
+    }
 
-	va_end(ap);
+    va_end(ap);
 
-	if (s->data) {
+    if (s->data) {
         ueum_safe_alloc(concatenated, char, strlen(s->data) + 1);
         memcpy(concatenated, s->data, (strlen(s->data) + 1) * sizeof(char));
-	}
+    }
 
-	ueum_string_builder_destroy(s);
+    ueum_string_builder_destroy(s);
 
-	return concatenated;
+    return concatenated;
 }
 
 int ueum_find_str_in_data(char *data, const char *query) {
-	size_t begin_pos, i, j, query_size;
+    size_t begin_pos, i, j, query_size;
 
-	begin_pos = 0;
-	query_size = strlen(query);
+    begin_pos = 0;
+    query_size = strlen(query);
 
-	for (i = 0, j = 0; i < strlen(data); i++) {
+    for (i = 0, j = 0; i < strlen(data); i++) {
         if (j == 0) {
             begin_pos = i;
         }
@@ -188,382 +188,382 @@ int ueum_find_str_in_data(char *data, const char *query) {
         } else {
             j = 0;
         }
-	}
+    }
 
-	return -1;
+    return -1;
 }
 
 char *ueum_get_file_name_from_path(char *path) {
-	char *file_name, *tmp_file_name;
+    char *file_name, *tmp_file_name;
 
-	file_name = NULL;
+    file_name = NULL;
 
-	if (!strstr(path, "/")) {
+    if (!strstr(path, "/")) {
         ueum_safe_alloc(file_name, char, strlen(path) + 1);
         strcpy(file_name, path);
         return file_name;
-	}
+    }
 
-	tmp_file_name = strrchr(path, '/');
-	ueum_safe_alloc(file_name, char, strlen(tmp_file_name + 1) + 1);
-	strcpy(file_name, tmp_file_name + 1);
+    tmp_file_name = strrchr(path, '/');
+    ueum_safe_alloc(file_name, char, strlen(tmp_file_name + 1) + 1);
+    strcpy(file_name, tmp_file_name + 1);
 
-	return file_name;
+    return file_name;
 }
 
 char *ueum_get_file_extension(char *path) {
-	char *file_name, *tmp_file_name;
+    char *file_name, *tmp_file_name;
 
-	file_name = NULL;
+    file_name = NULL;
 
-	if (!strstr(path, ".")) {
+    if (!strstr(path, ".")) {
         ueum_safe_alloc(file_name, char, strlen(path) + 1);
         strcpy(file_name, path);
         return file_name;
-	}
+    }
 
-	tmp_file_name = strrchr(path, '.');
-	ueum_safe_alloc(file_name, char, strlen(tmp_file_name + 1) + 1);
-	strcpy(file_name, tmp_file_name + 1);
+    tmp_file_name = strrchr(path, '.');
+    ueum_safe_alloc(file_name, char, strlen(tmp_file_name + 1) + 1);
+    strcpy(file_name, tmp_file_name + 1);
 
-	return file_name;
+    return file_name;
 }
 
 char *ueum_string_create_from(const char *str) {
-	char *new_str;
+    char *new_str;
 
-	new_str = NULL;
+    new_str = NULL;
 
-	ueum_safe_alloc(new_str, char, strlen(str) + 1);
-	strcpy(new_str, str);
+    ueum_safe_alloc(new_str, char, strlen(str) + 1);
+    strcpy(new_str, str);
 
-	return new_str;
+    return new_str;
 }
 
 char *ueum_string_create_from_bytes(unsigned char *bytes, size_t size) {
-	char *string;
+    char *string;
 
-	string = NULL;
+    string = NULL;
 
-	ueum_safe_alloc(string, char, size + 1);
-	memcpy(string, bytes, size * sizeof(char));
+    ueum_safe_alloc(string, char, size + 1);
+    memcpy(string, bytes, size * sizeof(char));
 
-	return string;
+    return string;
 }
 
 char *ueum_append_dump_string(char *data, size_t max) {
-	char *dump;
+    char *dump;
 
-	if (max <= strlen(data)) {
+    if (max <= strlen(data)) {
         return ueum_string_create_from(data);
-	}
+    }
 
-	dump = NULL;
+    dump = NULL;
 
-	ueum_safe_alloc(dump, char, max + 1);
-	strcpy(dump, data);
-	memset(dump + strlen(data), ' ', (max - strlen(data)) * sizeof(char));
+    ueum_safe_alloc(dump, char, max + 1);
+    strcpy(dump, data);
+    memset(dump + strlen(data), ' ', (max - strlen(data)) * sizeof(char));
 
-	return dump;
+    return dump;
 }
 
 bool ueum_starts_with(const char *pre, const char *str) {
-	size_t lenpre = strlen(pre), lenstr = strlen(str);
-	return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
+    size_t lenpre = strlen(pre), lenstr = strlen(str);
+    return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
 }
 
 int ueum_last_index_of(const char *string, char target) {
-	int r;
-	int current_index;
+    int r;
+    int current_index;
 
-	r = -1;
-	current_index = 0;
+    r = -1;
+    current_index = 0;
 
-	while (string[current_index] != '\0') {
+    while (string[current_index] != '\0') {
         if (string[current_index] == target) {
             r = current_index;
         }
 
         current_index++;
-	}
+    }
 
-	return r;
+    return r;
 }
 
 char *ueum_string_reverse(char *string) {
-	char c;
-	char *s0, *s1;
+    char c;
+    char *s0, *s1;
 
-	s0 = string - 1;
-	s1 = string;
+    s0 = string - 1;
+    s1 = string;
 
-	/* Find the end of the string */
-	while (*s1) {
+    /* Find the end of the string */
+    while (*s1) {
         ++s1;
-	}
+    }
 
-	/* Reverse it */
-	while (s1-- > ++s0) {
+    /* Reverse it */
+    while (s1-- > ++s0) {
         c = *s0;
         *s0 = *s1;
         *s1 = c;
-	}
+    }
 
-	return string;
+    return string;
 }
 
 bool ueum_int_to_string(int num, char *buffer, int radix) {
-	int i, remainder;
-	bool is_negative;
+    int i, remainder;
+    bool is_negative;
 
-	i = 0;
-	is_negative = false;
+    i = 0;
+    is_negative = false;
 
-	/* Handle 0 explicitely, otherwise empty string is printed for 0 */
-	if (num == 0) {
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (num == 0) {
         buffer[i++] = '0';
         buffer[i] = '\0';
         return false;
-	}
+    }
 
-	/**
-	 * In standard itoa(), negative numbers are handled only with
-	 * radix 10. Otherwise numbers are considered unsigned.
-	 */
-	if (num < 0 && radix == 10) {
+    /**
+     * In standard itoa(), negative numbers are handled only with
+     * radix 10. Otherwise numbers are considered unsigned.
+     */
+    if (num < 0 && radix == 10) {
         is_negative = true;
         num = -num;
-	}
+    }
 
-	/* Process individual digits */
-	while (num != 0) {
+    /* Process individual digits */
+    while (num != 0) {
         remainder = num % radix;
         buffer[i++] =
             (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
         num = num / radix;
-	}
+    }
 
-	/* If number is negative, append '-' */
-	if (is_negative) {
+    /* If number is negative, append '-' */
+    if (is_negative) {
         buffer[i++] = '-';
-	}
+    }
 
-	/* Append string terminator */
-	buffer[i] = '\0';
+    /* Append string terminator */
+    buffer[i] = '\0';
 
-	buffer = ueum_string_reverse(buffer);
+    buffer = ueum_string_reverse(buffer);
 
-	return true;
+    return true;
 }
 
 bool ueum_long_to_string(long num, char *buffer, int radix) {
-	int i, remainder;
-	bool is_negative;
+    int i, remainder;
+    bool is_negative;
 
-	i = 0;
-	is_negative = false;
+    i = 0;
+    is_negative = false;
 
-	/* Handle 0 explicitely, otherwise empty string is printed for 0 */
-	if (num == 0) {
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (num == 0) {
         buffer[i++] = '0';
         buffer[i] = '\0';
         return false;
-	}
+    }
 
-	/**
-	 * In standard itoa(), negative numbers are handled only with
-	 * radix 10. Otherwise numbers are considered unsigned.
-	 */
-	if (num < 0 && radix == 10) {
+    /**
+     * In standard itoa(), negative numbers are handled only with
+     * radix 10. Otherwise numbers are considered unsigned.
+     */
+    if (num < 0 && radix == 10) {
         is_negative = true;
         num = -num;
-	}
+    }
 
-	/* Process individual digits */
-	while (num != 0) {
+    /* Process individual digits */
+    while (num != 0) {
         remainder = num % radix;
         buffer[i++] =
             (char)((remainder > 9) ? (remainder - 10) + 'a' : remainder + '0');
         num = num / radix;
-	}
+    }
 
-	/* If number is negative, append '-' */
-	if (is_negative) {
+    /* If number is negative, append '-' */
+    if (is_negative) {
         buffer[i++] = '-';
-	}
+    }
 
-	/* Append string terminator */
-	buffer[i] = '\0';
+    /* Append string terminator */
+    buffer[i] = '\0';
 
-	buffer = ueum_string_reverse(buffer);
+    buffer = ueum_string_reverse(buffer);
 
-	return true;
+    return true;
 }
 
 bool ueum_string_to_int(char *string, int *out, int radix) {
-	char *end;
-	long l;	
+    char *end;
+    long l;    
 
-	ei_check_parameter_or_return(string);
+    ei_check_parameter_or_return(string);
 
-	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
+    if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
         ei_stacktrace_push_msg("String is inconvertible");
         return false;
-	}
+    }
 
-	errno = 0;
-	l = strtol(string, &end, radix);
+    errno = 0;
+    l = strtol(string, &end, radix);
 
-	/* Both checks are needed because INT_MAX == LONG_MAX is possible. */
-	if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
+    /* Both checks are needed because INT_MAX == LONG_MAX is possible. */
+    if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
         ei_stacktrace_push_msg("String overflow");
         return false;
-	}
-	if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
+    }
+    if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
         ei_stacktrace_push_msg("String underflow");
         return false;
-	}
-	if (*end != '\0') {
+    }
+    if (*end != '\0') {
         ei_stacktrace_push_msg("String is inconvertible");
         return false;
-	}
+    }
 
-	*out = l;
+    *out = l;
 
-	return true;
+    return true;
 }
 
 bool ueum_string_to_long(char *string, long *out, int radix) {
-	char *end;
-	long l;
+    char *end;
+    long l;
 
-	ei_check_parameter_or_return(string);
+    ei_check_parameter_or_return(string);
 
-	if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
+    if (string[0] == '\0' || isspace((unsigned char ) string[0])) {
         ei_stacktrace_push_msg("String is inconvertible");
         return false;
-	}
+    }
 
-	errno = 0;
-	l = strtol(string, &end, radix);
+    errno = 0;
+    l = strtol(string, &end, radix);
 
-	/* Both checks are needed because INT_MAX == LONG_MAX is possible. */
-	if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
+    /* Both checks are needed because INT_MAX == LONG_MAX is possible. */
+    if (l > INT_MAX || (errno == ERANGE && l == LONG_MAX)) {
         ei_stacktrace_push_msg("String overflow");
         return false;
-	}
-	if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
+    }
+    if (l < INT_MIN || (errno == ERANGE && l == LONG_MIN)) {
         ei_stacktrace_push_msg("String underflow");
         return false;
-	}
-	if (*end != '\0') {
+    }
+    if (*end != '\0') {
         ei_stacktrace_push_msg("String is inconvertible");
         return false;
-	}
+    }
 
-	*out = l;
+    *out = l;
 
-	return true;
+    return true;
 }
 
 char *ueum_substring(char *string, size_t begin_index, size_t end_index) {
-	size_t sub_length, length;
-	char *new_string;
+    size_t sub_length, length;
+    char *new_string;
 
-	length = strlen(string);
-	new_string = NULL;
+    length = strlen(string);
+    new_string = NULL;
 
-	if (end_index > length) {
+    if (end_index > length) {
         ei_stacktrace_push_msg("Index out of bounds");
         return NULL;
-	}
+    }
 
-	if (ueum__sub_sizet_overflow(end_index, begin_index, &sub_length)) {
+    if (ueum__sub_sizet_overflow(end_index, begin_index, &sub_length)) {
         ei_stacktrace_push_msg("Buffer overflow detected when substracting end_index and begin_index");
         return NULL;
-	}
+    }
 
-	if (ueum__add_sizet_overflow(sub_length, 1, &sub_length)) {
+    if (ueum__add_sizet_overflow(sub_length, 1, &sub_length)) {
         ei_stacktrace_push_msg("Buffer overflow detected when adding 1 to sub_length");
         return NULL;
-	}
+    }
 
-	if ((begin_index == 0) && (end_index == length)) {
+    if ((begin_index == 0) && (end_index == length)) {
         return ueum_string_create_from(string);
-	}
+    }
 
-	ueum_safe_alloc(new_string, char, length + 1);
-	strncpy(new_string, string + begin_index, sub_length);
-	return new_string;
+    ueum_safe_alloc(new_string, char, length + 1);
+    strncpy(new_string, string + begin_index, sub_length);
+    return new_string;
 }
 
 char *ueum_get_until_symbol(char *str, int begin, char symbol, int *end) {
-	char *line;
-	int cr, line_size;
-	size_t i, size;
+    char *line;
+    int cr, line_size;
+    size_t i, size;
 
-	line = NULL;
-	cr = -1;
-	size = strlen(str);
-	*end = -1;
+    line = NULL;
+    cr = -1;
+    size = strlen(str);
+    *end = -1;
 
-	for (i = begin; i < size; i++) {
+    for (i = begin; i < size; i++) {
         if (str[i] == symbol) {
             cr = i;
             break;
         }
-	}
+    }
 
-	if (cr != -1) {
+    if (cr != -1) {
         line_size = cr - begin;
         ueum_safe_alloc(line, char, line_size + 1);
         memcpy(line, str + begin, line_size * sizeof(char));
-	}
+    }
 
-	*end = cr;
+    *end = cr;
 
-	return line;
+    return line;
 }
 
 char *ueum_trim_whitespace(char *str) {
-	char *end;
+    char *end;
 
-	while (isspace((unsigned char )*str)) {
+    while (isspace((unsigned char )*str)) {
         str++;
-	}
+    }
 
-	 /* All spaces? */
-	if (*str == 0) {
+     /* All spaces? */
+    if (*str == 0) {
         return str;
-	}
+    }
 
-	/* Trim trailing space */
-	end = str + strlen(str) - 1;
-	while (end > str && isspace((unsigned char )*end)) {
+    /* Trim trailing space */
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char )*end)) {
         end--;
-	}
+    }
 
-	/* Write new null terminator */
-	*(end + 1) = 0;
+    /* Write new null terminator */
+    *(end + 1) = 0;
 
-	return str;
+    return str;
 }
 
 char *ueum_string_uppercase(const char *input) {
-	char *output;
-	size_t length, i;
+    char *output;
+    size_t length, i;
 
-	ei_check_parameter_or_return(input);
+    ei_check_parameter_or_return(input);
 
-	output = NULL;
-	length = strlen(input);
+    output = NULL;
+    length = strlen(input);
 
-	ueum_safe_alloc(output, char, length+1);
+    ueum_safe_alloc(output, char, length+1);
 
-	i = 0;
-	for (i = 0; i < length; i++) {
+    i = 0;
+    for (i = 0; i < length; i++) {
         output[i] = (unsigned char)toupper((unsigned char)input[i]);
-	}
+    }
 
-	return output;
+    return output;
 }

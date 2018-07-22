@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,14 +13,14 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
 /**
  *  @file      byte_stream_struct.h
  *  @brief     Byte stream structure to quickly concatenate bytes and read different
- *    	   types.
+ *           types.
  *  @author    Charly Lamothe
  *  @copyright GNU Public License.
  *  @see       byte_stream.h
@@ -44,7 +44,7 @@
  * The is fixed at the creation of the stream, or 1024 by default.
  */
 typedef struct {
-	unsigned char *bytes; /** bytes of the stream */
+    unsigned char *bytes; /** bytes of the stream */
     uint64_t limit; /** limit of the bytes field */
     uint64_t position; /** current position of the bytes field */
     uint64_t size; /** current max size of the stream */

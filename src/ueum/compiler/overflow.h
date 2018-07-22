@@ -40,7 +40,7 @@
 #include <limits.h>
 
 #if defined(__unix__)
-	#include <sys/cdefs.h>
+    #include <sys/cdefs.h>
 #endif
 
 /* Support for gcc/clang __has_builtin intrinsic */
@@ -52,10 +52,10 @@
 #if (SIZE_MAX == ULONG_MAX) && __has_builtin(__builtin_uaddl_overflow)
 
 # define ueum__add_sizet_overflow(one, two, out) \
-	__builtin_uaddl_overflow(one, two, out)
+    __builtin_uaddl_overflow(one, two, out)
 
 # define ueum__mul_sizet_overflow(one, two, out) \
-	__builtin_umull_overflow(one, two, out)
+    __builtin_umull_overflow(one, two, out)
 
 # define ueum__sub_sizet_overflow(one, two, out) \
     __builtin_usubl_overflow(one, two, out);
@@ -63,10 +63,10 @@
 #elif (SIZE_MAX == UINT_MAX) && __has_builtin(__builtin_uadd_overflow)
 
 # define ueum__add_sizet_overflow(one, two, out) \
-	__builtin_uadd_overflow(one, two, out)
+    __builtin_uadd_overflow(one, two, out)
 
 # define ueum__mul_sizet_overflow(one, two, out) \
-	__builtin_umul_overflow(one, two, out)
+    __builtin_umul_overflow(one, two, out)
 
 # define ueum__sub_sizet_overflow(one, two, out) \
     __builtin_usub_overflow(one, two, out);
@@ -78,11 +78,11 @@
  * @return true if the result fits in a `size_t`, false on overflow.
  */
 ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out) {
-	if (ULONG_MAX - one < two) {
+    if (ULONG_MAX - one < two) {
         return true;
     }
-	*out = one + two;
-	return false;
+    *out = one + two;
+    return false;
 }
 
 /**
@@ -90,11 +90,11 @@ ueum__inline(bool) ueum__add_sizet_overflow(size_t one, size_t two, size_t *out)
  * @return true if the result fits in a `size_t`, false on overflow.
  */
 ueum__inline(bool) ueum__mul_sizet_overflow(size_t one, size_t two, size_t *out) {
-	if (one && ULONG_MAX / one < two) {
+    if (one && ULONG_MAX / one < two) {
         return true;
     }
-	*out = one * two;
-	return false;
+    *out = one * two;
+    return false;
 }
 
 /**
@@ -141,7 +141,7 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
     int:                __builtin_sadd_overflow, \
     long:               __builtin_saddl_overflow, \
     long long:          __builtin_saddll_overflow \
-	)(T,U,V)
+    )(T,U,V)
 
 #define __ueum__sub_overflow_func(T,U,V) _Generic((T), \
     unsigned:           __builtin_usub_overflow, \
@@ -150,7 +150,7 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
     int:                __builtin_ssub_overflow, \
     long:               __builtin_ssubl_overflow, \
     long long:          __builtin_ssubll_overflow \
-	)(T,U,V)
+    )(T,U,V)
 
 #define __ueum__mul_overflow_func(T,U,V) _Generic((T), \
     unsigned:           __builtin_umul_overflow, \
@@ -159,53 +159,53 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
     int:                __builtin_smul_overflow, \
     long:               __builtin_smull_overflow, \
     long long:          __builtin_smulll_overflow \
-	)(T,U,V)
+    )(T,U,V)
 
 #define ueum__add_overflow(a, b, res) ueum__warn_unused_result(__extension__({ \
-	typecheck((a), (b)); \
-	typecheck((b), *(res)); \
-	__ueum__add_overflow_func((a), (b), (res)); \
+    typecheck((a), (b)); \
+    typecheck((b), *(res)); \
+    __ueum__add_overflow_func((a), (b), (res)); \
 }))
 
 #define ueum__sub_overflow(a, b, res) ueum__warn_unused_result(__extension__({ \
-	typecheck((a), (b)); \
-	typecheck((b), *(res)); \
-	__ueum__sub_overflow_func((a), (b), (res)); \
+    typecheck((a), (b)); \
+    typecheck((b), *(res)); \
+    __ueum__sub_overflow_func((a), (b), (res)); \
 }))
 
 #define ueum__mul_overflow(a, b, res) ueum__warn_unused_result(__extension__({ \
-	typecheck((a), (b)); \
-	typecheck((b), *(res)); \
-	__ueum__mul_overflow_func((a), (b), (res)); \
+    typecheck((a), (b)); \
+    typecheck((b), *(res)); \
+    __ueum__mul_overflow_func((a), (b), (res)); \
 }))
 
 #endif /* __has_builtin(...) */
 
 /* ueum__add3_overflow(a, b, c) -> (a + b + c) */
 #define ueum__add3_overflow(a, b, c, res) ueum__warn_unused_result(__extension__({ \
-	__typeof__(*(res)) _tmp; \
-	bool _s, _t; \
-	_s = ueum__add_overflow((a), (b), &_tmp); \
-	_t = ueum__add_overflow((c), _tmp, (res)); \
-	_s | _t; \
+    __typeof__(*(res)) _tmp; \
+    bool _s, _t; \
+    _s = ueum__add_overflow((a), (b), &_tmp); \
+    _t = ueum__add_overflow((c), _tmp, (res)); \
+    _s | _t; \
 }))
 
 /* ueum__add_and_mul_overflow(a, b, x) -> (a + b)*x */
 #define ueum__add_and_mul_overflow(a, b, x, res) ueum__warn_unused_result(__extension__({ \
-	__typeof__(*(res)) _tmp; \
-	bool _s, _t; \
-	_s = ueum__add_overflow((a), (b), &_tmp); \
-	_t = ueum__mul_overflow((x), _tmp, (res)); \
-	_s | _t; \
+    __typeof__(*(res)) _tmp; \
+    bool _s, _t; \
+    _s = ueum__add_overflow((a), (b), &_tmp); \
+    _t = ueum__mul_overflow((x), _tmp, (res)); \
+    _s | _t; \
 }))
 
 /* ueum__mul_and_add_overflow(a, x, b) -> a*x + b */
 #define ueum__mul_and_add_overflow(a, x, b, res) ueum__warn_unused_result(__extension__({ \
-	__typeof__(*(res)) _tmp; \
-	bool _s, _t; \
-	_s = ueum__mul_overflow((a), (x), &_tmp); \
-	_t = ueum__add_overflow((b), _tmp, (res)); \
-	_s | _t; \
+    __typeof__(*(res)) _tmp; \
+    bool _s, _t; \
+    _s = ueum__mul_overflow((a), (x), &_tmp); \
+    _t = ueum__add_overflow((b), _tmp, (res)); \
+    _s | _t; \
 }))
 
 #endif

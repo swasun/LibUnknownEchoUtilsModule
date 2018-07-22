@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -95,8 +95,8 @@ void ueum_progress_bar_set_frequency_update(ueum_progress_bar *progress_bar, uns
     /* Prevents out of bound crash if freqency_update > n */
     if (frequency_update > progress_bar->n){
         progress_bar->frequency_update = progress_bar->n;
-	}
-	else {
+    }
+    else {
         progress_bar->frequency_update = frequency_update;
     }
 }
@@ -140,14 +140,14 @@ static void ueum_progress_bar_clear_field(ueum_progress_bar *progress_bar) {
 
 static unsigned int ueum_progress_bar_compute_length(ueum_progress_bar *progress_bar) {
     unsigned int bar_length;
-	int width;
+    int width;
 
-	width = ueum_console_get_width();
+    width = ueum_console_get_width();
 
-	if (width < 0) {
+    if (width < 0) {
         ei_stacktrace_push_msg("Cannot cast a signed int to unsigned int");
         return 0;
-	}
+    }
 
     bar_length = (unsigned int)((unsigned int)width - progress_bar->desc_width - progress_bar->character_width_percentage) / 2;
 

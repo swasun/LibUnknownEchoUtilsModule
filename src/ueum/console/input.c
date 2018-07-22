@@ -1,11 +1,11 @@
 /******************************************************************************************
- * Copyright (C) 2018 by Charly Lamothe                        	                          *
+ * Copyright (C) 2018 by Charly Lamothe                                                   *
  *                                                                                        *
  * This file is part of LibUnknownEchoUtilsModule.                                        *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is free software: you can redistribute it and/or modify    *
  *   it under the terms of the GNU General Public License as published by                 *
- *   the Free Software Foundation, either version 3 of the License, or        	          *
+ *   the Free Software Foundation, either version 3 of the License, or                    *
  *   (at your option) any later version.                                                  *
  *                                                                                        *
  *   LibUnknownEchoUtilsModule is distributed in the hope that it will be useful,         *
@@ -13,7 +13,7 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        *
  *   GNU General Public License for more details.                                         *
  *                                                                                        *
- *   You should have received a copy of the GNU General Public License        	          *
+ *   You should have received a copy of the GNU General Public License                    *
  *   along with LibUnknownEchoUtilsModule.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************************/
 
@@ -28,20 +28,20 @@
 #include <errno.h>  /* for errno */
 
 #if defined(__unix__)
-	#include <unistd.h> /* for EINTR */
+    #include <unistd.h> /* for EINTR */
 #endif
 
 char *ueum_input_string(char *prefix) {
-	char input[256], *result;
-	int i;
+    char input[256], *result;
+    int i;
 
-	result = NULL;
+    result = NULL;
 
-	printf("%s", prefix);
+    printf("%s", prefix);
 
-  	if (fgets(input, 256, stdin)) {
+      if (fgets(input, 256, stdin)) {
         if (input[0] == 10) {
-      	    return NULL;
+              return NULL;
         }
         for (i = 0; i < 256; i++) {
             if (input[i] != ' ') {
@@ -50,9 +50,9 @@ char *ueum_input_string(char *prefix) {
                 break;
             }
         }
-  	}
+      }
 
-  	return result;
+      return result;
 }
 
 #if defined(__unix__)
@@ -157,10 +157,10 @@ static ssize_t get_input_password_unix(char **password, ssize_t max_size, int ma
  * @see http://www.cplusplus.com/articles/E6vU7k9E/
  */
 static ssize_t get_input_password_windows(char **password, ssize_t max_size, FILE *stream) {
-	(void)password;
-	(void)max_size;
-	(void)stream;
-	ei_stacktrace_push_msg("Not implemented");
+    (void)password;
+    (void)max_size;
+    (void)stream;
+    ei_stacktrace_push_msg("Not implemented");
     return -1;
 }
 
