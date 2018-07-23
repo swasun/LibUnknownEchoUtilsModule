@@ -50,6 +50,8 @@
 #include <ueum/fileSystem/file_utility.h>
 #include <ueum/fileSystem/folder_utility.h>
 
+#include <ueum/process/process_utils.h>
+
 #include <ueum/safe/safe_alloc.h>
 #include <ueum/safe/safe_arithmetic.h>
 
