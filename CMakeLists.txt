@@ -200,6 +200,9 @@ target_link_libraries(${PROJECT_NAME_STATIC} ${LIBERRORINTERCEPTOR_LIBRARIES})
 
 # --- INSTALL ---
 
+# Copy includes
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
+
 # Copy static library
 install (
     TARGETS ${PROJECT_NAME_STATIC}
