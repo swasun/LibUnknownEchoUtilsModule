@@ -131,7 +131,7 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
 #define ueum__sub_overflow(a, b, res) ueum__warn_unused_result(__builtin_sub_overflow((a), (b), (res)))
 #define ueum__mul_overflow(a, b, res) ueum__warn_unused_result(__builtin_mul_overflow((a), (b), (res)))
 
-/* C11 */
+ /* C11 */
 #elif __STDC_VERSION__ >= 201112L
 
 #define __ueum__add_overflow_func(T,U,V) _Generic((T), \
@@ -178,6 +178,14 @@ ueum__inline(bool) ueum__sub_sizet_overflow(size_t one, size_t two, size_t *out)
     typecheck((b), *(res)); \
     __ueum__mul_overflow_func((a), (b), (res)); \
 }))
+
+#else
+
+#define ueum__add_overflow(a, b, res) 0
+
+#define ueum__sub_overflow(a, b, res) 0
+
+#define ueum__mul_overflow(a, b, res) 0
 
 #endif /* __has_builtin(...) */
 
