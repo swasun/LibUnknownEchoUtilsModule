@@ -139,6 +139,16 @@ gcc -o basic_usage basic_usage.c -lueum_static -lei_static -pthread
 
 * [LibErrorInterceptor](https://github.com/swasun/LibErrorInterceptor), a lightweight and cross-plateform library to handle stacktrace and logging in C99.
 
+# Architecture
+
+## Facade design pattern
+The facade design pattern is use to simplify the complexity of a module.
+In the module, we have 2 to 4 sub folders which are:
+* api: that contains the highest level of functions/structs of the module.
+* impl: that contains implementation(s) a api files.
+* factory (optional): that contains factories to create complex objects from the api files.
+* utils (optional): that contains utils functions only used in this module.
+
 # Cross-plateform
 
 Successfully tested on the following OS (on both 32 and 64 bits):
