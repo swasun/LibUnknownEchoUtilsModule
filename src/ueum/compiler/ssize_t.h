@@ -27,6 +27,11 @@ typedef SSIZE_T ssize_t;
 #elif defined(__unix__)
 
 #include <unistd.h>
+#include <stdint.h>
+
+#elif defined(_WIN32)
+
+#include <stdio.h>
 
 #endif
 
