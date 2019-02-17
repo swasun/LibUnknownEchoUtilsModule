@@ -81,7 +81,7 @@ To install in another place, add `-DLIBEI_INSTALL=/usr` flag in `cmake` command.
 Finally, to install in the system:
 ```bash
 cd build/release
-cmake --build . --config Release --target install
+<sudo> cmake --build . --config Release --target install
 ```
 
 # Examples
