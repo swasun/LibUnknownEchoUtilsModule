@@ -72,7 +72,7 @@ cmake --build . --config Debug
 ```
 
 * By default, dependencies are built and install in the `build` directoy.
-To install in another place, add `-DLIBEI_INSTALL=/usr` flag in `cmake` command.
+To specify an other path, add `-DLIBEI_INSTALL=/usr` flag in `cmake` command.
 
 * To build with LIBEI already installed in the system, add `-DLIBEI_SYSTEM=TRUE` flag in `cmake` command.
 
