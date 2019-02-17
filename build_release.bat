@@ -1,5 +1,4 @@
-#!/bin/bash
-
 cmake -Bbuild/release -H. -DCMAKE_BUILD_TYPE=Release
-cd $PWD/build/release
+cd %cd%/build/release
 cmake --build . --config Release
+cd %~dp0

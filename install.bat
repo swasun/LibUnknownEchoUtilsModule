@@ -1,4 +1,2 @@
-#!/bin/bash
-
-cd $PWD/build/release
+cd %~dp0/build/release
 cmake --build . --config Release --target install

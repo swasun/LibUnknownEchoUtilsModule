@@ -1,5 +1,4 @@
-#!/bin/bash
-
 cmake -Bbuild/debug -H. -DCMAKE_BUILD_TYPE=Debug
-cd $PWD/build/debug
+cd %cd%/build/debug
 cmake --build . --config Debug
+cd %~dp0
