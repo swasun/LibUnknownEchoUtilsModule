@@ -22,7 +22,12 @@
 
 #if defined(_WIN32)
 
+#undef UNICODE
+#define UNICODE
+#undef _WINSOCKAPI_
+#define _WINSOCKAPI_
 #include <Windows.h>
+#include <winsock2.h>
 
 #endif
 

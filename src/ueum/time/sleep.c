@@ -19,7 +19,12 @@
 #include <ueum/time/sleep.h>
 
 #if defined(_WIN32) || defined(_WIN64)
-    #include <windows.h>
+    #undef UNICODE
+    #define UNICODE
+    #undef _WINSOCKAPI_
+    #define _WINSOCKAPI_
+    #include <Windows.h>
+    #include <winsock2.h>
 #else
     #include <unistd.h>
     #include <time.h>

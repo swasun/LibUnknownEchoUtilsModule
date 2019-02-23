@@ -24,7 +24,12 @@
 #if defined(__unix__)
     #include <sys/time.h>
 #elif defined(_WIN32) || defined(_WIN64)
+    #undef UNICODE
+    #define UNICODE
+    #undef _WINSOCKAPI_
+    #define _WINSOCKAPI_
     #include <Windows.h>
+    #include <winsock2.h>
 #endif
 
 bool ueum_time_of_day(struct timeval *p);

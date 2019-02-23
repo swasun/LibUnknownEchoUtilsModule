@@ -23,7 +23,12 @@
 #include <ueum/thread/thread_mutex.h>
 
 #if defined(_WIN32) || defined(_WIN64)
+    #undef UNICODE
+    #define UNICODE
+    #undef _WINSOCKAPI_
+    #define _WINSOCKAPI_
     #include <Windows.h>
+    #include <winsock2.h>
 #elif defined(__unix__)
     #include <pthread.h>
 #endif

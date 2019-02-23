@@ -183,7 +183,12 @@
  *            https://github.com/richgel999/lzham_codec_devel/blob/master/lzhamdecomp/lzham_mem.cpp
  */
 #if defined(_WIN32) || defined(_WIN64)
+    #undef UNICODE
+    #define UNICODE
+    #undef _WINSOCKAPI_
+    #define _WINSOCKAPI_
     #include <Windows.h>
+    #include <winsock2.h>
 #elif defined(__APPLE__)
     #include <malloc/malloc.h>
 #elif defined(__FreeBSD__) || defined(__NetBSD__)
