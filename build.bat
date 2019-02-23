@@ -6,7 +6,7 @@ chcp 65001 > NUL
  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
  : Copyright (C) 2019 Charly Lamothe                                           :
  :                                                                             :
- : This file is part of LibUnknownEchoUtilsModule.                              :
+ : This file is part of LibErrorInterceptor.                                   :
  :                                                                             :
  :   Licensed under the Apache License, Version 2.0 (the "License");           :
  :   you may not use this file except in compliance with the License.          :
@@ -38,7 +38,7 @@ goto :init
 
 :init
     set default_build_type=release
-    set default_install_path="C:\\LibUnknownEchoUtilsModule"
+    set default_install_path="C:\\LibErrorInterceptor"
     set default_plateform=x64
 
     set "__NAME=%~n0"
