@@ -37,7 +37,7 @@ goto :init
     goto :eof
 
 :init
-    set default_build_type=release
+    set default_build_type=Release
     set default_install_path="C:\\LibUnknownEchoUtilsModule"
     set default_plateform=x64
 
@@ -102,7 +102,7 @@ goto :init
     echo.   --help           Shows this help
     echo.   --version        Shows the version
     echo.   --build_type [BUILD_TYPE]
-    echo.                    Select the build type: release or Debug (default: %default_build_type%)
+    echo.                    Select the build type: Release or Debug (default: %default_build_type%)
     echo.   --install_path [INSTALL_PATH]
     echo.                    Select the installation path (default: %default_install_path%)
     echo.   --plateform [PLATEFORM]

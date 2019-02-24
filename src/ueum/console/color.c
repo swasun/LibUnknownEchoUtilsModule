@@ -52,6 +52,11 @@ char *ueum_colorize_string(const char *string, int attribute_id, int foreground_
     background = NULL;
     string_length = strlen(string);
 
+#if defined(_WIN32) || defined(_WIN64)
+    ei_logger_warn("ueum_colorize_string() is not supported in Windows for now.");
+    return ueum_string_create_from(string);
+#endif
+
     colored_length = 8 + string_length + strlen(UNKNOWNECHOUTILSMODULE_COLOR_ESCAPE_RESET);
 
     if (color_is_valid_attribute(attribute_id)) {
